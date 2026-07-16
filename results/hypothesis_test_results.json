@@ -1,0 +1,400 @@
+{
+  "config_summary": [
+    {
+      "config_name": "baseline",
+      "config_label": "Baseline (HEA)",
+      "mean_of_seed_means": 11.241636933169291,
+      "median_of_seed_means": 11.292126529390359,
+      "std_of_seed_means": 2.533143602339423,
+      "n_seeds": 50
+    },
+    {
+      "config_name": "combined",
+      "config_label": "Combined (A+B+C)",
+      "mean_of_seed_means": 9.503716477100367,
+      "median_of_seed_means": 10.044497308934352,
+      "std_of_seed_means": 3.0459998560654857,
+      "n_seeds": 50
+    },
+    {
+      "config_name": "entanglement_local",
+      "config_label": "Entanglement + local cost",
+      "mean_of_seed_means": 11.159239727701477,
+      "median_of_seed_means": 9.673497845634087,
+      "std_of_seed_means": 6.479100247766202,
+      "n_seeds": 50
+    },
+    {
+      "config_name": "entanglement_only",
+      "config_label": "Constrained entanglement only",
+      "mean_of_seed_means": 14.135420414146738,
+      "median_of_seed_means": 13.89276417852817,
+      "std_of_seed_means": 2.837099738459236,
+      "n_seeds": 50
+    },
+    {
+      "config_name": "entanglement_residual",
+      "config_label": "Entanglement + residual",
+      "mean_of_seed_means": 10.696868411779388,
+      "median_of_seed_means": 10.757516211510096,
+      "std_of_seed_means": 2.686360496641079,
+      "n_seeds": 50
+    },
+    {
+      "config_name": "local_cost_only",
+      "config_label": "Local cost function only",
+      "mean_of_seed_means": 10.234414987528833,
+      "median_of_seed_means": 9.665385529769825,
+      "std_of_seed_means": 3.466267851114911,
+      "n_seeds": 50
+    },
+    {
+      "config_name": "residual_only",
+      "config_label": "Residual connections only",
+      "mean_of_seed_means": 8.167858580261782,
+      "median_of_seed_means": 8.092451744877351,
+      "std_of_seed_means": 2.703438702533219,
+      "n_seeds": 50
+    }
+  ],
+  "H1": {
+    "hypothesis": "H1: combined (config 7) SNR > configs 1-4 individually",
+    "comparisons": [
+      {
+        "config_a": "combined",
+        "config_b": "baseline",
+        "mean_a": 9.503716477100367,
+        "mean_b": 11.241636933169291,
+        "median_a": 10.044497308934352,
+        "median_b": 11.292126529390359,
+        "mean_diff_a_minus_b": -1.7379204560689225,
+        "a_greater_than_b": false,
+        "n_pairs": 50,
+        "statistic": 337.0,
+        "pvalue": 0.0032054206503495664
+      },
+      {
+        "config_a": "combined",
+        "config_b": "entanglement_only",
+        "mean_a": 9.503716477100367,
+        "mean_b": 14.135420414146738,
+        "median_a": 10.044497308934352,
+        "median_b": 13.89276417852817,
+        "mean_diff_a_minus_b": -4.631703937046373,
+        "a_greater_than_b": false,
+        "n_pairs": 50,
+        "statistic": 41.0,
+        "pvalue": 1.7687185049908294e-11
+      },
+      {
+        "config_a": "combined",
+        "config_b": "local_cost_only",
+        "mean_a": 9.503716477100367,
+        "mean_b": 10.234414987528833,
+        "median_a": 10.044497308934352,
+        "median_b": 9.665385529769825,
+        "mean_diff_a_minus_b": -0.7306985104284667,
+        "a_greater_than_b": false,
+        "n_pairs": 50,
+        "statistic": 528.0,
+        "pvalue": 0.2954728324166016
+      },
+      {
+        "config_a": "combined",
+        "config_b": "residual_only",
+        "mean_a": 9.503716477100367,
+        "mean_b": 8.167858580261782,
+        "median_a": 10.044497308934352,
+        "median_b": 8.092451744877351,
+        "mean_diff_a_minus_b": 1.3358578968385868,
+        "a_greater_than_b": true,
+        "n_pairs": 50,
+        "statistic": 413.0,
+        "pvalue": 0.029727315082014982
+      }
+    ],
+    "combined_exceeds_all_four": false,
+    "all_differences_significant_p<0.05": false
+  },
+  "H2a": {
+    "hypothesis": "H2a: entanglement_local (config 5) vs entanglement_only (2) and local_cost_only (3)",
+    "wilcoxon_config5_vs_config2": {
+      "config_a": "entanglement_local",
+      "config_b": "entanglement_only",
+      "mean_a": 11.159239727701477,
+      "mean_b": 14.135420414146738,
+      "median_a": 9.673497845634087,
+      "median_b": 13.89276417852817,
+      "mean_diff_a_minus_b": -2.976180686445265,
+      "a_greater_than_b": false,
+      "n_pairs": 50,
+      "statistic": 256.0,
+      "pvalue": 0.0001362867761987019
+    },
+    "wilcoxon_config5_vs_config3": {
+      "config_a": "entanglement_local",
+      "config_b": "local_cost_only",
+      "mean_a": 11.159239727701477,
+      "mean_b": 10.234414987528833,
+      "median_a": 9.673497845634087,
+      "median_b": 9.665385529769825,
+      "mean_diff_a_minus_b": 0.9248247401726418,
+      "a_greater_than_b": true,
+      "n_pairs": 50,
+      "statistic": 559.0,
+      "pvalue": 0.4547879869752496
+    },
+    "additivity": {
+      "gain_a_over_baseline": 2.8937834809774508,
+      "gain_b_over_baseline": -1.007221945640456,
+      "gain_combined_over_baseline_actual": -0.08239720546781548,
+      "sum_framing_additive_prediction": 1.8865615353369947,
+      "sum_framing_sub_additive": true,
+      "ratio_a_over_baseline": 1.257416557586834,
+      "ratio_b_over_baseline": 0.9104025551057807,
+      "ratio_combined_over_baseline_actual": 0.992670355219826,
+      "product_framing_multiplicative_prediction": 1.1447552468593687,
+      "product_framing_sub_additive": true
+    }
+  },
+  "H2b": {
+    "hypothesis": "H2b: entanglement_residual (config 6) vs entanglement_only (2) and residual_only (4)",
+    "wilcoxon_config6_vs_config2": {
+      "config_a": "entanglement_residual",
+      "config_b": "entanglement_only",
+      "mean_a": 10.696868411779388,
+      "mean_b": 14.135420414146738,
+      "median_a": 10.757516211510096,
+      "median_b": 13.89276417852817,
+      "mean_diff_a_minus_b": -3.4385520023673526,
+      "a_greater_than_b": false,
+      "n_pairs": 50,
+      "statistic": 61.0,
+      "pvalue": 2.0232171493717033e-10
+    },
+    "wilcoxon_config6_vs_config4": {
+      "config_a": "entanglement_residual",
+      "config_b": "residual_only",
+      "mean_a": 10.696868411779388,
+      "mean_b": 8.167858580261782,
+      "median_a": 10.757516211510096,
+      "median_b": 8.092451744877351,
+      "mean_diff_a_minus_b": 2.529009831517607,
+      "a_greater_than_b": true,
+      "n_pairs": 50,
+      "statistic": 163.0,
+      "pvalue": 9.364108866094512e-07
+    },
+    "additivity": {
+      "gain_a_over_baseline": 2.8937834809774508,
+      "gain_b_over_baseline": -3.0737783529075084,
+      "gain_combined_over_baseline_actual": -0.5447685213899014,
+      "sum_framing_additive_prediction": -0.1799948719300577,
+      "sum_framing_sub_additive": true,
+      "ratio_a_over_baseline": 1.257416557586834,
+      "ratio_b_over_baseline": 0.726571995592733,
+      "ratio_combined_over_baseline_actual": 0.9515401071366643,
+      "product_framing_multiplicative_prediction": 0.9136036575372106,
+      "product_framing_sub_additive": false
+    }
+  },
+  "H3": {
+    "hypothesis": "H3: depth threshold where residual connections overtake local cost",
+    "per_depth": [
+      {
+        "L": 1,
+        "mean_local_cost_only": 168.5968851794353,
+        "mean_residual_only": 19.673469716742858,
+        "mean_local_and_residual": 168.5968851794352,
+        "median_local_cost_only": 8.59698899432361,
+        "median_residual_only": 20.164552813914025,
+        "median_local_and_residual": 8.596988994323608,
+        "local_beats_residual_by_mean": true,
+        "local_beats_residual_by_median": false,
+        "local_vs_residual_pvalue": 0.4262959591146398,
+        "local_vs_combo": {
+          "config_a": "local_cost_only",
+          "config_b": "local_and_residual",
+          "mean_a": 168.59688517943528,
+          "mean_b": 168.59688517943516,
+          "median_a": 8.59698899432361,
+          "median_b": 8.596988994323608,
+          "mean_diff_a_minus_b": 1.1179432379826437e-13,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": null,
+          "pvalue": 1.0,
+          "note": "all paired differences are zero"
+        },
+        "residual_vs_combo": {
+          "config_a": "residual_only",
+          "config_b": "local_and_residual",
+          "mean_a": 19.673469716742858,
+          "mean_b": 168.59688517943516,
+          "median_a": 20.164552813914025,
+          "median_b": 8.596988994323608,
+          "mean_diff_a_minus_b": -148.9234154626923,
+          "a_greater_than_b": false,
+          "n_pairs": 50,
+          "statistic": 554.0,
+          "pvalue": 0.4262959591146398
+        }
+      },
+      {
+        "L": 2,
+        "mean_local_cost_only": 12.172875592069747,
+        "mean_residual_only": 8.931417527744783,
+        "mean_local_and_residual": 7.292877295341601,
+        "median_local_cost_only": 9.95833315455824,
+        "median_residual_only": 8.83952375808343,
+        "median_local_and_residual": 7.485090099638763,
+        "local_beats_residual_by_mean": true,
+        "local_beats_residual_by_median": true,
+        "local_vs_residual_pvalue": 0.006325487527247375,
+        "local_vs_combo": {
+          "config_a": "local_cost_only",
+          "config_b": "local_and_residual",
+          "mean_a": 12.172875592069747,
+          "mean_b": 7.292877295341603,
+          "median_a": 9.95833315455824,
+          "median_b": 7.485090099638763,
+          "mean_diff_a_minus_b": 4.879998296728145,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": 226.0,
+          "pvalue": 3.288899332076767e-05
+        },
+        "residual_vs_combo": {
+          "config_a": "residual_only",
+          "config_b": "local_and_residual",
+          "mean_a": 8.931417527744784,
+          "mean_b": 7.292877295341603,
+          "median_a": 8.83952375808343,
+          "median_b": 7.485090099638763,
+          "mean_diff_a_minus_b": 1.6385402324031815,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": 166.0,
+          "pvalue": 1.1326234101716182e-06
+        }
+      },
+      {
+        "L": 3,
+        "mean_local_cost_only": 10.234414987528833,
+        "mean_residual_only": 8.16785858026178,
+        "mean_local_and_residual": 7.344225251881222,
+        "median_local_cost_only": 9.665385529769825,
+        "median_residual_only": 8.092451744877351,
+        "median_local_and_residual": 7.250805342891849,
+        "local_beats_residual_by_mean": true,
+        "local_beats_residual_by_median": true,
+        "local_vs_residual_pvalue": 0.006525205201144857,
+        "local_vs_combo": {
+          "config_a": "local_cost_only",
+          "config_b": "local_and_residual",
+          "mean_a": 10.234414987528833,
+          "mean_b": 7.344225251881222,
+          "median_a": 9.665385529769825,
+          "median_b": 7.250805342891849,
+          "mean_diff_a_minus_b": 2.8901897356476116,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": 230.0,
+          "pvalue": 4.011462634423424e-05
+        },
+        "residual_vs_combo": {
+          "config_a": "residual_only",
+          "config_b": "local_and_residual",
+          "mean_a": 8.167858580261782,
+          "mean_b": 7.344225251881222,
+          "median_a": 8.092451744877351,
+          "median_b": 7.250805342891849,
+          "mean_diff_a_minus_b": 0.8236333283805586,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": 204.0,
+          "pvalue": 1.0451820186219152e-05
+        }
+      },
+      {
+        "L": 5,
+        "mean_local_cost_only": 8.392667012726996,
+        "mean_residual_only": 7.911308681662039,
+        "mean_local_and_residual": 7.76766910713204,
+        "median_local_cost_only": 8.341775030273265,
+        "median_residual_only": 7.691802506258197,
+        "median_local_and_residual": 7.735081653333847,
+        "local_beats_residual_by_mean": true,
+        "local_beats_residual_by_median": true,
+        "local_vs_residual_pvalue": 0.1406841997467243,
+        "local_vs_combo": {
+          "config_a": "local_cost_only",
+          "config_b": "local_and_residual",
+          "mean_a": 8.392667012726998,
+          "mean_b": 7.767669107132039,
+          "median_a": 8.341775030273265,
+          "median_b": 7.735081653333847,
+          "mean_diff_a_minus_b": 0.6249979055949565,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": 461.0,
+          "pvalue": 0.0894381024777875
+        },
+        "residual_vs_combo": {
+          "config_a": "residual_only",
+          "config_b": "local_and_residual",
+          "mean_a": 7.91130868166204,
+          "mean_b": 7.767669107132039,
+          "median_a": 7.691802506258197,
+          "median_b": 7.735081653333847,
+          "mean_diff_a_minus_b": 0.14363957452999881,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": 418.0,
+          "pvalue": 0.033687793845592395
+        }
+      },
+      {
+        "L": 8,
+        "mean_local_cost_only": 8.644297215441462,
+        "mean_residual_only": 7.156046399424008,
+        "mean_local_and_residual": 7.046107399288912,
+        "median_local_cost_only": 8.44763456731,
+        "median_residual_only": 7.071289630446806,
+        "median_local_and_residual": 6.983036536402319,
+        "local_beats_residual_by_mean": true,
+        "local_beats_residual_by_median": true,
+        "local_vs_residual_pvalue": 4.521505763577238e-06,
+        "local_vs_combo": {
+          "config_a": "local_cost_only",
+          "config_b": "local_and_residual",
+          "mean_a": 8.644297215441462,
+          "mean_b": 7.046107399288911,
+          "median_a": 8.44763456731,
+          "median_b": 6.983036536402319,
+          "mean_diff_a_minus_b": 1.5981898161525492,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": 152.0,
+          "pvalue": 4.56562391448756e-07
+        },
+        "residual_vs_combo": {
+          "config_a": "residual_only",
+          "config_b": "local_and_residual",
+          "mean_a": 7.156046399424008,
+          "mean_b": 7.046107399288911,
+          "median_a": 7.071289630446806,
+          "median_b": 6.983036536402319,
+          "mean_diff_a_minus_b": 0.10993900013509532,
+          "a_greater_than_b": true,
+          "n_pairs": 50,
+          "statistic": 446.0,
+          "pvalue": 0.064886242135481
+        }
+      }
+    ],
+    "crossover_depth_L": 2,
+    "crossover_direction": "local_overtakes_residual",
+    "note": "crossover_depth_L (median-based, see docstring) is the first depth (ascending) at which the local-vs-residual median-SNR ordering flips, in either direction (crossover_direction records which way); null if one configuration dominates at every swept depth"
+  }
+}
