@@ -1,0 +1,2 @@
+task,n_qubits,h1_combined_exceeds_all_four,h2a_sum_framing_sub_additive,h2a_product_framing_sub_additive,h2b_sum_framing_sub_additive,h2b_product_framing_sub_additive,best_config,entanglement_only_is_best,combined_worse_than_baseline
+tfim_h0.5,4,False,True,True,False,False,entanglement_only,True,True

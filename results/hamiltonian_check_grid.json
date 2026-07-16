@@ -1,0 +1,371 @@
+[
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 2,
+    "ground_energy": -1.414213562373095,
+    "first_excited_energy": -0.9999999999999996,
+    "spectral_gap": 0.41421356237309537,
+    "ground_state_zz01_expval": 0.7071067811865466,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 3,
+    "ground_energy": -2.4032119259115534,
+    "first_excited_energy": -2.209275359436922,
+    "spectral_gap": 0.19393656647463153,
+    "ground_state_zz01_expval": 0.787014578430222,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 4,
+    "ground_energy": -3.427034088908079,
+    "first_excited_energy": -3.3322465011650046,
+    "spectral_gap": 0.09478758774307439,
+    "ground_state_zz01_expval": 0.8186619528379564,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 5,
+    "ground_energy": -4.469490344005433,
+    "first_excited_energy": -4.422453647641849,
+    "spectral_gap": 0.04703669636358487,
+    "ground_state_zz01_expval": 0.8342963476098506,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 6,
+    "ground_energy": -5.522029570800216,
+    "first_excited_energy": -5.49856768524506,
+    "spectral_gap": 0.023461885555155604,
+    "ground_state_zz01_expval": 0.8423696908370447,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 7,
+    "ground_energy": -6.579920439429844,
+    "first_excited_energy": -6.568198110288694,
+    "spectral_gap": 0.011722329141149679,
+    "ground_state_zz01_expval": 0.8465355082346084,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 8,
+    "ground_energy": -7.640592553590078,
+    "first_excited_energy": -7.634732664382485,
+    "spectral_gap": 0.00585988920759295,
+    "ground_state_zz01_expval": 0.848664875332471,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 9,
+    "ground_energy": -8.70268776740164,
+    "first_excited_energy": -8.69975800725381,
+    "spectral_gap": 0.002929760147830862,
+    "ground_state_zz01_expval": 0.8497442096693029,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h0.5",
+    "task_params": {
+      "J": 1.0,
+      "h": 0.5
+    },
+    "n_qubits": 10,
+    "ground_energy": -9.765503957927185,
+    "first_excited_energy": -9.76403910404887,
+    "spectral_gap": 0.0014648538783159637,
+    "ground_state_zz01_expval": 0.8502881894528543,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 2,
+    "ground_energy": -4.1231056256176615,
+    "first_excited_energy": -1.0000000000000004,
+    "spectral_gap": 3.123105625617661,
+    "ground_state_zz01_expval": 0.24253562503633333,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 3,
+    "ground_energy": -6.249770839529145,
+    "first_excited_energy": -3.523114363663781,
+    "spectral_gap": 2.7266564758653637,
+    "ground_state_zz01_expval": 0.24932718420028255,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 4,
+    "ground_energy": -8.37679863685036,
+    "first_excited_energy": -5.8658445062541436,
+    "spectral_gap": 2.5109541305962164,
+    "ground_state_zz01_expval": 0.2500219880790908,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 5,
+    "ground_energy": -10.503877297734345,
+    "first_excited_energy": -8.124311250140405,
+    "spectral_gap": 2.37956604759394,
+    "ground_state_zz01_expval": 0.25012007712919665,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 6,
+    "ground_energy": -12.630964276492954,
+    "first_excited_energy": -10.337685803172187,
+    "spectral_gap": 2.2932784733207665,
+    "ground_state_zz01_expval": 0.2501362023793098,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 7,
+    "ground_energy": -14.758052743598713,
+    "first_excited_energy": -12.524594715848563,
+    "spectral_gap": 2.2334580277501495,
+    "ground_state_zz01_expval": 0.25013909958775565,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 8,
+    "ground_energy": -16.885141493208177,
+    "first_excited_energy": -14.69489435332412,
+    "spectral_gap": 2.1902471398840575,
+    "ground_state_zz01_expval": 0.25013965128182847,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 9,
+    "ground_energy": -19.012230298716265,
+    "first_excited_energy": -16.854224621778545,
+    "spectral_gap": 2.1580056769377194,
+    "ground_state_zz01_expval": 0.25013976072587624,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "tfim_h2.0",
+    "task_params": {
+      "J": 1.0,
+      "h": 2.0
+    },
+    "n_qubits": 10,
+    "ground_energy": -21.139319115631196,
+    "first_excited_energy": -19.00601192291366,
+    "spectral_gap": 2.1333071927175347,
+    "ground_state_zz01_expval": 0.250139783106065,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 2,
+    "ground_energy": -2.5,
+    "first_excited_energy": 0.5,
+    "spectral_gap": 3.0,
+    "ground_state_zz01_expval": -0.9999999999999998,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 3,
+    "ground_energy": -3.3722813232690148,
+    "first_excited_energy": -3.3722813232690148,
+    "spectral_gap": 0.0,
+    "ground_state_zz01_expval": -0.587038827977849,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 4,
+    "ground_energy": -5.424343992020249,
+    "first_excited_energy": -3.5,
+    "spectral_gap": 1.9243439920202494,
+    "ground_state_zz01_expval": -0.8714983208238468,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 5,
+    "ground_energy": -6.5054914778459505,
+    "first_excited_energy": -6.505491477845946,
+    "spectral_gap": 4.440892098500626e-15,
+    "ground_state_zz01_expval": -0.7045269182671171,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 6,
+    "ground_energy": -8.391550553031404,
+    "first_excited_energy": -6.9779536277638,
+    "spectral_gap": 1.413596925267604,
+    "ground_state_zz01_expval": -0.8422037078714631,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 7,
+    "ground_energy": -9.575074321861074,
+    "first_excited_energy": -9.57507432186107,
+    "spectral_gap": 3.552713678800501e-15,
+    "ground_state_zz01_expval": -0.749053097972655,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 8,
+    "ground_energy": -11.37299610403002,
+    "first_excited_energy": -10.255722668858892,
+    "spectral_gap": 1.1172734351711284,
+    "ground_state_zz01_expval": -0.8305436664029207,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 9,
+    "ground_energy": -12.61805092738428,
+    "first_excited_energy": -12.618050927384276,
+    "spectral_gap": 3.552713678800501e-15,
+    "ground_state_zz01_expval": -0.7707036916823397,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  },
+  {
+    "task": "xxz_delta0.5",
+    "task_params": {
+      "delta": 0.5
+    },
+    "n_qubits": 10,
+    "ground_energy": -14.361002811946285,
+    "first_excited_energy": -13.43706012140162,
+    "spectral_gap": 0.9239426905446653,
+    "ground_state_zz01_expval": -0.8246691030427084,
+    "hermitian_check_passed": true,
+    "zz_idempotent_check_passed": true
+  }
+]

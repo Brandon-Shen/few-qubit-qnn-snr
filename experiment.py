@@ -17,9 +17,10 @@ import time
 import numpy as np
 import pandas as pd
 
-from hamiltonian import build_tfim_hamiltonian, z0z1_operator, sanity_check
+from hamiltonian import (build_tfim_hamiltonian, build_xxz_hamiltonian, z0z1_operator,
+                          sanity_check, sanity_check_hamiltonian)
 from snr import init_params, compute_snr_for_initialization
-from ansatze import build_snapshot_circuit
+from ansatze import build_snapshot_circuit, brick_pattern_matches_pilot_n4
 
 N_QUBITS = 4
 J, H_FIELD = 1.0, 0.5
@@ -91,7 +92,7 @@ def run_main_experiment(H, H2, ZZ, verbose=True):
         t0 = time.time()
         for seed in range(N_SEEDS):
             theta, alpha = init_params(seed, L_MAIN, N_QUBITS, config["residual"])
-            grads, snrs, labels = compute_snr_for_initialization(
+            grads, snrs, labels, _det = compute_snr_for_initialization(
                 theta, alpha, L_MAIN, N_QUBITS, config["entanglement"], config["cost"],
                 config["residual"], H, H2, ZZ, N_shots=N_SHOTS, run_circuit=run_circuit,
             )
@@ -128,7 +129,7 @@ def run_depth_sweep(H, H2, ZZ, verbose=True):
             t0 = time.time()
             for seed in range(N_SEEDS):
                 theta, alpha = init_params(seed, L, N_QUBITS, config["residual"])
-                grads, snrs, labels = compute_snr_for_initialization(
+                grads, snrs, labels, _det = compute_snr_for_initialization(
                     theta, alpha, L, N_QUBITS, config["entanglement"], config["cost"],
                     config["residual"], H, H2, ZZ, N_shots=N_SHOTS, run_circuit=run_circuit,
                 )
@@ -170,6 +171,391 @@ def landscape_gradient_variance(per_param_records):
             "n_seeds": len(grads),
         })
     return pd.DataFrame(rows)
+
+
+# ============================================================================
+# Companion-paper phase 2: n-qubit x task grid, sum-vs-mean residual
+# sensitivity check, and a scoped (n in {4,6,10}) depth sweep.
+#
+# The pilot's own run_main_experiment/run_depth_sweep/_summarize above are
+# left untouched (still n=4, TFIM(h=0.5)-only, using np.isfinite exclusion) so
+# `python experiment.py`'s existing behavior and the committed pilot result
+# files stay byte-for-byte reproducible. Everything below is new and lives in
+# its own results/*grid*/*sensitivity*/*scoped* files instead.
+# ============================================================================
+
+TASKS = [
+    {"name": "tfim_h0.5", "label": "TFIM (J=1, h=0.5)", "kind": "tfim",
+     "params": {"J": 1.0, "h": 0.5}},
+    {"name": "tfim_h2.0", "label": "TFIM (J=1, h=2.0)", "kind": "tfim",
+     "params": {"J": 1.0, "h": 2.0}},
+    {"name": "xxz_delta0.5", "label": "XXZ (Delta=0.5)", "kind": "xxz",
+     "params": {"delta": 0.5}},
+]
+REFERENCE_TASK_NAME = "tfim_h0.5"  # matches the pilot's exact TFIM(J=1,h=0.5) task
+
+N_QUBITS_SWEEP = list(range(2, 11))  # 2..10
+SENSITIVITY_N_QUBITS = [4, 10]
+DEPTH_SWEEP_N_QUBITS = [4, 6, 10]
+RESIDUAL_CONFIG_NAMES = {"residual_only", "entanglement_residual", "combined"}
+
+# Runtime-budget-driven seed counts (see README "Design choices" / RESULTS.md
+# runtime note). A calibration run before the full data generation measured:
+#   main grid (3 tasks x 9 n-values x 7 configs) at 200 seeds  -> ~88 min
+#   sensitivity check (3 tasks x n in {4,10} x 7 configs) at 200 seeds x2 reductions -> ~46 min
+#   scoped depth sweep (n in {4,6,10} x 3 configs x 5 depths) at 200 seeds -> ~58 min
+# Running all three at the spec's suggested 200 seeds would total ~2.7 hours,
+# exceeding the stated 1-2 hour budget. Per the spec's explicit instruction to
+# "reduce seeds for the full n x task grid specifically ... but keep 200 seeds
+# for whichever single reference point you'd call out as a headline result":
+# the main grid and sensitivity check are reduced to 50 seeds (matching the
+# pilot's own seed count, which already produced clean, significant Wilcoxon
+# results), while the depth sweep keeps the full 200 (it fits the budget on
+# its own and is the piece most sensitive to a heavy-tailed distribution at
+# low L). The single grid point most directly comparable to the pilot
+# (n_qubits=4, task=tfim_h0.5) is additionally re-run at the full 200 seeds
+# as this phase's headline reference result.
+N_SEEDS_MAIN_GRID = 50
+N_SEEDS_SENSITIVITY = 50
+N_SEEDS_DEPTH_SWEEP = 200
+N_SEEDS_HEADLINE = 200
+HEADLINE_TASK_NAME = "tfim_h0.5"
+HEADLINE_N_QUBITS = 4
+
+
+def build_task_hamiltonian(task, n_qubits):
+    if task["kind"] == "tfim":
+        return build_tfim_hamiltonian(n_qubits, task["params"]["J"], task["params"]["h"])
+    elif task["kind"] == "xxz":
+        return build_xxz_hamiltonian(n_qubits, task["params"]["delta"])
+    else:
+        raise ValueError(f"unknown task kind: {task['kind']}")
+
+
+def _summarize_grid(snrs, deterministic, labels):
+    """Like `_summarize`, but built around the deterministic-parameter rule
+    (snr.py's `_DETERMINISTIC_VAR_TOL`): parameters flagged `deterministic`
+    are excluded from the aggregate mean/median (this is now equivalent to,
+    but semantically distinct from, `np.isfinite` -- see snr.snr_from_grad_var),
+    and their count + identity are reported as separate diagnostic fields
+    rather than silently dropped.
+    """
+    deterministic = np.asarray(deterministic, dtype=bool)
+    keep = ~deterministic
+    finite = snrs[keep]
+    if finite.size == 0:
+        finite = np.array([np.nan])
+    det_labels = [l for l, d in zip(labels, deterministic) if d]
+    return {
+        "mean_snr": float(np.mean(finite)),
+        "median_snr": float(np.median(finite)),
+        "std_snr": float(np.std(finite)),
+        "min_snr": float(np.min(finite)),
+        "max_snr": float(np.max(finite)),
+        "n_params": int(snrs.size),
+        "n_finite_params": int(np.sum(keep)),
+        "n_deterministic_params": int(np.sum(deterministic)),
+        "deterministic_labels": ";".join(det_labels),
+    }
+
+
+def run_hamiltonian_and_pattern_checks(tasks=None, n_qubits_sweep=None, verbose=True):
+    """Hamiltonian sanity check (Hermiticity, Z0Z1 idempotency, exact ground
+    energy) for every (task, n) point in the sweep, plus the brick-pattern
+    generalization regression check -- the regression guard against a
+    generalization bug, run before any grid data is generated.
+    """
+    tasks = tasks if tasks is not None else TASKS
+    n_qubits_sweep = n_qubits_sweep if n_qubits_sweep is not None else N_QUBITS_SWEEP
+
+    assert brick_pattern_matches_pilot_n4(), \
+        "brick-layer generalization does not reduce to the pilot's n=4 pattern"
+
+    results = []
+    for task in tasks:
+        for n_qubits in n_qubits_sweep:
+            H = build_task_hamiltonian(task, n_qubits)
+            r = sanity_check_hamiltonian(H, n_qubits, label=task["name"],
+                                          task_params=task["params"], verbose=False)
+            results.append(r)
+    if verbose:
+        print(f"  Hamiltonian sanity checks passed: {len(results)} (task, n) points "
+              f"({len(tasks)} tasks x {len(n_qubits_sweep)} n-values); "
+              f"brick-pattern n=4 regression check passed.")
+    return results
+
+
+def run_main_grid(tasks=None, n_qubits_sweep=None, n_seeds=N_SEEDS_MAIN_GRID,
+                   L=L_MAIN, N_shots=N_SHOTS, residual_reduction="sum", verbose=True):
+    """Runs all 7 CONFIGS x n_seeds seeds at L=L_MAIN, for every (task, n_qubits)
+    grid point. Returns a single long-format summary DataFrame (one row per
+    task/n_qubits/config/seed) -- the main new empirical contribution of this
+    phase. No full per-parameter JSON is kept for the grid (see README
+    "Design choices" / data-volume scoping); only the summary statistics
+    `_summarize_grid` computes per seed are retained.
+    """
+    tasks = tasks if tasks is not None else TASKS
+    n_qubits_sweep = n_qubits_sweep if n_qubits_sweep is not None else N_QUBITS_SWEEP
+
+    summary_rows = []
+    for task in tasks:
+        for n_qubits in n_qubits_sweep:
+            H = build_task_hamiltonian(task, n_qubits)
+            H2 = H @ H
+            ZZ = z0z1_operator(n_qubits)
+            circuit_cache = {}
+            for config in CONFIGS:
+                key = (config["entanglement"], L)
+                if key not in circuit_cache:
+                    circuit_cache[key] = build_snapshot_circuit(n_qubits, L, config["entanglement"])
+                run_circuit = circuit_cache[key]
+
+                t0 = time.time()
+                for seed in range(n_seeds):
+                    theta, alpha = init_params(seed, L, n_qubits, config["residual"])
+                    grads, snrs, labels, det = compute_snr_for_initialization(
+                        theta, alpha, L, n_qubits, config["entanglement"], config["cost"],
+                        config["residual"], H, H2, ZZ, N_shots=N_shots,
+                        run_circuit=run_circuit, residual_reduction=residual_reduction,
+                    )
+                    row = {"task": task["name"], "task_label": task["label"], "n_qubits": n_qubits,
+                           "config_id": config["id"], "config_name": config["name"],
+                           "config_label": config["label"], "seed": seed, "L": L,
+                           "residual_reduction": residual_reduction}
+                    row.update(_summarize_grid(snrs, det, labels))
+                    row["mean_abs_grad"] = float(np.mean(np.abs(grads)))
+                    summary_rows.append(row)
+                if verbose:
+                    print(f"  [{task['name']:14s} n={n_qubits:2d}] {config['label']:32s} "
+                          f"{n_seeds} seeds in {time.time() - t0:.2f}s")
+
+    return pd.DataFrame(summary_rows)
+
+
+def run_sensitivity_check(tasks=None, n_qubits_list=None, n_seeds=N_SEEDS_SENSITIVITY,
+                           L=L_MAIN, N_shots=N_SHOTS, verbose=True):
+    """Self-contained sum-vs-mean residual-reduction sensitivity check (spec
+    section 3), at n in {4,10} across all three tasks. Runs ALL 7 CONFIGS
+    under residual_reduction='sum', plus the three residual-bearing configs
+    (residual_only, entanglement_residual, combined) again under 'mean' -- the
+    other four configs never touch alpha, so they are exactly invariant to
+    this toggle and their 'sum' rows are valid under the 'mean' label too,
+    with no separate computation needed.
+
+    Deliberately self-contained (does not reuse rows from `run_main_grid`,
+    which may use a different seed count -- see N_SEEDS_MAIN_GRID vs.
+    N_SEEDS_SENSITIVITY): both reductions here are computed at the *same*
+    seeds, so the comparison stays properly paired.
+
+    Returns (sum_df, mean_df): each has all 7 configs at every (task,
+    n_qubits) point, ready for a full H1/H2a/H2b comparison under both
+    reductions.
+    """
+    tasks = tasks if tasks is not None else TASKS
+    n_qubits_list = n_qubits_list if n_qubits_list is not None else SENSITIVITY_N_QUBITS
+
+    sum_rows = []
+    mean_only_rows = []
+    for task in tasks:
+        for n_qubits in n_qubits_list:
+            H = build_task_hamiltonian(task, n_qubits)
+            H2 = H @ H
+            ZZ = z0z1_operator(n_qubits)
+            circuit_cache = {}
+            for config in CONFIGS:
+                key = (config["entanglement"], L)
+                if key not in circuit_cache:
+                    circuit_cache[key] = build_snapshot_circuit(n_qubits, L, config["entanglement"])
+                run_circuit = circuit_cache[key]
+
+                t0 = time.time()
+                for seed in range(n_seeds):
+                    theta, alpha = init_params(seed, L, n_qubits, config["residual"])
+                    grads, snrs, labels, det = compute_snr_for_initialization(
+                        theta, alpha, L, n_qubits, config["entanglement"], config["cost"],
+                        config["residual"], H, H2, ZZ, N_shots=N_shots,
+                        run_circuit=run_circuit, residual_reduction="sum",
+                    )
+                    row = {"task": task["name"], "task_label": task["label"], "n_qubits": n_qubits,
+                           "config_id": config["id"], "config_name": config["name"],
+                           "config_label": config["label"], "seed": seed, "L": L,
+                           "residual_reduction": "sum"}
+                    row.update(_summarize_grid(snrs, det, labels))
+                    row["mean_abs_grad"] = float(np.mean(np.abs(grads)))
+                    sum_rows.append(row)
+                if verbose:
+                    print(f"  [sensitivity sum]  [{task['name']:14s} n={n_qubits:2d}] "
+                          f"{config['label']:32s} {n_seeds} seeds in {time.time() - t0:.2f}s")
+
+                if config["name"] in RESIDUAL_CONFIG_NAMES:
+                    t0 = time.time()
+                    for seed in range(n_seeds):
+                        theta, alpha = init_params(seed, L, n_qubits, config["residual"])
+                        grads, snrs, labels, det = compute_snr_for_initialization(
+                            theta, alpha, L, n_qubits, config["entanglement"], config["cost"],
+                            config["residual"], H, H2, ZZ, N_shots=N_shots,
+                            run_circuit=run_circuit, residual_reduction="mean",
+                        )
+                        row = {"task": task["name"], "task_label": task["label"], "n_qubits": n_qubits,
+                               "config_id": config["id"], "config_name": config["name"],
+                               "config_label": config["label"], "seed": seed, "L": L,
+                               "residual_reduction": "mean"}
+                        row.update(_summarize_grid(snrs, det, labels))
+                        row["mean_abs_grad"] = float(np.mean(np.abs(grads)))
+                        mean_only_rows.append(row)
+                    if verbose:
+                        print(f"  [sensitivity mean] [{task['name']:14s} n={n_qubits:2d}] "
+                              f"{config['label']:32s} {n_seeds} seeds in {time.time() - t0:.2f}s")
+
+    sum_df = pd.DataFrame(sum_rows)
+    mean_only_df = pd.DataFrame(mean_only_rows)
+    non_residual_as_mean = sum_df[~sum_df["config_name"].isin(RESIDUAL_CONFIG_NAMES)].copy()
+    non_residual_as_mean["residual_reduction"] = "mean"
+    mean_df = pd.concat([non_residual_as_mean, mean_only_df], ignore_index=True, sort=False)
+    return sum_df, mean_df
+
+
+def run_headline_reference(n_seeds=N_SEEDS_HEADLINE, L=L_MAIN, N_shots=N_SHOTS, verbose=True):
+    """Re-runs the single grid point most directly comparable to the pilot
+    (n_qubits=HEADLINE_N_QUBITS, task=HEADLINE_TASK_NAME, all 7 configs) at
+    the full N_SEEDS=200 the spec asks for throughout this phase, even though
+    the full grid itself had to use a reduced seed count to fit the runtime
+    budget (see N_SEEDS_MAIN_GRID above). This is "whichever single reference
+    point you'd call out as a headline result."
+    """
+    task = next(t for t in TASKS if t["name"] == HEADLINE_TASK_NAME)
+    return run_main_grid(tasks=[task], n_qubits_sweep=[HEADLINE_N_QUBITS], n_seeds=n_seeds,
+                          L=L, N_shots=N_shots, residual_reduction="sum", verbose=verbose)
+
+
+def run_depth_sweep_scoped(n_qubits_list=None, n_seeds=N_SEEDS_DEPTH_SWEEP, N_shots=N_SHOTS,
+                            verbose=True):
+    """H3 depth sweep (spec section 6): DEPTH_CONFIGS x DEPTHS x n_seeds seeds,
+    restricted to the reference task (TFIM h=0.5) at n_qubits in {4,6,10} --
+    not the full 5-depth x 9-n x 3-task sweep, which is disproportionately
+    expensive for what it buys (see README "Non-goals"). Applies the
+    deterministic-parameter rule explicitly, which is specifically relevant at
+    L=1 (see snr.py module docstring). Returns (summary_df, per_param_records).
+    """
+    n_qubits_list = n_qubits_list if n_qubits_list is not None else DEPTH_SWEEP_N_QUBITS
+    ref_task = next(t for t in TASKS if t["name"] == REFERENCE_TASK_NAME)
+
+    summary_rows = []
+    per_param_records = []
+    for n_qubits in n_qubits_list:
+        H = build_task_hamiltonian(ref_task, n_qubits)
+        H2 = H @ H
+        ZZ = z0z1_operator(n_qubits)
+        for L in DEPTHS:
+            circuit_cache = {}
+            for config in DEPTH_CONFIGS:
+                key = config["entanglement"]
+                if key not in circuit_cache:
+                    circuit_cache[key] = build_snapshot_circuit(n_qubits, L, config["entanglement"])
+                run_circuit = circuit_cache[key]
+
+                t0 = time.time()
+                for seed in range(n_seeds):
+                    theta, alpha = init_params(seed, L, n_qubits, config["residual"])
+                    grads, snrs, labels, det = compute_snr_for_initialization(
+                        theta, alpha, L, n_qubits, config["entanglement"], config["cost"],
+                        config["residual"], H, H2, ZZ, N_shots=N_shots, run_circuit=run_circuit,
+                    )
+                    row = {"n_qubits": n_qubits, "config_name": config["name"],
+                           "config_label": config["label"], "seed": seed, "L": L}
+                    row.update(_summarize_grid(snrs, det, labels))
+                    row["mean_abs_grad"] = float(np.mean(np.abs(grads)))
+                    summary_rows.append(row)
+
+                    per_param_records.append({
+                        "n_qubits": n_qubits, "config_name": config["name"], "seed": seed, "L": L,
+                        "labels": labels, "grads": grads.tolist(), "snrs": snrs.tolist(),
+                        "deterministic": det.tolist(),
+                    })
+                if verbose:
+                    print(f"  [depth scoped] n={n_qubits:2d} L={L} [{config['label']:24s}] "
+                          f"{n_seeds} seeds in {time.time() - t0:.2f}s")
+
+    return pd.DataFrame(summary_rows), per_param_records
+
+
+def run_companion_phase(n_seeds_grid=N_SEEDS_MAIN_GRID, n_seeds_sensitivity=N_SEEDS_SENSITIVITY,
+                         n_seeds_depth=N_SEEDS_DEPTH_SWEEP, n_seeds_headline=N_SEEDS_HEADLINE,
+                         verbose=True):
+    """Orchestrates the full companion-paper phase 2: hamiltonian/pattern
+    checks -> main n x task grid -> headline reference re-run -> sum-vs-mean
+    sensitivity check -> scoped depth sweep. Writes all raw output to
+    results/. Does not touch or re-run the pilot's own files
+    (main_experiment_summary.csv, depth_sweep_summary.csv, etc.), which stay
+    as the labeled n=4/single-task reference. See the seed-count constants
+    above for the runtime-budget-driven reduction applied to the main grid
+    and sensitivity check.
+    """
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    runtime = {}
+
+    print("Running Hamiltonian + brick-pattern regression checks across the full (task, n) sweep...")
+    ham_checks = run_hamiltonian_and_pattern_checks(verbose=verbose)
+    with open(os.path.join(RESULTS_DIR, "hamiltonian_check_grid.json"), "w") as f:
+        json.dump(ham_checks, f, indent=2)
+
+    print(f"\nRunning main grid: {len(TASKS)} tasks x {len(N_QUBITS_SWEEP)} n-values x "
+          f"{len(CONFIGS)} configs x {n_seeds_grid} seeds at L={L_MAIN}...")
+    t0 = time.time()
+    main_grid_df = run_main_grid(n_seeds=n_seeds_grid, verbose=verbose)
+    runtime["main_grid_seconds"] = time.time() - t0
+    main_grid_df.to_csv(os.path.join(RESULTS_DIR, "main_grid_summary.csv"), index=False)
+    print(f"Main grid done in {runtime['main_grid_seconds']:.1f}s "
+          f"({len(main_grid_df)} rows).")
+
+    print(f"\nRunning headline reference re-run: n_qubits={HEADLINE_N_QUBITS}, "
+          f"task={HEADLINE_TASK_NAME}, {n_seeds_headline} seeds...")
+    t0 = time.time()
+    headline_df = run_headline_reference(n_seeds=n_seeds_headline, verbose=verbose)
+    runtime["headline_seconds"] = time.time() - t0
+    headline_df.to_csv(os.path.join(RESULTS_DIR, "main_grid_headline_reference.csv"), index=False)
+    print(f"Headline reference done in {runtime['headline_seconds']:.1f}s.")
+
+    print(f"\nRunning sum-vs-mean residual sensitivity check at n in {SENSITIVITY_N_QUBITS} "
+          f"across all tasks, {n_seeds_sensitivity} seeds...")
+    t0 = time.time()
+    sensitivity_sum_df, sensitivity_mean_df = run_sensitivity_check(
+        n_seeds=n_seeds_sensitivity, verbose=verbose)
+    runtime["sensitivity_seconds"] = time.time() - t0
+    sensitivity_sum_df.to_csv(os.path.join(RESULTS_DIR, "sensitivity_sum_summary.csv"), index=False)
+    sensitivity_mean_df.to_csv(os.path.join(RESULTS_DIR, "sensitivity_mean_summary.csv"), index=False)
+    print(f"Sensitivity check done in {runtime['sensitivity_seconds']:.1f}s.")
+
+    print(f"\nRunning scoped H3 depth sweep at n in {DEPTH_SWEEP_N_QUBITS} "
+          f"(reference task only), {n_seeds_depth} seeds...")
+    t0 = time.time()
+    depth_scoped_df, depth_scoped_per_param = run_depth_sweep_scoped(n_seeds=n_seeds_depth,
+                                                                      verbose=verbose)
+    runtime["depth_sweep_scoped_seconds"] = time.time() - t0
+    depth_scoped_df.to_csv(os.path.join(RESULTS_DIR, "depth_sweep_scoped_summary.csv"), index=False)
+    with open(os.path.join(RESULTS_DIR, "depth_sweep_scoped_per_parameter.json"), "w") as f:
+        json.dump(depth_scoped_per_param, f)
+    print(f"Scoped depth sweep done in {runtime['depth_sweep_scoped_seconds']:.1f}s.")
+
+    runtime["total_seconds"] = sum(runtime.values())
+    runtime["n_seeds_grid"] = n_seeds_grid
+    runtime["n_seeds_sensitivity"] = n_seeds_sensitivity
+    runtime["n_seeds_depth"] = n_seeds_depth
+    runtime["n_seeds_headline"] = n_seeds_headline
+    with open(os.path.join(RESULTS_DIR, "runtime_phase2.json"), "w") as f:
+        json.dump(runtime, f, indent=2)
+    print(f"\nCompanion phase 2 total runtime: {runtime['total_seconds']:.1f}s "
+          f"({runtime['total_seconds'] / 60:.1f} min)")
+
+    return {
+        "main_grid_df": main_grid_df,
+        "headline_df": headline_df,
+        "sensitivity_sum_df": sensitivity_sum_df,
+        "sensitivity_mean_df": sensitivity_mean_df,
+        "depth_scoped_df": depth_scoped_df,
+        "depth_scoped_per_param": depth_scoped_per_param,
+        "runtime": runtime,
+    }
 
 
 def main():

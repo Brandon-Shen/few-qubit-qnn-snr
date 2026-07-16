@@ -36,24 +36,47 @@ def quantum_cost_and_var(state, cost_type, H=None, H2=None, ZZ=None):
         raise ValueError(f"unknown cost_type: {cost_type}")
 
 
-def residual_addition(alpha, block_inputs_z_list):
-    """Sum_l alpha_l * Sum_j <Z_j>_in^(l), the classical residual-shortcut term
+def _reduce_z(z, reduction):
+    """Sum_j z_j ('sum', the pilot's original scale-with-n behavior) or
+    (1/n) Sum_j z_j ('mean', n-invariant in scale -- see README "Design choices",
+    `residual_reduction`)."""
+    s = float(np.sum(z))
+    if reduction == "sum":
+        return s
+    elif reduction == "mean":
+        return s / len(z)
+    else:
+        raise ValueError(f"unknown residual_reduction: {reduction}")
+
+
+def residual_addition(alpha, block_inputs_z_list, reduction="sum"):
+    """Sum_l alpha_l * reduce(<Z_j>_in^(l)), the classical residual-shortcut term
     added to C_quantum to form C_res. `block_inputs_z_list` is a list of length
     L, each entry a length-n_qubits array of <Z_j> values for that block's input.
+    `reduction` selects 'sum' (pilot default) or 'mean' (n-invariant) per block.
     """
-    return float(sum(a * float(np.sum(z)) for a, z in zip(alpha, block_inputs_z_list)))
+    return float(sum(a * _reduce_z(z, reduction) for a, z in zip(alpha, block_inputs_z_list)))
 
 
-def residual_single_shot_var(var_quantum, alpha, block_inputs_z_list):
-    """Total single-shot variance of C_res = C_quantum + Sum_l alpha_l Sum_j Z_j_in^(l),
+def residual_single_shot_var(var_quantum, alpha, block_inputs_z_list, reduction="sum"):
+    """Total single-shot variance of C_res = C_quantum + Sum_l alpha_l * reduce(Z_j_in^(l)),
     under the simplifying assumption that the final-cost measurement and every
     intermediate single-qubit measurement are independent (no covariance modeled
     between them, nor between qubits within a block). See README "Design choices".
 
-    Var(single-shot) = Var_quantum + Sum_l alpha_l^2 * Sum_j (1 - <Z_j>_in^(l)^2)
+    'sum'  : Var(single-shot) = Var_quantum + Sum_l alpha_l^2 * Sum_j (1 - <Z_j>_in^(l)^2)
+    'mean' : same, but each block's term is divided by n_qubits^2 (Var of an
+             average of n independent terms), keeping the residual variance
+             contribution n-invariant in scale just like the mean itself.
     """
-    residual_var = sum(
-        (a ** 2) * float(np.sum(1.0 - np.asarray(z) ** 2))
-        for a, z in zip(alpha, block_inputs_z_list)
-    )
+    def block_var(z):
+        v = float(np.sum(1.0 - np.asarray(z) ** 2))
+        if reduction == "sum":
+            return v
+        elif reduction == "mean":
+            return v / (len(z) ** 2)
+        else:
+            raise ValueError(f"unknown residual_reduction: {reduction}")
+
+    residual_var = sum((a ** 2) * block_var(z) for a, z in zip(alpha, block_inputs_z_list))
     return var_quantum + residual_var

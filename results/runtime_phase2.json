@@ -1,0 +1,11 @@
+{
+  "main_grid_seconds": 1375.8650720119476,
+  "headline_seconds": 56.54386568069458,
+  "sensitivity_seconds": 591.6291987895966,
+  "depth_sweep_scoped_seconds": 3439.755459547043,
+  "total_seconds": 5463.793596029282,
+  "n_seeds_grid": 50,
+  "n_seeds_sensitivity": 50,
+  "n_seeds_depth": 200,
+  "n_seeds_headline": 200
+}

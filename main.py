@@ -137,6 +137,176 @@ def write_results_md(hyp_results, runtime_info):
     print(f"Wrote {out_path}")
 
 
+def _fmt_bool_count(series):
+    n_yes = int(series.sum())
+    n_total = len(series)
+    return f"{n_yes}/{n_total}"
+
+
+def append_companion_phase_results_md(companion_results, runtime_phase2):
+    """Appends the companion-paper phase 2 sections to the existing
+    RESULTS.md (written by `write_results_md` above, which stays the n=4/
+    single-task pilot reference, clearly labeled). Does not touch or
+    regenerate the pilot section.
+    """
+    grid_df = companion_results["grid_summary_df"]
+    headline_df = companion_results["headline_summary_df"]
+    sensitivity_df = companion_results["sensitivity_combined_df"]
+    diverge_df = companion_results["sensitivity_diverge_df"]
+    h3_scoped = companion_results["h3_scoped_results"]
+    l1_gap_df = companion_results["l1_gap_diagnostic_df"]
+
+    lines = []
+    lines.append("\n---\n")
+    lines.append("# Companion paper: expanded empirical testing (phase 2)\n")
+    lines.append(
+        f"Companion-phase runtime: **{runtime_phase2['total_seconds']:.1f}s** "
+        f"({runtime_phase2['total_seconds'] / 60:.1f} min) -- main grid "
+        f"{runtime_phase2['main_grid_seconds']:.1f}s, headline reference "
+        f"{runtime_phase2['headline_seconds']:.1f}s, sensitivity check "
+        f"{runtime_phase2['sensitivity_seconds']:.1f}s, scoped depth sweep "
+        f"{runtime_phase2['depth_sweep_scoped_seconds']:.1f}s.\n"
+    )
+    lines.append(
+        f"**Seed-count reduction (runtime budget):** the main n x task grid and "
+        f"the sensitivity check use **{runtime_phase2['n_seeds_grid']} seeds** "
+        f"(matching the pilot's own seed count) instead of the spec's suggested "
+        f"200 -- a calibration run showed the full grid at 200 seeds alone would "
+        f"take ~88 minutes, and combined with the depth sweep and sensitivity "
+        f"check would total ~2.7 hours, exceeding the stated 1-2 hour budget. "
+        f"The scoped depth sweep keeps the full "
+        f"**{runtime_phase2['n_seeds_depth']} seeds** (it fits the budget on its "
+        f"own and is the piece most sensitive to a heavy-tailed distribution at "
+        f"low L). The single grid point most comparable to the pilot "
+        f"(n_qubits=4, task=tfim_h0.5) is additionally re-run at the full "
+        f"**{runtime_phase2['n_seeds_headline']} seeds** as this phase's "
+        f"headline reference result -- see below.\n"
+    )
+
+    lines.append("## Main grid: does the pilot's n=4/TFIM(h=0.5) finding replicate?\n")
+    lines.append(
+        "Heatmap: `results/plots/grid_hypothesis_heatmap.png` (rows = task, "
+        "columns = n_qubits, green/Y = matches the labeled claim).\n"
+    )
+    lines.append(f"- Entanglement-alone is the best of the 7 configs: "
+                  f"**{_fmt_bool_count(grid_df['entanglement_only_is_best'])}** grid points.")
+    lines.append(f"- Combined underperforms baseline: "
+                  f"**{_fmt_bool_count(grid_df['combined_worse_than_baseline'])}** grid points.")
+    lines.append(f"- H2a (entanglement+local) is sub-additive, sum framing: "
+                  f"**{_fmt_bool_count(grid_df['h2a_sum_framing_sub_additive'])}** grid points.")
+    lines.append(f"- H2b (entanglement+residual) is sub-additive, sum framing: "
+                  f"**{_fmt_bool_count(grid_df['h2b_sum_framing_sub_additive'])}** grid points.")
+    lines.append("")
+    non_replicating = grid_df[~grid_df["entanglement_only_is_best"]
+                               | ~grid_df["combined_worse_than_baseline"]]
+    if len(non_replicating) > 0:
+        lines.append("Grid points where at least one of the two headline pilot claims "
+                      "does *not* replicate:\n")
+        lines.append("| task | n_qubits | entanglement best | combined < baseline | best config |")
+        lines.append("|---|---|---|---|---|")
+        for _, row in non_replicating.iterrows():
+            lines.append(f"| {row['task']} | {row['n_qubits']} | "
+                          f"{row['entanglement_only_is_best']} | "
+                          f"{row['combined_worse_than_baseline']} | {row['best_config']} |")
+    else:
+        lines.append("Both headline pilot claims replicate at every grid point swept.")
+    lines.append("")
+
+    lines.append("## Headline reference (n_qubits=4, TFIM h=0.5, 200 seeds)\n")
+    lines.append("Same grid point as the pilot's own experiment, re-run at the full "
+                  "requested seed count for direct comparison to the pilot's 50-seed result "
+                  "(see `results/main_grid_headline_reference.csv`).\n")
+    hl = headline_df.iloc[0]
+    lines.append(f"- Best config: **{hl['best_config']}** "
+                  f"(entanglement-alone best: {hl['entanglement_only_is_best']}; "
+                  f"combined < baseline: {hl['combined_worse_than_baseline']})")
+    lines.append(f"- H1 (combined exceeds configs 1-4): {hl['h1_combined_exceeds_all_four']}")
+    lines.append(f"- H2a sub-additive (sum framing): {hl['h2a_sum_framing_sub_additive']}")
+    lines.append(f"- H2b sub-additive (sum framing): {hl['h2b_sum_framing_sub_additive']}")
+    lines.append("")
+    lines.append(
+        "**Sample-size sensitivity note:** the pilot's own 50-seed result at this exact grid "
+        "point found H2b sub-additive (sum framing: prediction -0.180, actual -0.545). At the "
+        "full 200 seeds, H2b's sum-framing classification flips to *not* sub-additive "
+        "(prediction -0.194, actual -0.057) -- both actual values are small and close to zero "
+        "relative to the individual gains/losses feeding them, so this is a borderline effect "
+        "size where the sub-additive/not-sub-additive classification is sensitive to seed count, "
+        "not a contradiction between the two runs.\n"
+    )
+
+    lines.append("## Sum vs. mean residual-reduction sensitivity check\n")
+    lines.append("Plot: `results/plots/sensitivity_sum_vs_mean.png` "
+                  "(residual-bearing configs only, n=4 and n=10, all 3 tasks).\n")
+    n_diverge = int(diverge_df["diverges_sum_vs_mean"].sum())
+    n_total = len(diverge_df)
+    lines.append(f"**{n_diverge}/{n_total}** (task, n_qubits) points show a qualitative "
+                  f"difference between 'sum' and 'mean' reduction on at least one of "
+                  f"H1/H2a/H2b/best-config/pilot-finding outcomes.\n")
+    if n_diverge > 0:
+        lines.append("| task | n_qubits | diverging outcomes |")
+        lines.append("|---|---|---|")
+        for _, row in diverge_df[diverge_df["diverges_sum_vs_mean"]].iterrows():
+            lines.append(f"| {row['task']} | {row['n_qubits']} | {row['diverging_columns']} |")
+        lines.append("")
+
+    lines.append("## Scoped H3 depth sweep (n_qubits in {4, 6, 10}, reference task only)\n")
+    lines.append("Plot: `results/plots/depth_sweep_scoped_faceted.png`. The deterministic-"
+                  "parameter rule (snr.py `_DETERMINISTIC_VAR_TOL`) is applied throughout.\n")
+    lines.append("| n_qubits | crossover depth L | crossover direction |")
+    lines.append("|---|---|---|")
+    for n_qubits in sorted(h3_scoped.keys()):
+        h3 = h3_scoped[n_qubits]
+        cl = h3["crossover_depth_L"]
+        direction = h3["crossover_direction"] or "none (one config dominates throughout)"
+        lines.append(f"| {n_qubits} | {cl if cl is not None else 'n/a'} | {direction} |")
+    lines.append("")
+
+    lines.append("### Does the deterministic-parameter rule resolve the L=1 mean/median gap?\n")
+    lines.append("Checked directly against the real per-seed data at L=1 (`depth_sweep_scoped_"
+                  "l1_gap_diagnostic.csv`), not assumed:\n")
+    lines.append("| n_qubits | config | mean(mean_snr) | median(mean_snr) | mean/median ratio | "
+                  "max deterministic params/seed |")
+    lines.append("|---|---|---|---|---|---|")
+    for _, row in l1_gap_df.iterrows():
+        lines.append(f"| {row['n_qubits']} | {row['config_name']} | "
+                      f"{row['mean_of_mean_snr']:.3f} | {row['median_of_mean_snr']:.3f} | "
+                      f"{row['mean_median_ratio']:.2f}x | {row['max_n_deterministic_params']} |")
+    lines.append("")
+    lines.append(
+        "**Answer: partially, and only for the mechanism it actually targets.** "
+        "`residual_only` has `alpha_1` (deterministic by construction: block 1's input is "
+        "always the fixed `|0...0>` state) and its mean/median ratio is close to 1x -- the "
+        "rule cleanly excludes it. `local_cost_only` and `local_and_residual` show **zero** "
+        "deterministic parameters at L=1 yet still show a large mean/median ratio: inspecting "
+        "the offending seed directly shows a shot-noise variance of order 1e-9 -- three orders "
+        "of magnitude above the `1e-12` tolerance, so correctly classified as non-deterministic. "
+        "This is a specific seed's random theta draw landing extremely close to a `Z0Z1` "
+        "eigenstate -- a genuine, continuous small-sample statistical fluke, not a "
+        "provably-exact-zero case, and not something the deterministic-parameter rule fixes or "
+        "should fix (there is no principled tolerance that excludes it without also excluding "
+        "legitimately large finite SNRs from other seeds). The median remains the correct "
+        "robust summary statistic for this second phenomenon, exactly as the pilot's own H3 "
+        "analysis already documents.\n")
+
+    lines.append("## Companion-phase notes\n")
+    lines.append("- Full grid raw data: `results/main_grid_summary.csv` "
+                  "(no per-parameter JSON at grid scale -- see README 'Design choices' "
+                  "data-volume scoping note).")
+    lines.append("- Hypothesis-test detail per grid point: "
+                  "`results/grid_hypothesis_results.json`.")
+    lines.append("- Sensitivity check raw data: `results/sensitivity_sum_summary.csv`, "
+                  "`results/sensitivity_mean_summary.csv`.")
+    lines.append("- Scoped depth sweep per-parameter detail (incl. `deterministic` flags): "
+                  "`results/depth_sweep_scoped_per_parameter.json`.")
+    lines.append("- Hamiltonian + brick-pattern regression checks for every (task, n) point: "
+                  "`results/hamiltonian_check_grid.json`.")
+
+    out_path = os.path.join(os.path.dirname(__file__), "RESULTS.md")
+    with open(out_path, "a") as f:
+        f.write("\n".join(lines) + "\n")
+    print(f"Appended companion-phase sections to {out_path}")
+
+
 def main():
     t0 = time.time()
     experiment.main()
@@ -147,8 +317,18 @@ def main():
         runtime_info = json.load(f)
     write_results_md(hyp_results, runtime_info)
 
+    print("\n--- Companion-paper phase 2 (n x task grid, sensitivity check, scoped depth sweep) ---")
+    experiment.run_companion_phase()
+    companion_results = analysis.run_companion_phase_analyses()
+    plots.generate_companion_phase_plots()
+
+    with open(os.path.join(RESULTS_DIR, "runtime_phase2.json")) as f:
+        runtime_phase2 = json.load(f)
+    append_companion_phase_results_md(companion_results, runtime_phase2)
+
     total = time.time() - t0
-    print(f"\nEnd-to-end total wall time (including analysis + plotting): {total:.1f}s")
+    print(f"\nEnd-to-end total wall time (including analysis + plotting): {total:.1f}s "
+          f"({total / 60:.1f} min)")
 
 
 if __name__ == "__main__":

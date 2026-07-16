@@ -204,6 +204,191 @@ def analyze_h3(depth_df):
     }
 
 
+# ============================================================================
+# Companion-paper phase 2: per-(task, n_qubits) grid analysis, sum-vs-mean
+# sensitivity analysis, and scoped H3 analysis. All three reuse analyze_h1 /
+# analyze_h2a / analyze_h2b / analyze_h3 unchanged -- those functions only
+# ever look at a "config_name" column, so calling them once per grid cell
+# (a df already filtered/grouped down to one (task, n_qubits) point) is all
+# that's needed; no new hypothesis-testing logic here.
+# ============================================================================
+
+def analyze_pilot_finding_replication(df, metric=METRIC):
+    """Checks the pilot's headline finding at a single (task, n_qubits) grid
+    point: is entanglement_only the best (argmax mean seed-level SNR) of the
+    7 configs, and does combined underperform baseline?
+    """
+    means = df.groupby("config_name")[metric].mean()
+    best_config = means.idxmax()
+    return {
+        "best_config": best_config,
+        "means": means.to_dict(),
+        "entanglement_only_is_best": bool(best_config == "entanglement_only"),
+        "combined_worse_than_baseline": bool(means["combined"] < means["baseline"]),
+    }
+
+
+def run_grid_analysis(main_grid_df, metric=METRIC):
+    """Runs H1/H2a/H2b plus the pilot-finding-replication check at every
+    (task, n_qubits) point in `main_grid_df`. Returns (grid_summary_df,
+    full_results): `grid_summary_df` is a compact one-row-per-grid-point
+    table (the basis for the heatmap deliverable), `full_results` keeps the
+    complete nested H1/H2a/H2b dicts keyed by "{task}__n{n_qubits}".
+    """
+    rows = []
+    full_results = {}
+    for (task, n_qubits), sub in main_grid_df.groupby(["task", "n_qubits"]):
+        h1 = analyze_h1(sub)
+        h2a = analyze_h2a(sub)
+        h2b = analyze_h2b(sub)
+        pilot_check = analyze_pilot_finding_replication(sub, metric=metric)
+        key = f"{task}__n{int(n_qubits)}"
+        full_results[key] = {
+            "task": task, "n_qubits": int(n_qubits),
+            "H1": h1, "H2a": h2a, "H2b": h2b, "pilot_finding": pilot_check,
+        }
+        rows.append({
+            "task": task, "n_qubits": int(n_qubits),
+            "h1_combined_exceeds_all_four": h1["combined_exceeds_all_four"],
+            "h2a_sum_framing_sub_additive": h2a["additivity"]["sum_framing_sub_additive"],
+            "h2a_product_framing_sub_additive": h2a["additivity"]["product_framing_sub_additive"],
+            "h2b_sum_framing_sub_additive": h2b["additivity"]["sum_framing_sub_additive"],
+            "h2b_product_framing_sub_additive": h2b["additivity"]["product_framing_sub_additive"],
+            "best_config": pilot_check["best_config"],
+            "entanglement_only_is_best": pilot_check["entanglement_only_is_best"],
+            "combined_worse_than_baseline": pilot_check["combined_worse_than_baseline"],
+        })
+    grid_summary_df = pd.DataFrame(rows).sort_values(["task", "n_qubits"]).reset_index(drop=True)
+    return grid_summary_df, full_results
+
+
+_SENSITIVITY_COMPARISON_COLS = [
+    "h1_combined_exceeds_all_four", "h2a_sum_framing_sub_additive",
+    "h2a_product_framing_sub_additive", "h2b_sum_framing_sub_additive",
+    "h2b_product_framing_sub_additive", "best_config", "entanglement_only_is_best",
+    "combined_worse_than_baseline",
+]
+
+
+def run_sensitivity_analysis(sensitivity_sum_df, sensitivity_mean_df, metric=METRIC):
+    """Compares H1/H2a/H2b/pilot-finding outcomes under residual_reduction=
+    'sum' vs 'mean' at the sensitivity check's grid points (n in {4,10} x all
+    3 tasks): does the qualitative picture change under the n-invariant
+    'mean' formulation? Returns (combined_df, diverge_df): `combined_df` has
+    one row per (task, n_qubits, residual_reduction); `diverge_df` flags
+    which (task, n_qubits) points disagree between the two reductions on any
+    of `_SENSITIVITY_COMPARISON_COLS`.
+    """
+    sum_grid, _ = run_grid_analysis(sensitivity_sum_df, metric=metric)
+    sum_grid["residual_reduction"] = "sum"
+    mean_grid, _ = run_grid_analysis(sensitivity_mean_df, metric=metric)
+    mean_grid["residual_reduction"] = "mean"
+    combined_df = pd.concat([sum_grid, mean_grid], ignore_index=True)
+
+    diverge_rows = []
+    for (task, n_qubits), sub in combined_df.groupby(["task", "n_qubits"]):
+        sum_row = sub[sub["residual_reduction"] == "sum"].iloc[0]
+        mean_row = sub[sub["residual_reduction"] == "mean"].iloc[0]
+        diverging_cols = [c for c in _SENSITIVITY_COMPARISON_COLS if sum_row[c] != mean_row[c]]
+        diverge_rows.append({
+            "task": task, "n_qubits": n_qubits,
+            "diverges_sum_vs_mean": len(diverging_cols) > 0,
+            "diverging_columns": ";".join(diverging_cols),
+        })
+    diverge_df = pd.DataFrame(diverge_rows).sort_values(["task", "n_qubits"]).reset_index(drop=True)
+    return combined_df, diverge_df
+
+
+def run_scoped_h3_analysis(depth_scoped_df):
+    """H3 analysis (crossover detection, reusing analyze_h3 unchanged) at
+    each n_qubits in the scoped depth sweep (spec section 6): does the
+    pilot's n=4 crossover direction hold, reverse, or disappear as n grows?
+    Returns {n_qubits: analyze_h3(...) result}.
+    """
+    results = {}
+    for n_qubits, sub in depth_scoped_df.groupby("n_qubits"):
+        results[int(n_qubits)] = analyze_h3(sub)
+    return results
+
+
+def diagnose_l1_mean_median_gap(depth_scoped_df, L=1):
+    """Reports, per (n_qubits, config), the mean-vs-median gap in seed-level
+    mean_snr at depth L (default 1, where the pilot noted a ~20x gap) plus
+    the maximum n_deterministic_params observed -- computed directly from the
+    real per-seed data, not assumed. Distinguishes two different phenomena:
+    a config where deterministic parameters (e.g. alpha_1, whose input is the
+    fixed |0...0> state) are present and the mean/median gap is small is a
+    case the snr.py deterministic-parameter rule actually resolves; a config
+    with a persisting large gap despite zero deterministic parameters is a
+    separate, real small-sample heavy-tailed phenomenon (a specific seed's
+    shallow circuit landing extremely close to a cost-function eigenstate,
+    giving a tiny-but-nonzero shot-noise variance) that the rule correctly
+    does not and should not suppress -- see README "Design choices".
+    """
+    sub = depth_scoped_df[depth_scoped_df["L"] == L]
+    rows = []
+    for (n_qubits, config_name), grp in sub.groupby(["n_qubits", "config_name"]):
+        mean_v = grp["mean_snr"].mean()
+        median_v = grp["mean_snr"].median()
+        rows.append({
+            "n_qubits": int(n_qubits), "config_name": config_name,
+            "mean_of_mean_snr": float(mean_v), "median_of_mean_snr": float(median_v),
+            "mean_median_ratio": float(mean_v / median_v) if median_v else float("nan"),
+            "max_n_deterministic_params": int(grp["n_deterministic_params"].max()),
+        })
+    return pd.DataFrame(rows).sort_values(["n_qubits", "config_name"]).reset_index(drop=True)
+
+
+def run_companion_phase_analyses():
+    """Reads the companion-phase-2 raw CSVs from results/ (written by
+    experiment.run_companion_phase), runs the grid/sensitivity/scoped-H3
+    analyses above, and writes their outputs back to results/. Does not
+    touch or re-run `run_all_analyses` (the pilot's own analysis).
+    """
+    main_grid_df = pd.read_csv(os.path.join(RESULTS_DIR, "main_grid_summary.csv"))
+    headline_df = pd.read_csv(os.path.join(RESULTS_DIR, "main_grid_headline_reference.csv"))
+    sensitivity_sum_df = pd.read_csv(os.path.join(RESULTS_DIR, "sensitivity_sum_summary.csv"))
+    sensitivity_mean_df = pd.read_csv(os.path.join(RESULTS_DIR, "sensitivity_mean_summary.csv"))
+    depth_scoped_df = pd.read_csv(os.path.join(RESULTS_DIR, "depth_sweep_scoped_summary.csv"))
+
+    grid_summary_df, grid_full_results = run_grid_analysis(main_grid_df)
+    grid_summary_df.to_csv(os.path.join(RESULTS_DIR, "grid_hypothesis_summary.csv"), index=False)
+    with open(os.path.join(RESULTS_DIR, "grid_hypothesis_results.json"), "w") as f:
+        json.dump(grid_full_results, f, indent=2)
+
+    headline_summary_df, headline_full_results = run_grid_analysis(headline_df)
+    headline_summary_df.to_csv(os.path.join(RESULTS_DIR, "headline_hypothesis_summary.csv"),
+                                index=False)
+    with open(os.path.join(RESULTS_DIR, "headline_hypothesis_results.json"), "w") as f:
+        json.dump(headline_full_results, f, indent=2)
+
+    sensitivity_combined_df, sensitivity_diverge_df = run_sensitivity_analysis(
+        sensitivity_sum_df, sensitivity_mean_df)
+    sensitivity_combined_df.to_csv(
+        os.path.join(RESULTS_DIR, "sensitivity_hypothesis_summary.csv"), index=False)
+    sensitivity_diverge_df.to_csv(
+        os.path.join(RESULTS_DIR, "sensitivity_divergence.csv"), index=False)
+
+    h3_scoped_results = run_scoped_h3_analysis(depth_scoped_df)
+    with open(os.path.join(RESULTS_DIR, "depth_sweep_scoped_hypothesis_results.json"), "w") as f:
+        json.dump(h3_scoped_results, f, indent=2)
+
+    l1_gap_diagnostic_df = diagnose_l1_mean_median_gap(depth_scoped_df)
+    l1_gap_diagnostic_df.to_csv(
+        os.path.join(RESULTS_DIR, "depth_sweep_scoped_l1_gap_diagnostic.csv"), index=False)
+
+    return {
+        "grid_summary_df": grid_summary_df,
+        "l1_gap_diagnostic_df": l1_gap_diagnostic_df,
+        "grid_full_results": grid_full_results,
+        "headline_summary_df": headline_summary_df,
+        "headline_full_results": headline_full_results,
+        "sensitivity_combined_df": sensitivity_combined_df,
+        "sensitivity_diverge_df": sensitivity_diverge_df,
+        "h3_scoped_results": h3_scoped_results,
+    }
+
+
 def run_all_analyses():
     main_df = pd.read_csv(os.path.join(RESULTS_DIR, "main_experiment_summary.csv"))
     depth_df = pd.read_csv(os.path.join(RESULTS_DIR, "depth_sweep_summary.csv"))

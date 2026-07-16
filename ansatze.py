@@ -23,23 +23,35 @@ def entangling_pairs(layer_idx, n_qubits, entanglement):
 
     'full'  : linear-chain CNOT(i, i+1) for i in 0..n_qubits-2, every layer
               (volume-law-scaling baseline / HEA entanglement).
-    'brick' : alternating brick pattern, fixed for n_qubits == 4:
-              odd layers (1-indexed: 1, 3, 5, ...) -> CNOT(0,1), CNOT(2,3)
-              even layers (1-indexed: 2, 4, 6, ...) -> CNOT(1,2)
-              (boundary/area-law-scaling entanglement growth).
+    'brick' : standard brick-wall pattern, general in n_qubits:
+              odd layers (1-indexed: 1, 3, 5, ...)  -> CNOT(0,1), CNOT(2,3), CNOT(4,5), ...
+              even layers (1-indexed: 2, 4, 6, ...) -> CNOT(1,2), CNOT(3,4), CNOT(5,6), ...
+              (disjoint pairs each layer; a trailing unpaired qubit is simply
+              untouched that layer). For n_qubits == 4 this reduces exactly to
+              the original pilot pattern (odd -> (0,1),(2,3); even -> (1,2)) --
+              see `brick_pattern_matches_pilot_n4` for a regression check.
     """
     if entanglement == "full":
         return [(i, i + 1) for i in range(n_qubits - 1)]
     elif entanglement == "brick":
-        if n_qubits != 4:
-            raise NotImplementedError("brick pattern is specified for n_qubits == 4 only")
         layer_num = layer_idx + 1  # 1-indexed, matches spec wording
-        if layer_num % 2 == 1:
-            return [(0, 1), (2, 3)]
-        else:
-            return [(1, 2)]
+        start = 0 if layer_num % 2 == 1 else 1
+        return [(i, i + 1) for i in range(start, n_qubits - 1, 2)]
     else:
         raise ValueError(f"unknown entanglement pattern: {entanglement}")
+
+
+def brick_pattern_matches_pilot_n4():
+    """Regression check: the generalized brick-wall formula above must
+    reproduce the pilot's original hardcoded n_qubits==4 pattern exactly
+    (odd layers -> CNOT(0,1),CNOT(2,3); even layers -> CNOT(1,2)).
+    """
+    for layer_idx in range(6):
+        pairs = entangling_pairs(layer_idx, 4, "brick")
+        expected = [(0, 1), (2, 3)] if (layer_idx + 1) % 2 == 1 else [(1, 2)]
+        if pairs != expected:
+            return False
+    return True
 
 
 def n_theta_params(n_qubits, L):

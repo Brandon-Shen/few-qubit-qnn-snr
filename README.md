@@ -1,11 +1,18 @@
 # Few-Qubit QNN Barren-Plateau Mitigation: Gradient SNR Study
 
-Tests whether three barren-plateau mitigation strategies for a 4-qubit QNN --
+Tests whether three barren-plateau mitigation strategies for a few-qubit QNN --
 (A) constrained ("brick-layer") entanglement, (B) a local cost function, and
 (C) classically-parameterized residual/shortcut connections -- combine
 additively or not, using gradient signal-to-noise ratio (SNR) as the outcome
-metric. Reference task: ground-state energy estimation for a 4-site
-open-boundary transverse-field Ising model (TFIM).
+metric.
+
+The project has two phases. The **pilot** (4 qubits, one TFIM Hamiltonian,
+`L=3`, 50 seeds) established the core methodology and headline findings. The
+**companion-paper phase 2** generalizes the same machinery to a qubit-count
+sweep (n=2..10), two additional Hamiltonians/tasks, and a residual-connection
+scaling sensitivity check, to test whether the pilot's findings hold beyond
+its single (n=4, TFIM) reference point. Both phases' raw results and plots
+are kept, clearly labeled, in `results/`.
 
 ## How to run
 
@@ -14,37 +21,62 @@ pip install -r requirements.txt
 python main.py
 ```
 
-This runs the full pipeline end to end: Hamiltonian sanity check -> 7 configs
-x 50 seeds at L=3 -> H3 depth sweep (3 configs x 5 depths x 50 seeds) ->
-hypothesis tests -> plots -> `RESULTS.md`. **Total wall time: ~109s** on the
-machine this was developed on (main experiment ~16s, depth sweep ~93s --
-the depth sweep dominates because circuit-evaluation cost and parameter
-count both grow with L, up to L=8). No reduction in seed count or shot-repeat
-count was needed to hit a reasonable runtime.
+This runs the full pipeline end to end, both phases: pilot (Hamiltonian
+sanity check -> 7 configs x 50 seeds at L=3 -> H3 depth sweep -> hypothesis
+tests -> plots) followed by companion phase 2 (Hamiltonian + brick-pattern
+regression checks across the full task x n_qubits sweep -> main grid ->
+headline reference re-run -> sum-vs-mean sensitivity check -> scoped H3 depth
+sweep -> hypothesis tests -> plots) -> a single `RESULTS.md` with both
+phases' sections. **Pilot wall time: ~109s.** **Companion-phase wall time:
+~91 min** (measured: 5463.8s, see `results/runtime_phase2.json`) on the
+machine this was developed on (see "Seed-count reduction" in RESULTS.md's
+companion-phase section for why the main grid and sensitivity check use a
+reduced seed count to fit within the ~1-2hr runtime budget the spec allows
+for this phase). Both phases together run in one `python main.py`
+invocation, so budget roughly 93 minutes for a full run.
 
-Individual stages can also be run/imported separately: `python hamiltonian.py`
-(sanity check only), `python experiment.py` (raw data only, writes to
-`results/`), `python analysis.py` (hypothesis tests from existing raw data),
-`python plots.py` (plots from existing raw data).
+Individual stages can also be run/imported separately. Pilot: `python
+hamiltonian.py` (sanity check only), `python experiment.py` (raw data only,
+writes to `results/`), `python analysis.py` (hypothesis tests from existing
+raw data), `python plots.py` (plots from existing raw data). Companion phase
+2: `experiment.run_companion_phase()`, `analysis.run_companion_phase_analyses()`,
+`plots.generate_companion_phase_plots()` (each importable and independently
+re-runnable against the CSV/JSON already in `results/`).
 
 ## Project layout
 
 - `hamiltonian.py` -- TFIM Hamiltonian construction (explicit Kronecker
-  products) + exact diagonalization sanity check.
+  products) + exact diagonalization sanity check; phase 2 adds
+  `build_xxz_hamiltonian` (Task C) and a generic `sanity_check_hamiltonian`
+  reused across every (task, n_qubits) grid point.
 - `ansatze.py` -- baseline (HEA) and brick-layer entangling patterns, and the
   PennyLane `qml.Snapshot`/`qml.snapshots` plumbing that exposes mid-circuit
-  statevectors for residual connections.
+  statevectors for residual connections. Phase 2 generalizes the brick-layer
+  pattern to arbitrary `n_qubits` (`brick_pattern_matches_pilot_n4` is the
+  regression check that it still reduces to the pilot's n=4 pattern).
 - `cost_functions.py` -- global (`<H>`) and local (`<Z0Z1>`) cost/variance
-  formulas, and the residual-connection cost/variance combinators.
+  formulas, and the residual-connection cost/variance combinators. Phase 2
+  adds the `reduction="sum"|"mean"` toggle to the residual combinators.
 - `snr.py` -- the two-branch gradient/SNR estimator: parameter-shift for
   gate angles `theta_i`, direct analytic gradient for residual weights
-  `alpha_l`.
+  `alpha_l`. Phase 2 adds the tolerance-based deterministic-parameter rule
+  (`_DETERMINISTIC_VAR_TOL`) and threads `residual_reduction` through both
+  branches.
 - `experiment.py` -- defines the 7 ablation configs and the H3 depth-sweep
-  configs, runs them, saves raw CSV/JSON to `results/`.
+  configs, runs them, saves raw CSV/JSON to `results/` (pilot, unchanged).
+  Phase 2 adds the `TASKS` registry, the n_qubits x task main grid
+  (`run_main_grid`), the headline reference re-run, the sum-vs-mean
+  sensitivity check (`run_sensitivity_check`), and the scoped depth sweep
+  (`run_depth_sweep_scoped`), orchestrated by `run_companion_phase`.
 - `analysis.py` -- Wilcoxon signed-rank hypothesis tests (H1/H2a/H2b/H3) and
-  summary statistics.
-- `plots.py` -- SNR-by-configuration box/bar plots and the SNR-vs-depth plot.
-- `main.py` -- orchestrates all of the above and writes `RESULTS.md`.
+  summary statistics (pilot, unchanged). Phase 2 adds `run_grid_analysis`,
+  `run_sensitivity_analysis`, and `run_scoped_h3_analysis`, all reusing
+  `analyze_h1`/`h2a`/`h2b`/`h3` unchanged, one grid cell at a time.
+- `plots.py` -- SNR-by-configuration box/bar plots and the SNR-vs-depth plot
+  (pilot, unchanged). Phase 2 adds the hypothesis-outcome heatmap grid, the
+  sum-vs-mean sensitivity comparison plot, and the n-faceted depth-sweep plot.
+- `main.py` -- orchestrates all of the above (both phases) and writes
+  `RESULTS.md` (pilot section, then companion-phase-2 sections appended).
 
 Raw output lives in `results/` (CSV/JSON, git-tracked) and
 `results/plots/` (PNGs); the human-readable summary is `RESULTS.md` at the
@@ -151,6 +183,103 @@ excluded from the "finite" mean/median reported per seed
 (`experiment._summarize`), and are visible in the raw per-parameter JSON for
 anyone who wants to look at them directly.
 
+## Design choices -- companion paper phase 2
+
+**Brick-layer generalization.** The pilot's n=4 pattern (odd layers ->
+`CNOT(0,1),CNOT(2,3)`; even layers -> `CNOT(1,2)`) is one instance of the
+standard brick-wall construction: odd layers apply CNOT to disjoint pairs
+`(0,1),(2,3),(4,5),...`, even layers to `(1,2),(3,4),(5,6),...`, with any
+trailing unpaired qubit simply untouched that layer. Implemented as
+`range(start, n_qubits-1, 2)` with `start=0`/`1` for odd/even layers
+(`ansatze.entangling_pairs`); `ansatze.brick_pattern_matches_pilot_n4` is a
+standing regression check (run at the start of `run_companion_phase`) that
+this reduces exactly to the pilot's hardcoded n=4 pattern.
+
+**Task selection, and why the local cost stays fixed across all three.**
+Task A (TFIM, `J=1,h=0.5`) is the pilot's own task, unchanged. Task B (TFIM,
+`J=1,h=2.0`) is the same model in the field-dominated regime. Task C (XXZ,
+`Delta=0.5`) is a structurally different model -- U(1) symmetry (conserved
+total Z-magnetization) instead of the TFIM's Z2 symmetry, and no external
+field term. The local cost function is deliberately kept as `<Z0Z1>` for all
+three tasks (only the global cost `<H>` changes, since global cost is always
+`<H>` for whichever Hamiltonian is active): the point of sweeping the task is
+to isolate the Hamiltonian as the varying factor, not to also vary the
+cost-function lever at the same time, which would confound "the interaction
+effects changed because the task changed" with "...because we also changed
+what's measured."
+
+**Deterministic-parameter rule -- formalizes and generalizes an exclusion the
+pilot already relied on implicitly, verified against the real per-parameter
+data rather than assumed.** The pilot's `snr_from_grad_var` treated
+`var_shots <= 0.0` as the "assign inf/nan, exclude from aggregate" case.
+`alpha_1`'s variance is exactly `0.0` by construction (block 1's input is
+always the fixed `|0...0>`, so `<Z_j>=1.0` exactly, no floating-point path
+involved) and was already being excluded cleanly by the pilot's own
+`np.isfinite` filter. `snr.py` now uses a fixed tolerance,
+`_DETERMINISTIC_VAR_TOL = 1e-12`, so any parameter with `var_shots <= tol` is
+classified `deterministic=True` uniformly across both the theta
+(parameter-shift) and alpha (linear) gradient paths, and its count + identity
+are explicitly reported via `n_deterministic_params`/`deterministic_labels`
+(`experiment._summarize_grid`) instead of only implicitly falling out of an
+`isfinite` filter -- this also guards against roundoff landing a few orders
+of magnitude off exact zero in geometries/tasks the pilot never tested.
+
+**This is a distinct phenomenon from the pilot's separate L=1 mean/median
+heavy-tailedness, confirmed by inspecting the actual companion-phase-2 raw
+data, not assumed.** The pilot's noted ~20x L=1 gap (mean 168.6 vs median
+8.6) was for `local_cost_only`, which has no `alpha` at all -- so it was
+never the exact-zero-variance mechanism above. Re-running the scoped depth
+sweep (n=4, L=1, 200 seeds) and inspecting the offending seed directly shows
+the real cause: seed 38's random `theta_1` draw happens to put the circuit
+extremely close to a `Z0Z1` eigenstate, giving a shot-noise variance of
+`~1.38e-9` -- three orders of magnitude *above* the `1e-12` tolerance, so
+correctly classified as non-deterministic, and correctly *not* excluded: it
+is a genuine (if extreme) draw from a continuous distribution, not a
+provably-exact-zero case, and there is no principled tolerance that would
+exclude it without also excluding legitimately large-but-finite SNR values
+from other seeds. Excluding it would be an arbitrary, unprincipled cutoff,
+not a fix. `residual_only`'s alpha-driven gap is (and, per the pilot's own
+`np.isfinite` filter, already was) cleanly resolved by exclusion; the
+separate local-cost heavy tail is not something this rule fixes or should
+fix -- the median remains the correct, already-documented robust summary
+statistic for it (see "H3 crossover detection uses the median" above and
+`RESULTS.md`'s companion-phase H3 section). The pilot's own
+`_summarize`/`run_main_experiment`/`run_depth_sweep` are untouched, so the
+pilot's committed result files stay byte-for-byte reproducible.
+
+**`residual_reduction`: sum vs. mean.** The residual term
+`C_res = C_quantum + Sum_l alpha_l * Sum_j <Z_j>_in^(l)` has a magnitude that
+scales with `n_qubits` under `"sum"` (the pilot's only option) -- a genuine
+confound once n is swept from 2 to 10, since it could produce spurious
+n-dependence unrelated to the mitigation strategies themselves.
+`cost_functions.residual_addition`/`residual_single_shot_var` gain a
+`reduction="sum"|"mean"` parameter (`"mean"` divides each block's sum, and
+its independent-channel variance contribution, by `n_qubits`/`n_qubits^2`).
+The main n x task grid runs under `"sum"` (continuity with the pilot); the
+dedicated sensitivity check (n in {4,10}, all 3 tasks) runs both, self-contained
+(same seeds under both reductions, not reusing a possibly different-seed-count
+grid subset) so the comparison stays properly paired.
+
+**Data volume: full per-parameter JSON only for reference points.** The main
+grid is 3 tasks x 9 n-values x 7 configs x 50 seeds = ~9,450 seed-configs;
+dumping full per-parameter grad/SNR arrays for all of them would add tens of
+MB of git-tracked JSON for marginal value, since the grid's hypothesis tests
+only need the seed-level `mean_snr` already in the summary row. The main
+grid and sensitivity check therefore write summary CSVs only (with the
+deterministic-parameter diagnostic columns); full per-parameter JSON is kept
+for the scoped depth sweep (much smaller, same order of magnitude as the
+pilot's own per-parameter file) and the pilot's own untouched files serve as
+the single-grid-point reference case.
+
+**Seed-count reduction for runtime.** See "Seed-count reduction (runtime
+budget)" in `RESULTS.md`'s companion-phase section for the specific numbers:
+a calibration run showed the spec's suggested 200 seeds everywhere would put
+total phase-2 runtime at ~2.7 hours, over the stated 1-2 hour budget. The
+main grid and sensitivity check use 50 seeds (matching the pilot's own count)
+instead; the scoped depth sweep keeps the full 200; the single grid point
+most comparable to the pilot (n_qubits=4, task=tfim_h0.5) is additionally
+re-run at 200 seeds as the headline reference result.
+
 ## Assumptions carried over directly from the spec (not independent choices)
 
 - 4 qubits, `J=1`, `h=0.5`, open-boundary TFIM, `L=3` for the main experiment.
@@ -161,6 +290,11 @@ anyone who wants to look at them directly.
   (paired design).
 - Wilcoxon signed-rank test (not Mann-Whitney U) for every paired
   configuration comparison.
+- Companion phase 2: n_qubits in {2,...,10}; three tasks (TFIM h=0.5, TFIM
+  h=2.0, XXZ Delta=0.5); local cost fixed at `<Z0Z1>` across all tasks;
+  scoped H3 depth sweep at n_qubits in {4,6,10}, reference task only; no
+  hardware noise modeling and no qubit counts beyond n=10 (both explicit
+  non-goals).
 
 ## Validation performed
 
