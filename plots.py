@@ -199,17 +199,19 @@ def plot_hypothesis_heatmap_grid(grid_summary_df, out_path):
 
 
 def plot_sensitivity_comparison(sensitivity_combined_df, out_path):
-    """Grouped-bar comparison of mean SNR under residual_reduction='sum' vs
-    'mean', for the three residual-bearing configs only (the other four are
-    provably invariant to this toggle -- see README "Design choices" -- so
-    plotting them would be uninformative), faceted by task, grouped by
-    n_qubits in {4,10}. Color encodes reduction identity (2 series, fixed
+    """Grouped-bar comparison of mean SNR under residual_reduction='mean'
+    (primary) vs. 'sum' (secondary sensitivity check), for the three
+    residual-bearing configs only (the other four are provably invariant to
+    this toggle -- see README "Design choices" -- so plotting them would be
+    uninformative), faceted by task, grouped by whichever n_qubits values are
+    present in `sensitivity_combined_df` (SENSITIVITY_N_QUBITS in
+    experiment.py). Color encodes reduction identity (2 series, fixed
     categorical slots 1 and 8 for maximum CVD separation).
     """
     residual_configs = ["residual_only", "entanglement_residual", "combined"]
     tasks = [t for t in TASK_ORDER if t in sensitivity_combined_df["task"].unique()]
     n_values = sorted(sensitivity_combined_df["n_qubits"].unique())
-    reductions = ["sum", "mean"]
+    reductions = ["mean", "sum"]
     colors = {"sum": CATEGORICAL[0], "mean": CATEGORICAL[7]}
 
     fig, axes = plt.subplots(1, len(tasks), figsize=(5 * len(tasks), 5), facecolor=SURFACE,
@@ -245,8 +247,9 @@ def plot_sensitivity_comparison(sensitivity_combined_df, out_path):
     handles = [plt.matplotlib.patches.Patch(facecolor=colors[r], label=r) for r in reductions]
     fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False,
                labelcolor=INK_PRIMARY, bbox_to_anchor=(0.5, -0.06))
-    fig.suptitle("Residual-connection sum vs. mean reduction: mean SNR at n=4, n=10",
-                 fontsize=12, color=INK_PRIMARY)
+    n_label = ", ".join(f"n={n}" for n in n_values)
+    fig.suptitle(f"Residual-connection mean (primary) vs. sum (secondary) reduction: "
+                 f"mean SNR at {n_label}", fontsize=12, color=INK_PRIMARY)
     fig.tight_layout(rect=[0, 0.05, 1, 0.94])
     fig.savefig(out_path, dpi=150, facecolor=SURFACE, bbox_inches="tight")
     plt.close(fig)

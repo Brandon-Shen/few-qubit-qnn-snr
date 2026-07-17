@@ -155,6 +155,7 @@ def append_companion_phase_results_md(companion_results, runtime_phase2):
     diverge_df = companion_results["sensitivity_diverge_df"]
     h3_scoped = companion_results["h3_scoped_results"]
     l1_gap_df = companion_results["l1_gap_diagnostic_df"]
+    routing = companion_results["parameter_routing_summary"]
 
     lines = []
     lines.append("\n---\n")
@@ -224,23 +225,19 @@ def append_companion_phase_results_md(companion_results, runtime_phase2):
     lines.append(f"- H2a sub-additive (sum framing): {hl['h2a_sum_framing_sub_additive']}")
     lines.append(f"- H2b sub-additive (sum framing): {hl['h2b_sum_framing_sub_additive']}")
     lines.append("")
-    lines.append(
-        "**Sample-size sensitivity note:** the pilot's own 50-seed result at this exact grid "
-        "point found H2b sub-additive (sum framing: prediction -0.180, actual -0.545). At the "
-        "full 200 seeds, H2b's sum-framing classification flips to *not* sub-additive "
-        "(prediction -0.194, actual -0.057) -- both actual values are small and close to zero "
-        "relative to the individual gains/losses feeding them, so this is a borderline effect "
-        "size where the sub-additive/not-sub-additive classification is sensitive to seed count, "
-        "not a contradiction between the two runs.\n"
-    )
 
-    lines.append("## Sum vs. mean residual-reduction sensitivity check\n")
-    lines.append("Plot: `results/plots/sensitivity_sum_vs_mean.png` "
-                  "(residual-bearing configs only, n=4 and n=10, all 3 tasks).\n")
+    lines.append("## Mean vs. sum residual-reduction sensitivity check\n")
+    lines.append(
+        "`mean` is the primary residual reduction throughout this phase (n-invariant in "
+        "scale); `sum` is retained as a secondary sensitivity check at n_qubits=4, "
+        "depth=L_MAIN, measurement budget=N_SHOTS (narrower than the original {4,10} x "
+        "3-task range, now that `mean` no longer needs cross-n validation as the default). "
+        "Plot: `results/plots/sensitivity_sum_vs_mean.png` (residual-bearing configs only).\n"
+    )
     n_diverge = int(diverge_df["diverges_sum_vs_mean"].sum())
     n_total = len(diverge_df)
     lines.append(f"**{n_diverge}/{n_total}** (task, n_qubits) points show a qualitative "
-                  f"difference between 'sum' and 'mean' reduction on at least one of "
+                  f"difference between 'mean' and 'sum' reduction on at least one of "
                   f"H1/H2a/H2b/best-config/pilot-finding outcomes.\n")
     if n_diverge > 0:
         lines.append("| task | n_qubits | diverging outcomes |")
@@ -248,6 +245,26 @@ def append_companion_phase_results_md(companion_results, runtime_phase2):
         for _, row in diverge_df[diverge_df["diverges_sum_vs_mean"]].iterrows():
             lines.append(f"| {row['task']} | {row['n_qubits']} | {row['diverging_columns']} |")
         lines.append("")
+
+    lines.append("## Parameter routing and operationally-resolvable fraction\n")
+    lines.append(
+        "Every parameter-level row in the main grid carries an explicit "
+        "`parameter_type`/`gradient_method`/`variance_method`/`estimator_family` tag "
+        "(`circuit_theta` via parameter-shift, or `residual_alpha` via the dedicated exact-"
+        "linear gradient + independent-per-qubit analytic variance path), and every row "
+        "passed `experiment.assert_no_residual_alpha_misrouting` at generation time -- no "
+        "`alpha_l` was ever routed through the parameter-shift path or vice versa.\n"
+    )
+    lines.append(f"- Total `circuit_theta` parameters seen: **{routing['total_circuit_theta_params']}**; "
+                  f"total `residual_alpha` parameters seen: **{routing['total_residual_alpha_params']}** "
+                  f"(across {routing['n_rows']} main-grid seed-config rows).")
+    lines.append(f"- `deterministic_nonzero` parameters (e.g. `alpha_1`, resolvable but noise-free): "
+                  f"**{routing['total_deterministic_nonzero_params']}**; `inactive_zero` parameters "
+                  f"(flat, no signal): **{routing['total_inactive_zero_params']}**.")
+    lines.append(f"- Operationally-resolvable fraction per seed-config row: "
+                  f"min **{routing['operationally_resolvable_fraction_min']:.3f}**, "
+                  f"mean **{routing['operationally_resolvable_fraction_mean']:.3f}**, "
+                  f"max **{routing['operationally_resolvable_fraction_max']:.3f}**.\n")
 
     lines.append("## Scoped H3 depth sweep (n_qubits in {4, 6, 10}, reference task only)\n")
     lines.append("Plot: `results/plots/depth_sweep_scoped_faceted.png`. The deterministic-"
@@ -265,28 +282,30 @@ def append_companion_phase_results_md(companion_results, runtime_phase2):
     lines.append("Checked directly against the real per-seed data at L=1 (`depth_sweep_scoped_"
                   "l1_gap_diagnostic.csv`), not assumed:\n")
     lines.append("| n_qubits | config | mean(mean_snr) | median(mean_snr) | mean/median ratio | "
-                  "max deterministic params/seed |")
+                  "max deterministic_nonzero params/seed |")
     lines.append("|---|---|---|---|---|---|")
     for _, row in l1_gap_df.iterrows():
         lines.append(f"| {row['n_qubits']} | {row['config_name']} | "
                       f"{row['mean_of_mean_snr']:.3f} | {row['median_of_mean_snr']:.3f} | "
-                      f"{row['mean_median_ratio']:.2f}x | {row['max_n_deterministic_params']} |")
+                      f"{row['mean_median_ratio']:.2f}x | {row['max_n_deterministic_nonzero_params']} |")
     lines.append("")
     lines.append(
         "**Answer: partially, and only for the mechanism it actually targets.** "
-        "`residual_only` has `alpha_1` (deterministic by construction: block 1's input is "
-        "always the fixed `|0...0>` state) and its mean/median ratio is close to 1x -- the "
-        "rule cleanly excludes it. `local_cost_only` and `local_and_residual` show **zero** "
-        "deterministic parameters at L=1 yet still show a large mean/median ratio: inspecting "
-        "the offending seed directly shows a shot-noise variance of order 1e-9 -- three orders "
-        "of magnitude above the `1e-12` tolerance, so correctly classified as non-deterministic. "
-        "This is a specific seed's random theta draw landing extremely close to a `Z0Z1` "
-        "eigenstate -- a genuine, continuous small-sample statistical fluke, not a "
-        "provably-exact-zero case, and not something the deterministic-parameter rule fixes or "
-        "should fix (there is no principled tolerance that excludes it without also excluding "
-        "legitimately large finite SNRs from other seeds). The median remains the correct "
-        "robust summary statistic for this second phenomenon, exactly as the pilot's own H3 "
-        "analysis already documents.\n")
+        "`residual_only` has `alpha_1` (`deterministic_nonzero` by construction: block 1's "
+        "input is always the fixed `|0...0>` state, giving a real nonzero gradient with "
+        "exactly zero variance) and its mean/median ratio is close to 1x -- the rule cleanly "
+        "excludes it from finite-SNR aggregates while still counting it toward the "
+        "operationally-resolvable fraction. `local_cost_only` and `local_and_residual` show "
+        "**zero** `deterministic_nonzero` parameters at L=1 yet still show a large mean/median "
+        "ratio: inspecting the offending seed directly shows a shot-noise variance of order "
+        "1e-9 -- three orders of magnitude above the `1e-12` tolerance, so correctly classified "
+        "as `active`, not `deterministic_nonzero`. This is a specific seed's random theta draw "
+        "landing extremely close to a `Z0Z1` eigenstate -- a genuine, continuous small-sample "
+        "statistical fluke, not a provably-exact-zero case, and not something the "
+        "deterministic-parameter rule fixes or should fix (there is no principled tolerance "
+        "that excludes it without also excluding legitimately large finite SNRs from other "
+        "seeds). The median remains the correct robust summary statistic for this second "
+        "phenomenon, exactly as the pilot's own H3 analysis already documents.\n")
 
     lines.append("## Companion-phase notes\n")
     lines.append("- Full grid raw data: `results/main_grid_summary.csv` "
@@ -294,9 +313,12 @@ def append_companion_phase_results_md(companion_results, runtime_phase2):
                   "data-volume scoping note).")
     lines.append("- Hypothesis-test detail per grid point: "
                   "`results/grid_hypothesis_results.json`.")
+    lines.append("- Parameter-routing summary (circuit_theta vs. residual_alpha counts, "
+                  "operationally-resolvable fraction): `results/parameter_routing_summary.json`.")
     lines.append("- Sensitivity check raw data: `results/sensitivity_sum_summary.csv`, "
                   "`results/sensitivity_mean_summary.csv`.")
-    lines.append("- Scoped depth sweep per-parameter detail (incl. `deterministic` flags): "
+    lines.append("- Scoped depth sweep per-parameter detail (incl. `classes`, `parameter_type`, "
+                  "`gradient_method`, `variance_method` per parameter): "
                   "`results/depth_sweep_scoped_per_parameter.json`.")
     lines.append("- Hamiltonian + brick-pattern regression checks for every (task, n) point: "
                   "`results/hamiltonian_check_grid.json`.")

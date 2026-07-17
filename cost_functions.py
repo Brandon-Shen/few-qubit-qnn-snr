@@ -49,16 +49,18 @@ def _reduce_z(z, reduction):
         raise ValueError(f"unknown residual_reduction: {reduction}")
 
 
-def residual_addition(alpha, block_inputs_z_list, reduction="sum"):
+def residual_addition(alpha, block_inputs_z_list, reduction="mean"):
     """Sum_l alpha_l * reduce(<Z_j>_in^(l)), the classical residual-shortcut term
     added to C_quantum to form C_res. `block_inputs_z_list` is a list of length
     L, each entry a length-n_qubits array of <Z_j> values for that block's input.
-    `reduction` selects 'sum' (pilot default) or 'mean' (n-invariant) per block.
+    `reduction` selects 'mean' (n-invariant, primary as of the companion-paper
+    correction) or 'sum' (pilot's original scale-with-n behavior, retained as
+    a secondary sensitivity check) per block.
     """
     return float(sum(a * _reduce_z(z, reduction) for a, z in zip(alpha, block_inputs_z_list)))
 
 
-def residual_single_shot_var(var_quantum, alpha, block_inputs_z_list, reduction="sum"):
+def residual_single_shot_var(var_quantum, alpha, block_inputs_z_list, reduction="mean"):
     """Total single-shot variance of C_res = C_quantum + Sum_l alpha_l * reduce(Z_j_in^(l)),
     under the simplifying assumption that the final-cost measurement and every
     intermediate single-qubit measurement are independent (no covariance modeled

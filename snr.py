@@ -36,6 +36,31 @@ rather than an exact-zero test: this also fixes a latent bug where such
 near-zero-but-nonzero variances produced a huge *finite* SNR (grad/sqrt(1e-15))
 that silently polluted the mean/median instead of being excluded alongside
 the genuinely infinite cases.
+
+Within the deterministic (var_shots <= tol) case, a parameter is further split
+by whether its gradient is also (near) zero:
+  * `deterministic_nonzero` -- var_shots <= VAR_TOL and |grad| > GRAD_TOL.
+    A real, resolvable direction with no measurement noise (e.g. alpha_1 with
+    a fixed |0...0> block-1 input: gradient = n or 1 depending on
+    `residual_reduction`, variance = 0 exactly). Reported as SNR = +inf and
+    counted in the "operationally resolvable" fraction, but excluded from
+    finite-SNR aggregates (there is no finite ratio to report).
+  * `inactive_zero` -- var_shots <= VAR_TOL and |grad| <= GRAD_TOL. A flat
+    direction: no signal and no noise (e.g. a no-signaling zero-gradient
+    theta outside a local cost's support). Reported as SNR = nan, excluded
+    from both finite-SNR aggregates and the operationally-resolvable count.
+Parameters with var_shots > VAR_TOL are `active` (the ordinary finite-SNR
+case).
+
+Parameter/estimator taxonomy. Every parameter is one of exactly two families,
+each with its own dedicated gradient and variance method -- never mixed:
+`circuit_theta` (gate rotation angles; parameter-shift gradient, analytic
+exact-statevector variance) and `residual_alpha` (classical residual
+weights; exact linear gradient, independent-per-qubit analytic variance).
+`_parameter_metadata` below is the single source of truth for the
+method/family labels and shift/tomography/measurement-setting counts
+attached to every parameter row; `assert_no_residual_alpha_misrouting` (in
+experiment.py) is the standing check that they never cross.
 """
 import numpy as np
 
@@ -44,6 +69,7 @@ from cost_functions import quantum_cost_and_var, residual_addition, residual_sin
 
 _VAR_FLOOR = 0.0  # analytic variances are >= 0; clip tiny float roundoff noise
 _DETERMINISTIC_VAR_TOL = 1e-12  # var_shots at/below this -> deterministic (see module docstring)
+_GRAD_TOL = 1e-12  # |grad| at/below this, combined with the above, -> inactive_zero
 
 
 def init_params(seed, L, n_qubits, include_residual, low=0.0, high=2 * np.pi):
@@ -60,7 +86,7 @@ def init_params(seed, L, n_qubits, include_residual, low=0.0, high=2 * np.pi):
 
 
 def _theta_gradient_snr(run_circuit, theta, alpha, i, L, n_qubits, cost_type,
-                         H, H2, ZZ, include_residual, N_shots, residual_reduction="sum"):
+                         H, H2, ZZ, include_residual, N_shots, residual_reduction="mean"):
     theta_p = theta.copy()
     theta_p[i] += np.pi / 2
     theta_m = theta.copy()
@@ -89,7 +115,7 @@ def _theta_gradient_snr(run_circuit, theta, alpha, i, L, n_qubits, cost_type,
     return grad, max(var_shots, _VAR_FLOOR)
 
 
-def _alpha_gradient_snr(zs0, l_idx, N_shots, residual_reduction="sum"):
+def _alpha_gradient_snr(zs0, l_idx, N_shots, residual_reduction="mean"):
     z = zs0[l_idx]
     if residual_reduction == "sum":
         grad = float(np.sum(z))
@@ -102,29 +128,71 @@ def _alpha_gradient_snr(zs0, l_idx, N_shots, residual_reduction="sum"):
     return grad, max(var_shots, _VAR_FLOOR)
 
 
-def snr_from_grad_var(grad, var_shots, tol=_DETERMINISTIC_VAR_TOL):
-    """Returns (snr, is_deterministic). `var_shots <= tol` is treated as a
-    deterministic direction (see module docstring): SNR is reported as inf
-    (nonzero gradient) or nan (both zero) for the raw record, but callers
-    should exclude `is_deterministic` parameters from aggregate statistics
-    rather than relying on `np.isfinite` alone, since floating-point roundoff
-    can leave var_shots at a tiny nonzero value instead of exactly 0.0.
+def snr_from_grad_var(grad, var_shots, var_tol=_DETERMINISTIC_VAR_TOL, grad_tol=_GRAD_TOL):
+    """Returns (snr, param_class) where param_class is one of "active",
+    "deterministic_nonzero", "inactive_zero" (see module docstring).
+    `var_shots <= var_tol` is treated as a deterministic direction: SNR is
+    reported as inf (|grad| > grad_tol) or nan (both at/below tolerance) for
+    the raw record, but callers should exclude non-"active" parameters from
+    aggregate statistics rather than relying on `np.isfinite` alone, since
+    floating-point roundoff can leave var_shots at a tiny nonzero value
+    instead of exactly 0.0.
     """
-    if var_shots <= tol:
-        snr = float("inf") if abs(grad) > 0.0 else float("nan")
-        return snr, True
-    return abs(grad) / np.sqrt(var_shots), False
+    if var_shots <= var_tol:
+        if abs(grad) > grad_tol:
+            return float("inf"), "deterministic_nonzero"
+        return float("nan"), "inactive_zero"
+    return abs(grad) / np.sqrt(var_shots), "active"
+
+
+def _parameter_metadata(parameter_type, n_qubits, cost_type=None):
+    """Single source of truth for the per-parameter method/family labels and
+    shift/tomography/measurement-setting counts (see module docstring). This
+    project has exactly two parameter families, `circuit_theta` and
+    `residual_alpha`; there is no tomography or mixed-state-fidelity path
+    anywhere in this codebase.
+    """
+    if parameter_type == "circuit_theta":
+        variance_method = ("analytic_global_hamiltonian" if cost_type == "global"
+                            else "analytic_local_pauli_bernoulli")
+        return {
+            "parameter_type": "circuit_theta",
+            "gradient_method": "parameter_shift",
+            "variance_method": variance_method,
+            "variance_method_family": "analytic_exact",
+            "estimator_family": "circuit_theta",
+            "number_of_shift_evaluations": 2,
+            "number_of_tomography_settings": 0,
+            "number_of_measurement_settings": 2,
+        }
+    elif parameter_type == "residual_alpha":
+        return {
+            "parameter_type": "residual_alpha",
+            "gradient_method": "residual_alpha_exact_linear",
+            "variance_method": "residual_alpha_analytic_independent_z",
+            "variance_method_family": "analytic_exact",
+            "estimator_family": "residual_alpha",
+            "number_of_shift_evaluations": 0,
+            "number_of_tomography_settings": 0,
+            "number_of_measurement_settings": n_qubits,
+        }
+    else:
+        raise ValueError(f"unknown parameter_type: {parameter_type}")
 
 
 def compute_snr_for_initialization(theta, alpha, L, n_qubits, entanglement, cost_type,
                                     include_residual, H, H2, ZZ, N_shots=1000,
-                                    run_circuit=None, residual_reduction="sum"):
+                                    run_circuit=None, residual_reduction="mean"):
     """Computes per-parameter gradients and SNRs for one (theta, alpha) draw.
 
-    Returns (grads, snrs, labels, deterministic): each an array/list of length
-    P_theta (+ L if include_residual), ordered theta_0..theta_{P-1} then
-    (if present) alpha_0..alpha_{L-1}. `deterministic[i]` is True iff that
-    parameter's shot-noise variance is at/below `_DETERMINISTIC_VAR_TOL`.
+    Returns (grads, snrs, labels, classes, param_meta): each an array/list of
+    length P_theta (+ L if include_residual), ordered theta_0..theta_{P-1}
+    then (if present) alpha_0..alpha_{L-1}. `classes[i]` is one of "active",
+    "deterministic_nonzero", "inactive_zero" (see module docstring).
+    `param_meta[i]` is the dict from `_parameter_metadata` for that
+    parameter's family (`circuit_theta` or `residual_alpha`), used to tag
+    every parameter-level output row and to drive
+    `experiment.assert_no_residual_alpha_misrouting`.
     """
     if run_circuit is None:
         run_circuit = build_snapshot_circuit(n_qubits, L, entanglement)
@@ -133,22 +201,27 @@ def compute_snr_for_initialization(theta, alpha, L, n_qubits, entanglement, cost
     n_params = P_theta + (L if include_residual else 0)
     grads = np.empty(n_params)
     snrs = np.empty(n_params)
-    deterministic = np.zeros(n_params, dtype=bool)
+    classes = [None] * n_params
+    param_meta = [None] * n_params
     labels = [f"theta_{i}" for i in range(P_theta)]
 
+    theta_meta = _parameter_metadata("circuit_theta", n_qubits, cost_type=cost_type)
     for i in range(P_theta):
         g, v = _theta_gradient_snr(run_circuit, theta, alpha, i, L, n_qubits, cost_type,
                                     H, H2, ZZ, include_residual, N_shots, residual_reduction)
         grads[i] = g
-        snrs[i], deterministic[i] = snr_from_grad_var(g, v)
+        snrs[i], classes[i] = snr_from_grad_var(g, v)
+        param_meta[i] = theta_meta
 
     if include_residual:
+        alpha_meta = _parameter_metadata("residual_alpha", n_qubits)
         snap0 = run_circuit(theta)
         zs0 = block_inputs_z(snap0, L, n_qubits)
         for l in range(L):
             g, v = _alpha_gradient_snr(zs0, l, N_shots, residual_reduction)
             grads[P_theta + l] = g
-            snrs[P_theta + l], deterministic[P_theta + l] = snr_from_grad_var(g, v)
+            snrs[P_theta + l], classes[P_theta + l] = snr_from_grad_var(g, v)
+            param_meta[P_theta + l] = alpha_meta
         labels += [f"alpha_{l}" for l in range(L)]
 
-    return grads, snrs, labels, deterministic
+    return grads, snrs, labels, classes, param_meta

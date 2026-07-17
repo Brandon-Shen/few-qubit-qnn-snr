@@ -216,13 +216,23 @@ data rather than assumed.** The pilot's `snr_from_grad_var` treated
 always the fixed `|0...0>`, so `<Z_j>=1.0` exactly, no floating-point path
 involved) and was already being excluded cleanly by the pilot's own
 `np.isfinite` filter. `snr.py` now uses a fixed tolerance,
-`_DETERMINISTIC_VAR_TOL = 1e-12`, so any parameter with `var_shots <= tol` is
-classified `deterministic=True` uniformly across both the theta
-(parameter-shift) and alpha (linear) gradient paths, and its count + identity
-are explicitly reported via `n_deterministic_params`/`deterministic_labels`
-(`experiment._summarize_grid`) instead of only implicitly falling out of an
-`isfinite` filter -- this also guards against roundoff landing a few orders
-of magnitude off exact zero in geometries/tasks the pilot never tested.
+`_DETERMINISTIC_VAR_TOL = 1e-12` (`VAR_TOL`), combined with a second
+tolerance on the gradient itself, `_GRAD_TOL = 1e-12` (`GRAD_TOL`), to split
+the `var_shots <= VAR_TOL` case into two: `deterministic_nonzero`
+(`|grad| > GRAD_TOL` -- a real, resolvable direction with no measurement
+noise, e.g. `alpha_1`) and `inactive_zero` (`|grad| <= GRAD_TOL` -- a
+genuinely flat direction, e.g. a no-signaling zero-gradient `theta_i` outside
+a local cost's support). Only `active` parameters (`var_shots > VAR_TOL`)
+feed the aggregate mean/median; both `deterministic_nonzero` and
+`inactive_zero` are excluded from it, but `deterministic_nonzero` additionally
+counts toward the `operationally_resolvable_fraction` (real gradient signal,
+just no shot noise to divide by) while `inactive_zero` does not (no signal at
+all). Every parameter's classification, count, and identity are reported
+explicitly (`experiment._summarize_grid`'s `n_deterministic_nonzero_params`/
+`n_inactive_zero_params`/`*_labels`/`operationally_resolvable_fraction`
+columns) instead of only implicitly falling out of an `isfinite` filter --
+this also guards against roundoff landing a few orders of magnitude off exact
+zero in geometries/tasks the pilot never tested.
 
 **This is a distinct phenomenon from the pilot's separate L=1 mean/median
 heavy-tailedness, confirmed by inspecting the actual companion-phase-2 raw
@@ -247,18 +257,48 @@ statistic for it (see "H3 crossover detection uses the median" above and
 `_summarize`/`run_main_experiment`/`run_depth_sweep` are untouched, so the
 pilot's committed result files stay byte-for-byte reproducible.
 
-**`residual_reduction`: sum vs. mean.** The residual term
-`C_res = C_quantum + Sum_l alpha_l * Sum_j <Z_j>_in^(l)` has a magnitude that
-scales with `n_qubits` under `"sum"` (the pilot's only option) -- a genuine
-confound once n is swept from 2 to 10, since it could produce spurious
-n-dependence unrelated to the mitigation strategies themselves.
-`cost_functions.residual_addition`/`residual_single_shot_var` gain a
-`reduction="sum"|"mean"` parameter (`"mean"` divides each block's sum, and
-its independent-channel variance contribution, by `n_qubits`/`n_qubits^2`).
-The main n x task grid runs under `"sum"` (continuity with the pilot); the
-dedicated sensitivity check (n in {4,10}, all 3 tasks) runs both, self-contained
-(same seeds under both reductions, not reusing a possibly different-seed-count
-grid subset) so the comparison stays properly paired.
+**`residual_reduction`: mean (primary) vs. sum (secondary sensitivity
+check).** The residual term
+`C_res = C_quantum + Sum_l alpha_l * reduce(<Z_j>_in^(l))` has a magnitude
+that scales with `n_qubits` under `"sum"` (the pilot's only option) -- a
+genuine confound once n is swept from 2 to 10, since it could produce
+spurious n-dependence unrelated to the mitigation strategies themselves.
+`cost_functions.residual_addition`/`residual_single_shot_var` support
+`reduction="mean"|"sum"` (`"mean"` divides each block's sum, and its
+independent-channel variance contribution, by `n_qubits`/`n_qubits^2`).
+Per the residual-parameter correction, `"mean"` (n-invariant) is now the
+*primary* reduction used throughout the main n x task grid, the headline
+reference, and the scoped depth sweep; `"sum"` is retained only as a
+secondary sensitivity check, at n_qubits=4, depth=`L_MAIN`, measurement
+budget=`N_SHOTS` (narrower than the original `{4,10}` x 3-task range, since
+`"mean"` no longer needs cross-n validation as the default). The sensitivity
+check is self-contained (both reductions computed at the same seeds, not
+reusing a possibly different-seed-count grid subset) so the comparison stays
+properly paired.
+
+**Parameter/estimator taxonomy: `circuit_theta` vs. `residual_alpha`, each
+with its own dedicated, explicitly-labeled gradient and variance path.**
+This codebase has exactly two parameter families and no others -- there is
+no tomography or mixed-state-fidelity estimator anywhere in it, since both
+quantum costs (`<H>` and `<Z0Z1>`) are evaluated exactly from a noiseless
+statevector, not estimated via measurement tomography. Every parameter-level
+record now carries explicit `parameter_type`, `gradient_method`,
+`variance_method`, `variance_method_family`, `estimator_family`,
+`number_of_shift_evaluations`, `number_of_tomography_settings`, and
+`number_of_measurement_settings` fields (`snr._parameter_metadata`), rather
+than only being distinguishable by a `theta_`/`alpha_` label prefix:
+`circuit_theta` parameters get `gradient_method="parameter_shift"`,
+`variance_method` distinguishing the global-Hamiltonian vs. local-Pauli-
+Bernoulli analytic variance formula, `number_of_shift_evaluations=2`, zero
+tomography settings; `residual_alpha` parameters get
+`gradient_method="residual_alpha_exact_linear"`,
+`variance_method="residual_alpha_analytic_independent_z"`, zero shift
+evaluations, zero tomography settings, and `number_of_measurement_settings
+=n_qubits` (one independent per-qubit `Z` estimator per block).
+`experiment.assert_no_residual_alpha_misrouting` is a standing check, run on
+every seed/config during data generation, that no `alpha_l` is ever tagged
+with the parameter-shift method (or vice versa) -- a routing bug fails loudly
+at generation time rather than silently mislabeling a row.
 
 **Data volume: full per-parameter JSON only for reference points.** The main
 grid is 3 tasks x 9 n-values x 7 configs x 50 seeds = ~9,450 seed-configs;

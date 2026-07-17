@@ -92,9 +92,10 @@ def run_main_experiment(H, H2, ZZ, verbose=True):
         t0 = time.time()
         for seed in range(N_SEEDS):
             theta, alpha = init_params(seed, L_MAIN, N_QUBITS, config["residual"])
-            grads, snrs, labels, _det = compute_snr_for_initialization(
+            grads, snrs, labels, _classes, _meta = compute_snr_for_initialization(
                 theta, alpha, L_MAIN, N_QUBITS, config["entanglement"], config["cost"],
                 config["residual"], H, H2, ZZ, N_shots=N_SHOTS, run_circuit=run_circuit,
+                residual_reduction="sum",
             )
             row = {"config_id": config["id"], "config_name": config["name"],
                    "config_label": config["label"], "seed": seed, "L": L_MAIN}
@@ -129,9 +130,10 @@ def run_depth_sweep(H, H2, ZZ, verbose=True):
             t0 = time.time()
             for seed in range(N_SEEDS):
                 theta, alpha = init_params(seed, L, N_QUBITS, config["residual"])
-                grads, snrs, labels, _det = compute_snr_for_initialization(
+                grads, snrs, labels, _classes, _meta = compute_snr_for_initialization(
                     theta, alpha, L, N_QUBITS, config["entanglement"], config["cost"],
                     config["residual"], H, H2, ZZ, N_shots=N_SHOTS, run_circuit=run_circuit,
+                    residual_reduction="sum",
                 )
                 row = {"config_name": config["name"], "config_label": config["label"],
                        "seed": seed, "L": L}
@@ -195,7 +197,11 @@ TASKS = [
 REFERENCE_TASK_NAME = "tfim_h0.5"  # matches the pilot's exact TFIM(J=1,h=0.5) task
 
 N_QUBITS_SWEEP = list(range(2, 11))  # 2..10
-SENSITIVITY_N_QUBITS = [4, 10]
+# Sensitivity check scope per the residual-parameter correction: 'sum' is the
+# secondary check, evaluated at n=4, depth=L_MAIN, measurement budget=N_SHOTS
+# (narrowed from the original {4,10} range now that 'mean' -- n-invariant --
+# is the primary reduction used throughout the main grid).
+SENSITIVITY_N_QUBITS = [4]
 DEPTH_SWEEP_N_QUBITS = [4, 6, 10]
 RESIDUAL_CONFIG_NAMES = {"residual_only", "entanglement_residual", "combined"}
 
@@ -232,31 +238,80 @@ def build_task_hamiltonian(task, n_qubits):
         raise ValueError(f"unknown task kind: {task['kind']}")
 
 
-def _summarize_grid(snrs, deterministic, labels):
-    """Like `_summarize`, but built around the deterministic-parameter rule
-    (snr.py's `_DETERMINISTIC_VAR_TOL`): parameters flagged `deterministic`
-    are excluded from the aggregate mean/median (this is now equivalent to,
-    but semantically distinct from, `np.isfinite` -- see snr.snr_from_grad_var),
-    and their count + identity are reported as separate diagnostic fields
-    rather than silently dropped.
+def _summarize_grid(snrs, classes, labels, param_meta):
+    """Like `_summarize`, but built around the three-way parameter
+    classification (snr.snr_from_grad_var: "active", "deterministic_nonzero",
+    "inactive_zero") and the parameter_type/estimator_family metadata
+    (snr._parameter_metadata). Only "active" parameters feed the aggregate
+    mean/median; "deterministic_nonzero" and "inactive_zero" are reported as
+    separate diagnostic fields (count + identity) rather than silently
+    dropped, and "deterministic_nonzero" additionally counts toward the
+    operationally-resolvable fraction (a real, resolvable gradient with no
+    measurement noise, as opposed to a truly flat "inactive_zero" direction).
     """
-    deterministic = np.asarray(deterministic, dtype=bool)
-    keep = ~deterministic
-    finite = snrs[keep]
+    classes = np.asarray(classes)
+    active_mask = classes == "active"
+    det_nonzero_mask = classes == "deterministic_nonzero"
+    inactive_mask = classes == "inactive_zero"
+
+    finite = snrs[active_mask]
     if finite.size == 0:
         finite = np.array([np.nan])
-    det_labels = [l for l, d in zip(labels, deterministic) if d]
+
+    n_params = int(snrs.size)
+    n_operationally_resolvable = int(np.sum(active_mask) + np.sum(det_nonzero_mask))
+    parameter_types = [m["parameter_type"] for m in param_meta]
+
     return {
         "mean_snr": float(np.mean(finite)),
         "median_snr": float(np.median(finite)),
         "std_snr": float(np.std(finite)),
         "min_snr": float(np.min(finite)),
         "max_snr": float(np.max(finite)),
-        "n_params": int(snrs.size),
-        "n_finite_params": int(np.sum(keep)),
-        "n_deterministic_params": int(np.sum(deterministic)),
-        "deterministic_labels": ";".join(det_labels),
+        "n_params": n_params,
+        "n_active_params": int(np.sum(active_mask)),
+        "n_deterministic_nonzero_params": int(np.sum(det_nonzero_mask)),
+        "n_inactive_zero_params": int(np.sum(inactive_mask)),
+        "operationally_resolvable_fraction": (
+            float(n_operationally_resolvable / n_params) if n_params else float("nan")
+        ),
+        "deterministic_nonzero_labels": ";".join(l for l, m in zip(labels, det_nonzero_mask) if m),
+        "inactive_zero_labels": ";".join(l for l, m in zip(labels, inactive_mask) if m),
+        "n_circuit_theta_params": sum(1 for t in parameter_types if t == "circuit_theta"),
+        "n_residual_alpha_params": sum(1 for t in parameter_types if t == "residual_alpha"),
     }
+
+
+def assert_no_residual_alpha_misrouting(labels, param_meta):
+    """Standing validation: every 'alpha_*' label must be tagged
+    parameter_type='residual_alpha' with the dedicated exact-linear gradient
+    method and independent-per-qubit analytic variance method (zero shift
+    evaluations, zero tomography settings -- this codebase has no tomography
+    or mixed-state-fidelity path at all); every 'theta_*' label must be
+    tagged parameter_type='circuit_theta' with the parameter-shift method.
+    Raises AssertionError on any violation, so a routing bug fails loudly
+    rather than silently mislabeling a parameter-level row.
+    """
+    for label, meta in zip(labels, param_meta):
+        if label.startswith("alpha_"):
+            assert meta["parameter_type"] == "residual_alpha", \
+                f"{label} misrouted: parameter_type={meta['parameter_type']!r}"
+            assert meta["gradient_method"] == "residual_alpha_exact_linear", \
+                f"{label} misrouted: gradient_method={meta['gradient_method']!r}"
+            assert meta["variance_method"] == "residual_alpha_analytic_independent_z", \
+                f"{label} misrouted: variance_method={meta['variance_method']!r}"
+            assert meta["number_of_shift_evaluations"] == 0, \
+                f"{label} misrouted: number_of_shift_evaluations != 0"
+            assert meta["number_of_tomography_settings"] == 0, \
+                f"{label} misrouted: number_of_tomography_settings != 0"
+        elif label.startswith("theta_"):
+            assert meta["parameter_type"] == "circuit_theta", \
+                f"{label} misrouted: parameter_type={meta['parameter_type']!r}"
+            assert meta["gradient_method"] == "parameter_shift", \
+                f"{label} misrouted: gradient_method={meta['gradient_method']!r}"
+        else:
+            raise AssertionError(f"unrecognized parameter label: {label}")
+    return True
 
 
 def run_hamiltonian_and_pattern_checks(tasks=None, n_qubits_sweep=None, verbose=True):
@@ -286,7 +341,7 @@ def run_hamiltonian_and_pattern_checks(tasks=None, n_qubits_sweep=None, verbose=
 
 
 def run_main_grid(tasks=None, n_qubits_sweep=None, n_seeds=N_SEEDS_MAIN_GRID,
-                   L=L_MAIN, N_shots=N_SHOTS, residual_reduction="sum", verbose=True):
+                   L=L_MAIN, N_shots=N_SHOTS, residual_reduction="mean", verbose=True):
     """Runs all 7 CONFIGS x n_seeds seeds at L=L_MAIN, for every (task, n_qubits)
     grid point. Returns a single long-format summary DataFrame (one row per
     task/n_qubits/config/seed) -- the main new empirical contribution of this
@@ -313,16 +368,17 @@ def run_main_grid(tasks=None, n_qubits_sweep=None, n_seeds=N_SEEDS_MAIN_GRID,
                 t0 = time.time()
                 for seed in range(n_seeds):
                     theta, alpha = init_params(seed, L, n_qubits, config["residual"])
-                    grads, snrs, labels, det = compute_snr_for_initialization(
+                    grads, snrs, labels, classes, meta = compute_snr_for_initialization(
                         theta, alpha, L, n_qubits, config["entanglement"], config["cost"],
                         config["residual"], H, H2, ZZ, N_shots=N_shots,
                         run_circuit=run_circuit, residual_reduction=residual_reduction,
                     )
+                    assert_no_residual_alpha_misrouting(labels, meta)
                     row = {"task": task["name"], "task_label": task["label"], "n_qubits": n_qubits,
                            "config_id": config["id"], "config_name": config["name"],
                            "config_label": config["label"], "seed": seed, "L": L,
                            "residual_reduction": residual_reduction}
-                    row.update(_summarize_grid(snrs, det, labels))
+                    row.update(_summarize_grid(snrs, classes, labels, meta))
                     row["mean_abs_grad"] = float(np.mean(np.abs(grads)))
                     summary_rows.append(row)
                 if verbose:
@@ -334,13 +390,19 @@ def run_main_grid(tasks=None, n_qubits_sweep=None, n_seeds=N_SEEDS_MAIN_GRID,
 
 def run_sensitivity_check(tasks=None, n_qubits_list=None, n_seeds=N_SEEDS_SENSITIVITY,
                            L=L_MAIN, N_shots=N_SHOTS, verbose=True):
-    """Self-contained sum-vs-mean residual-reduction sensitivity check (spec
-    section 3), at n in {4,10} across all three tasks. Runs ALL 7 CONFIGS
-    under residual_reduction='sum', plus the three residual-bearing configs
-    (residual_only, entanglement_residual, combined) again under 'mean' -- the
-    other four configs never touch alpha, so they are exactly invariant to
-    this toggle and their 'sum' rows are valid under the 'mean' label too,
-    with no separate computation needed.
+    """Self-contained mean-vs-sum residual-reduction sensitivity check. 'mean'
+    is the primary reduction (used throughout the main grid); 'sum' is
+    retained as a secondary sensitivity check, scoped to n=4, depth=L_MAIN,
+    measurement budget=N_SHOTS (per the residual-parameter correction -- not
+    the full {4,10} x 3-tasks range used in the original companion-phase
+    design, now that 'mean' is n-invariant and no longer needs cross-n
+    validation against 'sum' as the default).
+
+    Runs ALL 7 CONFIGS under residual_reduction='mean', plus the three
+    residual-bearing configs (residual_only, entanglement_residual, combined)
+    again under 'sum' -- the other four configs never touch alpha, so they
+    are exactly invariant to this toggle and their 'mean' rows are valid
+    under the 'sum' label too, with no separate computation needed.
 
     Deliberately self-contained (does not reuse rows from `run_main_grid`,
     which may use a different seed count -- see N_SEEDS_MAIN_GRID vs.
@@ -354,8 +416,8 @@ def run_sensitivity_check(tasks=None, n_qubits_list=None, n_seeds=N_SEEDS_SENSIT
     tasks = tasks if tasks is not None else TASKS
     n_qubits_list = n_qubits_list if n_qubits_list is not None else SENSITIVITY_N_QUBITS
 
-    sum_rows = []
-    mean_only_rows = []
+    mean_rows = []
+    sum_only_rows = []
     for task in tasks:
         for n_qubits in n_qubits_list:
             H = build_task_hamiltonian(task, n_qubits)
@@ -371,47 +433,49 @@ def run_sensitivity_check(tasks=None, n_qubits_list=None, n_seeds=N_SEEDS_SENSIT
                 t0 = time.time()
                 for seed in range(n_seeds):
                     theta, alpha = init_params(seed, L, n_qubits, config["residual"])
-                    grads, snrs, labels, det = compute_snr_for_initialization(
+                    grads, snrs, labels, classes, meta = compute_snr_for_initialization(
                         theta, alpha, L, n_qubits, config["entanglement"], config["cost"],
                         config["residual"], H, H2, ZZ, N_shots=N_shots,
-                        run_circuit=run_circuit, residual_reduction="sum",
+                        run_circuit=run_circuit, residual_reduction="mean",
                     )
+                    assert_no_residual_alpha_misrouting(labels, meta)
                     row = {"task": task["name"], "task_label": task["label"], "n_qubits": n_qubits,
                            "config_id": config["id"], "config_name": config["name"],
                            "config_label": config["label"], "seed": seed, "L": L,
-                           "residual_reduction": "sum"}
-                    row.update(_summarize_grid(snrs, det, labels))
+                           "residual_reduction": "mean"}
+                    row.update(_summarize_grid(snrs, classes, labels, meta))
                     row["mean_abs_grad"] = float(np.mean(np.abs(grads)))
-                    sum_rows.append(row)
+                    mean_rows.append(row)
                 if verbose:
-                    print(f"  [sensitivity sum]  [{task['name']:14s} n={n_qubits:2d}] "
+                    print(f"  [sensitivity mean] [{task['name']:14s} n={n_qubits:2d}] "
                           f"{config['label']:32s} {n_seeds} seeds in {time.time() - t0:.2f}s")
 
                 if config["name"] in RESIDUAL_CONFIG_NAMES:
                     t0 = time.time()
                     for seed in range(n_seeds):
                         theta, alpha = init_params(seed, L, n_qubits, config["residual"])
-                        grads, snrs, labels, det = compute_snr_for_initialization(
+                        grads, snrs, labels, classes, meta = compute_snr_for_initialization(
                             theta, alpha, L, n_qubits, config["entanglement"], config["cost"],
                             config["residual"], H, H2, ZZ, N_shots=N_shots,
-                            run_circuit=run_circuit, residual_reduction="mean",
+                            run_circuit=run_circuit, residual_reduction="sum",
                         )
+                        assert_no_residual_alpha_misrouting(labels, meta)
                         row = {"task": task["name"], "task_label": task["label"], "n_qubits": n_qubits,
                                "config_id": config["id"], "config_name": config["name"],
                                "config_label": config["label"], "seed": seed, "L": L,
-                               "residual_reduction": "mean"}
-                        row.update(_summarize_grid(snrs, det, labels))
+                               "residual_reduction": "sum"}
+                        row.update(_summarize_grid(snrs, classes, labels, meta))
                         row["mean_abs_grad"] = float(np.mean(np.abs(grads)))
-                        mean_only_rows.append(row)
+                        sum_only_rows.append(row)
                     if verbose:
-                        print(f"  [sensitivity mean] [{task['name']:14s} n={n_qubits:2d}] "
+                        print(f"  [sensitivity sum]  [{task['name']:14s} n={n_qubits:2d}] "
                               f"{config['label']:32s} {n_seeds} seeds in {time.time() - t0:.2f}s")
 
-    sum_df = pd.DataFrame(sum_rows)
-    mean_only_df = pd.DataFrame(mean_only_rows)
-    non_residual_as_mean = sum_df[~sum_df["config_name"].isin(RESIDUAL_CONFIG_NAMES)].copy()
-    non_residual_as_mean["residual_reduction"] = "mean"
-    mean_df = pd.concat([non_residual_as_mean, mean_only_df], ignore_index=True, sort=False)
+    mean_df = pd.DataFrame(mean_rows)
+    sum_only_df = pd.DataFrame(sum_only_rows)
+    non_residual_as_sum = mean_df[~mean_df["config_name"].isin(RESIDUAL_CONFIG_NAMES)].copy()
+    non_residual_as_sum["residual_reduction"] = "sum"
+    sum_df = pd.concat([non_residual_as_sum, sum_only_df], ignore_index=True, sort=False)
     return sum_df, mean_df
 
 
@@ -425,7 +489,7 @@ def run_headline_reference(n_seeds=N_SEEDS_HEADLINE, L=L_MAIN, N_shots=N_SHOTS, 
     """
     task = next(t for t in TASKS if t["name"] == HEADLINE_TASK_NAME)
     return run_main_grid(tasks=[task], n_qubits_sweep=[HEADLINE_N_QUBITS], n_seeds=n_seeds,
-                          L=L, N_shots=N_shots, residual_reduction="sum", verbose=verbose)
+                          L=L, N_shots=N_shots, residual_reduction="mean", verbose=verbose)
 
 
 def run_depth_sweep_scoped(n_qubits_list=None, n_seeds=N_SEEDS_DEPTH_SWEEP, N_shots=N_SHOTS,
@@ -457,20 +521,29 @@ def run_depth_sweep_scoped(n_qubits_list=None, n_seeds=N_SEEDS_DEPTH_SWEEP, N_sh
                 t0 = time.time()
                 for seed in range(n_seeds):
                     theta, alpha = init_params(seed, L, n_qubits, config["residual"])
-                    grads, snrs, labels, det = compute_snr_for_initialization(
+                    grads, snrs, labels, classes, meta = compute_snr_for_initialization(
                         theta, alpha, L, n_qubits, config["entanglement"], config["cost"],
                         config["residual"], H, H2, ZZ, N_shots=N_shots, run_circuit=run_circuit,
                     )
+                    assert_no_residual_alpha_misrouting(labels, meta)
                     row = {"n_qubits": n_qubits, "config_name": config["name"],
                            "config_label": config["label"], "seed": seed, "L": L}
-                    row.update(_summarize_grid(snrs, det, labels))
+                    row.update(_summarize_grid(snrs, classes, labels, meta))
                     row["mean_abs_grad"] = float(np.mean(np.abs(grads)))
                     summary_rows.append(row)
 
                     per_param_records.append({
                         "n_qubits": n_qubits, "config_name": config["name"], "seed": seed, "L": L,
                         "labels": labels, "grads": grads.tolist(), "snrs": snrs.tolist(),
-                        "deterministic": det.tolist(),
+                        "classes": classes,
+                        "parameter_type": [m["parameter_type"] for m in meta],
+                        "gradient_method": [m["gradient_method"] for m in meta],
+                        "variance_method": [m["variance_method"] for m in meta],
+                        "variance_method_family": [m["variance_method_family"] for m in meta],
+                        "estimator_family": [m["estimator_family"] for m in meta],
+                        "number_of_shift_evaluations": [m["number_of_shift_evaluations"] for m in meta],
+                        "number_of_tomography_settings": [m["number_of_tomography_settings"] for m in meta],
+                        "number_of_measurement_settings": [m["number_of_measurement_settings"] for m in meta],
                     })
                 if verbose:
                     print(f"  [depth scoped] n={n_qubits:2d} L={L} [{config['label']:24s}] "

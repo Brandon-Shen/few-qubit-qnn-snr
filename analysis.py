@@ -314,16 +314,17 @@ def run_scoped_h3_analysis(depth_scoped_df):
 def diagnose_l1_mean_median_gap(depth_scoped_df, L=1):
     """Reports, per (n_qubits, config), the mean-vs-median gap in seed-level
     mean_snr at depth L (default 1, where the pilot noted a ~20x gap) plus
-    the maximum n_deterministic_params observed -- computed directly from the
-    real per-seed data, not assumed. Distinguishes two different phenomena:
-    a config where deterministic parameters (e.g. alpha_1, whose input is the
-    fixed |0...0> state) are present and the mean/median gap is small is a
-    case the snr.py deterministic-parameter rule actually resolves; a config
-    with a persisting large gap despite zero deterministic parameters is a
-    separate, real small-sample heavy-tailed phenomenon (a specific seed's
-    shallow circuit landing extremely close to a cost-function eigenstate,
-    giving a tiny-but-nonzero shot-noise variance) that the rule correctly
-    does not and should not suppress -- see README "Design choices".
+    the maximum n_deterministic_nonzero_params observed -- computed directly
+    from the real per-seed data, not assumed. Distinguishes two different
+    phenomena: a config where deterministic-nonzero parameters (e.g. alpha_1,
+    whose input is the fixed |0...0> state) are present and the mean/median
+    gap is small is a case the snr.py deterministic-parameter rule actually
+    resolves; a config with a persisting large gap despite zero
+    deterministic-nonzero parameters is a separate, real small-sample
+    heavy-tailed phenomenon (a specific seed's shallow circuit landing
+    extremely close to a cost-function eigenstate, giving a tiny-but-nonzero
+    shot-noise variance) that the rule correctly does not and should not
+    suppress -- see README "Design choices".
     """
     sub = depth_scoped_df[depth_scoped_df["L"] == L]
     rows = []
@@ -334,9 +335,30 @@ def diagnose_l1_mean_median_gap(depth_scoped_df, L=1):
             "n_qubits": int(n_qubits), "config_name": config_name,
             "mean_of_mean_snr": float(mean_v), "median_of_mean_snr": float(median_v),
             "mean_median_ratio": float(mean_v / median_v) if median_v else float("nan"),
-            "max_n_deterministic_params": int(grp["n_deterministic_params"].max()),
+            "max_n_deterministic_nonzero_params": int(grp["n_deterministic_nonzero_params"].max()),
         })
     return pd.DataFrame(rows).sort_values(["n_qubits", "config_name"]).reset_index(drop=True)
+
+
+def summarize_parameter_routing(df):
+    """Aggregates the per-row parameter-type/classification counts (written
+    by experiment._summarize_grid) across an entire grid/sensitivity
+    DataFrame: total circuit_theta vs. residual_alpha parameters seen, and
+    the operationally-resolvable fraction's min/mean/max across seeds. Every
+    row's underlying per-parameter data already passed
+    experiment.assert_no_residual_alpha_misrouting at generation time (see
+    experiment.py); this is a summary for reporting, not a re-check.
+    """
+    return {
+        "n_rows": int(len(df)),
+        "total_circuit_theta_params": int(df["n_circuit_theta_params"].sum()),
+        "total_residual_alpha_params": int(df["n_residual_alpha_params"].sum()),
+        "total_deterministic_nonzero_params": int(df["n_deterministic_nonzero_params"].sum()),
+        "total_inactive_zero_params": int(df["n_inactive_zero_params"].sum()),
+        "operationally_resolvable_fraction_min": float(df["operationally_resolvable_fraction"].min()),
+        "operationally_resolvable_fraction_mean": float(df["operationally_resolvable_fraction"].mean()),
+        "operationally_resolvable_fraction_max": float(df["operationally_resolvable_fraction"].max()),
+    }
 
 
 def run_companion_phase_analyses():
@@ -377,9 +399,14 @@ def run_companion_phase_analyses():
     l1_gap_diagnostic_df.to_csv(
         os.path.join(RESULTS_DIR, "depth_sweep_scoped_l1_gap_diagnostic.csv"), index=False)
 
+    parameter_routing_summary = summarize_parameter_routing(main_grid_df)
+    with open(os.path.join(RESULTS_DIR, "parameter_routing_summary.json"), "w") as f:
+        json.dump(parameter_routing_summary, f, indent=2)
+
     return {
         "grid_summary_df": grid_summary_df,
         "l1_gap_diagnostic_df": l1_gap_diagnostic_df,
+        "parameter_routing_summary": parameter_routing_summary,
         "grid_full_results": grid_full_results,
         "headline_summary_df": headline_summary_df,
         "headline_full_results": headline_full_results,

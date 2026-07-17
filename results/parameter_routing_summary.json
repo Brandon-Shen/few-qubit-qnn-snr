@@ -1,0 +1,10 @@
+{
+  "n_rows": 9450,
+  "total_circuit_theta_params": 170100,
+  "total_residual_alpha_params": 12150,
+  "total_deterministic_nonzero_params": 4050,
+  "total_inactive_zero_params": 0,
+  "operationally_resolvable_fraction_min": 1.0,
+  "operationally_resolvable_fraction_mean": 1.0,
+  "operationally_resolvable_fraction_max": 1.0
+}
