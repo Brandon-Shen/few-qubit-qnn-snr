@@ -1,4 +1,0 @@
-task,n_qubits,diverges_sum_vs_mean,diverging_columns
-tfim_h0.5,4,False,
-tfim_h2.0,4,True,h2b_product_framing_sub_additive
-xxz_delta0.5,4,False,

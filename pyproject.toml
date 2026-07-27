@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qnn-snr"
+version = "0.1.0"
+description = "Gradient-usability SNR framework for few-qubit QNN mitigation strategies (companion code)"
+requires-python = ">=3.11"
+dependencies = [
+    "pennylane>=0.38,<0.46",
+    "numpy>=1.24,<3.0",
+    "pandas>=2.0,<4.0",
+    "scipy>=1.10,<2.0",
+    "statsmodels>=0.14,<0.15",
+    "pyarrow>=14.0",
+    "matplotlib>=3.7,<4.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "pytest-cov"]
+
+[tool.setuptools.packages.find]
+include = ["qnn_snr*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
