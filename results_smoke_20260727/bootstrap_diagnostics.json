@@ -1,0 +1,14 @@
+{
+  "h1": {
+    "n_requested": 20,
+    "n_successful": 20,
+    "success_fraction_met": true,
+    "failed_iterations": []
+  },
+  "h2h4": {
+    "n_requested": 20,
+    "n_successful": 20,
+    "success_fraction_met": true,
+    "failed_iterations": []
+  }
+}

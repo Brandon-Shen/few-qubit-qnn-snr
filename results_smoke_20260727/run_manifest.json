@@ -1,0 +1,253 @@
+{
+  "experiment_name": "smoke",
+  "config": {
+    "name": "smoke",
+    "seed_root": 20260726,
+    "seed_streams": {
+      "initialization": 1,
+      "shot_sampling": 2,
+      "optimization": 3,
+      "bootstrap": 4
+    },
+    "task": {
+      "n_qubits": 4,
+      "J": 1.0,
+      "h": 0.5,
+      "expected_E0": -3.427,
+      "expected_Emax": 3.427,
+      "spectrum_tol": 0.005
+    },
+    "circuit": {
+      "depths": [
+        1,
+        2
+      ],
+      "init_low": 0.0,
+      "init_high": 6.283185307179586
+    },
+    "cost_mapping": {
+      "L0": "global",
+      "L1": "local"
+    },
+    "residual": {
+      "gamma_R0": 0.0,
+      "gamma_R1": 1.0,
+      "blocks_per_depth": "one_per_layer",
+      "x0_init": "zeros",
+      "hidden_dim": "n_qubits",
+      "weight_init": "glorot_uniform",
+      "bias_init": "zeros",
+      "gamma_sensitivity_values": [
+        0.5,
+        1.0
+      ]
+    },
+    "gradient": {
+      "modes": [
+        "statevector_exact",
+        "finite_shot_conditional",
+        "finite_shot_end_to_end"
+      ],
+      "hardware_noisy_enabled": false,
+      "hardware_noisy_kind": "depolarizing"
+    },
+    "budget": {
+      "values": [
+        64,
+        128
+      ],
+      "allocator": "equal_deterministic_remainder",
+      "remainder_policy": "deterministic_sorted",
+      "sensitivity_allocator": "pilot_variance_optimized"
+    },
+    "design": {
+      "n_initializations": 3,
+      "replicates": 5,
+      "configurations": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "pilot": {
+      "replicate_count": {
+        "start_R": 30,
+        "increment": 10,
+        "max_R": 200,
+        "abs_halfwidth_tolerance": 0.05,
+        "rel_halfwidth_tolerance": 0.1,
+        "representative_cells": [
+          {
+            "configuration_id": 1,
+            "depth": 1,
+            "budget": 250
+          },
+          {
+            "configuration_id": 1,
+            "depth": 1,
+            "budget": 2000
+          },
+          {
+            "configuration_id": 1,
+            "depth": 6,
+            "budget": 250
+          },
+          {
+            "configuration_id": 1,
+            "depth": 6,
+            "budget": 2000
+          },
+          {
+            "configuration_id": 8,
+            "depth": 1,
+            "budget": 250
+          },
+          {
+            "configuration_id": 8,
+            "depth": 1,
+            "budget": 2000
+          },
+          {
+            "configuration_id": 8,
+            "depth": 6,
+            "budget": 250
+          },
+          {
+            "configuration_id": 8,
+            "depth": 6,
+            "budget": 2000
+          }
+        ]
+      },
+      "initialization_count": {
+        "start_n": 50,
+        "increment": 25,
+        "max_n": 300,
+        "target_percentile": 90.0,
+        "target_halfwidth": 0.2
+      }
+    },
+    "stats": {
+      "alpha_family_wise": 0.05,
+      "p_value_method": "wald_normal",
+      "variance_zero_policy": "flag_and_stop",
+      "bootstrap": {
+        "iterations_dev": 200,
+        "iterations_publication": 2000,
+        "iterations": 20,
+        "seed": 12345,
+        "min_success_fraction": 0.5,
+        "ci_method": "percentile",
+        "n_workers": 1
+      }
+    },
+    "output": {
+      "results_dir": "results"
+    }
+  },
+  "config_hash": "51193830ebd18b76",
+  "git_commit": "cbbeafa853b0e87e153a783296fed1f9c750681a",
+  "package_versions": {
+    "pennylane": "0.45.1",
+    "numpy": "2.5.1",
+    "pandas": "3.0.3",
+    "scipy": "1.18.0",
+    "statsmodels": "0.14.6",
+    "pyarrow": "25.0.0",
+    "matplotlib": "3.11.0",
+    "yaml": "6.0.3"
+  },
+  "quantum_backend": "pennylane/default.qubit",
+  "host_info": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.12.10",
+    "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel"
+  },
+  "start_time": "2026-07-27T06:22:37.123711+00:00",
+  "end_time": "2026-07-27T06:23:12.300074+00:00",
+  "steps_run": [
+    {
+      "step": "generate-exact",
+      "time": "2026-07-27T06:22:37.298974+00:00",
+      "n_rows": 288
+    },
+    {
+      "step": "generate-shots:finite_shot_conditional",
+      "time": "2026-07-27T06:22:38.188331+00:00",
+      "n_rows": 2880
+    },
+    {
+      "step": "generate-shots:finite_shot_end_to_end",
+      "time": "2026-07-27T06:22:39.089318+00:00",
+      "n_rows": 2880
+    },
+    {
+      "step": "validate",
+      "time": "2026-07-27T06:22:39.217889+00:00",
+      "passed": true,
+      "n_errors": 0
+    },
+    {
+      "step": "aggregate",
+      "time": "2026-07-27T06:22:39.511611+00:00",
+      "n_cells": 1152
+    },
+    {
+      "step": "fit",
+      "time": "2026-07-27T06:22:39.812086+00:00",
+      "h1_converged": true,
+      "h2h4_converged": true,
+      "n_zero_variance_cells": 159
+    },
+    {
+      "step": "bootstrap",
+      "time": "2026-07-27T06:23:10.286234+00:00",
+      "iterations": 20,
+      "diagnostics": {
+        "h1": {
+          "n_requested": 20,
+          "n_successful": 20,
+          "success_fraction_met": true,
+          "failed_iterations": []
+        },
+        "h2h4": {
+          "n_requested": 20,
+          "n_successful": 20,
+          "success_fraction_met": true,
+          "failed_iterations": []
+        }
+      }
+    },
+    {
+      "step": "report",
+      "time": "2026-07-27T06:23:12.300074+00:00"
+    }
+  ],
+  "random_seeds": {
+    "seed_root": 20260726,
+    "seed_streams": {
+      "initialization": 1,
+      "shot_sampling": 2,
+      "optimization": 3,
+      "bootstrap": 4
+    }
+  },
+  "model_formulas": {
+    "H1_exact_signal": "a ~ E*L*R + depth_z + E:depth_z + L:depth_z + R:depth_z",
+    "H2_H4_estimator_snr": "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + L:R:depth_z",
+    "sensitivity_estimator_snr": "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + L:R:depth_z + E:L:depth_z + E:R:depth_z"
+  },
+  "transform_definitions": {
+    "H1_response": "a = asinh(abs(exact_gradient))",
+    "H2_H4_response": "y = asinh(SNR_est)",
+    "depth_standardization": "depth_z = (depth - mean(design.depths)) / std(design.depths, ddof=0)"
+  },
+  "bootstrap_iterations": {},
+  "failed_fit_counts": {},
+  "pilot_status": {}
+}

@@ -1,0 +1,24 @@
+{
+  "n_shards": 1,
+  "per_shard_successful_iterations": {
+    "h2h4_boot_shard0.parquet": 8
+  },
+  "total_pooled_successful_iterations": 8,
+  "percentile_ci": {
+    "E:L": {
+      "lo": -0.001193282455609779,
+      "hi": 0.05313119336599609,
+      "n": 8
+    },
+    "E:R": {
+      "lo": -0.015523902530837757,
+      "hi": 0.02629962477453832,
+      "n": 8
+    },
+    "L:R:depth_z": {
+      "lo": -0.01620770616209538,
+      "hi": 0.024394390802134912,
+      "n": 8
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "formula": "a ~ E*L*R + depth_z + E:depth_z + L:depth_z + R:depth_z + E:L:depth_z",
+  "n_obs": 25600,
+  "n_groups": 50,
+  "n_vc_levels": 3200,
+  "converged": true,
+  "optimizer_used": "lbfgs",
+  "attempted_optimizers": [
+    "lbfgs"
+  ],
+  "params": {
+    "Intercept": 0.02669747480006861,
+    "E": -0.0011505829966610445,
+    "L": 0.020307819826412953,
+    "E:L": 0.003805362754524275,
+    "R": 0.0019789262307018858,
+    "E:R": 0.004296329890165746,
+    "L:R": 0.003379926243424713,
+    "E:L:R": -0.0006062573977251201,
+    "depth_z": -0.010649895404596734,
+    "E:depth_z": 0.0024166101510518755,
+    "L:depth_z": -0.0050539841485324356,
+    "R:depth_z": 0.004298134447647421,
+    "E:L:depth_z": 0.0010054262813158628,
+    "Group Var": 0.014707201958197077,
+    "param Var": 0.39291172958158843
+  },
+  "bse": {
+    "Intercept": 0.0012452746378234028,
+    "E": 0.0011627906120119272,
+    "L": 0.0011627906120119272,
+    "E:L": 0.001644434253707382,
+    "R": 0.0011227735244728572,
+    "E:R": 0.0015291558240619779,
+    "L:R": 0.0015291558240619785,
+    "E:L:R": 0.0021625529053702678,
+    "depth_z": 0.000802589779751224,
+    "E:depth_z": 0.0007954970357228732,
+    "L:depth_z": 0.0007954970357228731,
+    "R:depth_z": 0.0005625013483734423,
+    "E:L:depth_z": 0.0011250026967468817,
+    "Group Var": 0.004618182530517013,
+    "param Var": 0.013939470984415378
+  },
+  "z_scores": {
+    "Intercept": 21.439025568474385,
+    "E": -0.9895014500248155,
+    "L": 17.464726337337034,
+    "E:L": 2.314086285873134,
+    "R": 1.7625337501888396,
+    "E:R": 2.8096089506124864,
+    "L:R": 2.2103216626062565,
+    "E:L:R": -0.2803433831466509,
+    "depth_z": -13.26941318377845,
+    "E:depth_z": 3.0378619184368003,
+    "L:depth_z": -6.353240705592132,
+    "R:depth_z": 7.641109590361209,
+    "E:L:depth_z": 0.8937101077385925,
+    "Group Var": 3.184629854063083,
+    "param Var": 28.186990024289447
+  },
+  "random_effect_variances": {
+    "group_intercept_var": 2.751208657503542e-05,
+    "nested_param_var": 0.0007350019093584758
+  },
+  "condition_number": 22.494730275619457,
+  "singular_fit": false,
+  "residual_diagnostics": {
+    "resid_mean": -6.331740687315346e-18,
+    "resid_sd": 0.04113302973863719,
+    "resid_min": -0.25983308477502953,
+    "resid_max": 0.5086419713200961
+  },
+  "error": null,
+  "reference_H1_formula": "a ~ E*L*R + depth_z + E:depth_z + L:depth_z + R:depth_z",
+  "reference_confirmatory_eta_EL": 0.004346,
+  "note": "Ad hoc extension of H1_FORMULA, not part of the pipeline's confirmatory model set. Fit on the full confirmatory exact dataset (no new simulation). Descriptive/diagnostic only -- not a preregistered test, not part of the H1-H4 Holm family."
+}

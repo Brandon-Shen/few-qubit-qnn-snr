@@ -1,0 +1,8 @@
+{
+  "shard_id": 0,
+  "seed": 66001,
+  "n_requested": 8,
+  "n_successful": 8,
+  "failed_iterations": [],
+  "wall_clock_seconds": 34988.41790676117
+}

@@ -1,0 +1,5 @@
+hypothesis,coefficient_label,p_unadjusted,p_holm,reject_after_holm,family_wise_alpha
+H1,eta_EL,0.4536697784309549,1.0,False,0.05
+H2,beta_EL,0.5952520983894452,1.0,False,0.05
+H3,beta_ER,0.77903786956327,1.0,False,0.05
+H4,beta_LRd,0.6287866924837631,1.0,False,0.05
