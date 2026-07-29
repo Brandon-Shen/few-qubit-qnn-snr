@@ -1,0 +1,14 @@
+{
+  "tag": "solo",
+  "seed": 900001,
+  "iterations": 5,
+  "n_successful": 5,
+  "rss_after_load_gb": 4.779384832,
+  "rss_after_precompute_gb": 2.38665728,
+  "rss_after_run_gb": 0.738050048,
+  "peak_rss_gb": 5.334618112,
+  "t_load": 0.6594820022583008,
+  "t_precompute": 6.703794956207275,
+  "t_run": 335.8628816604614,
+  "start_time": 1785299846.259174
+}

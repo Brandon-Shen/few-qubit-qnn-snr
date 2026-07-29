@@ -1,0 +1,14 @@
+[safety_n4_3] loaded 6144000 rows in 0.7s; RSS=4.782GB
+[safety_n4_3] precomputed in 7.9s; RSS=2.396GB
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 0 done in 106.4s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 1 done in 107.3s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 2 done in 100.5s
+[safety_n4_3] ran 3/3 iterations in 314.2s (104.7s/iter); RSS=0.744GB
+[safety_n4_3] PEAK RSS = 5.338 GB
+[safety_n4_3] wrote C:\Users\Brandon Shen\documents\few-qubit-qnn-snr\verification\_rss_probe_safety_n4_3.json

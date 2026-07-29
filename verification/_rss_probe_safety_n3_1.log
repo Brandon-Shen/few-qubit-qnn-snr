@@ -1,0 +1,16 @@
+[safety_n3_1] loaded 6144000 rows in 1.9s; RSS=4.695GB
+[safety_n3_1] precomputed in 6.8s; RSS=2.421GB
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2261: ConvergenceWarning: The Hessian matrix at the estimated parameter values is not positive definite.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 0 done in 170.4s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 1 done in 71.6s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 2 done in 81.6s
+[safety_n3_1] ran 3/3 iterations in 323.6s (107.9s/iter); RSS=0.769GB
+[safety_n3_1] PEAK RSS = 4.695 GB
+[safety_n3_1] wrote C:\Users\Brandon Shen\documents\few-qubit-qnn-snr\verification\_rss_probe_safety_n3_1.json

@@ -1,0 +1,5 @@
+[00_start] current RSS (post-gc) = 0.145 GB | peak RSS seen so far = 0.145 GB
+loaded combined raw shot df: 6144000 rows in 0.6s
+[01_after_load_raw_data] current RSS (post-gc) = 4.781 GB | peak RSS seen so far = 4.781 GB
+outer resample: 6144000 rows in 11.7s
+[02_after_outer_resample] current RSS (post-gc) = 5.912 GB | peak RSS seen so far = 6.919 GB

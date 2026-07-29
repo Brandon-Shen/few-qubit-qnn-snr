@@ -1,0 +1,14 @@
+{
+  "tag": "conc_b",
+  "seed": 900003,
+  "iterations": 5,
+  "n_successful": 5,
+  "rss_after_load_gb": 4.807376896,
+  "rss_after_precompute_gb": 2.463920128,
+  "rss_after_run_gb": 0.78495744,
+  "peak_rss_gb": 4.807376896,
+  "t_load": 1.978498935699463,
+  "t_precompute": 10.340973615646362,
+  "t_run": 404.1555321216583,
+  "start_time": 1785300207.6890597
+}

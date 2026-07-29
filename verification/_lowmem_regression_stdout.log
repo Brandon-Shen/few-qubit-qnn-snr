@@ -1,0 +1,36 @@
+start RSS = 0.144 GB
+loaded 6144000 rows in 0.6s; RSS = 4.760 GB
+precomputed cell index (204800 cells) in 5.8s; RSS = 3.265 GB
+dropped raw_shot_df; RSS = 2.381 GB
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 0 done in 69.4s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 1 done in 73.8s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 2 done in 67.9s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 3 done in 88.6s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2261: ConvergenceWarning: The Hessian matrix at the estimated parameter values is not positive definite.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 4 done in 83.8s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 5 done in 66.0s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 6 done in 72.7s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 7 done in 66.8s
+run_h2h4_bootstrap_lowmem: 8/8 successful in 589.0s (73.6s/iter); RSS = 0.761 GB
+OVERALL PEAK RSS = 5.599 GB
+
+OVERALL PASS = True
+  E:L: max_abs_diff=0.000e+00 allclose(1e-9,1e-6)=True
+  E:R: max_abs_diff=0.000e+00 allclose(1e-9,1e-6)=True
+  L:R:depth_z: max_abs_diff=0.000e+00 allclose(1e-9,1e-6)=True
+wrote C:\Users\Brandon Shen\documents\few-qubit-qnn-snr\verification\h2h4_lowmem_regression_test_result.json

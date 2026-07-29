@@ -63,6 +63,30 @@ production wall-clock for a long unattended background run in this environment �
 plan future runs of this kind around the actual observed completion rate, not the
 isolated benchmark.
 
+**Retroactive note (Task H, follow-up pass, added after `verification/h2h4_bootstrap_memory_redesign.md`
+existed): a better-fitting explanation is now available, though still not independently
+confirmed.** The original implementation's per-iteration working set was ~16GB (see the
+memory-redesign document above), and this machine's free memory was observed to hit
+**590MB** with just 2 *concurrent* streams of that implementation (point 1 above) — i.e.
+even a *single* stream's ~16GB was already a large fraction of this machine's total
+physical memory once its other running applications (Chrome, VS Code, etc. — separately
+observed elsewhere in this verification pass to hold ~21GB of this machine's ~34GB total
+on their own) are accounted for. **Disk swapping/paging under memory pressure is a more
+plausible mechanism for a ~13x wall-clock slowdown than scheduler throttling** — paging
+a multi-GB working set to and from disk during a long-running single-threaded process
+would produce exactly this kind of "wall clock way ahead of compute-bound progress"
+symptom, and unlike generic "background throttling" it has a concrete, verified
+precondition (memory near the machine's ceiling) that was independently observed for
+this same implementation in this same environment. **This is not independently confirmed
+via actual swap/paging performance counters from that specific historical run** — no such
+logging was active at the time, and Windows does not appear to retain per-process paging
+history retroactively (checked: no relevant low-memory/resource-exhaustion System event
+log entries near the run's timeframe, and `Win32_PageFileUsage`'s peak-usage counter is a
+since-boot cumulative figure, not attributable to that specific run). So: **better
+explanation available, still not independently confirmed via swap logs** — both stand as
+plausible, unconfirmed root causes; this note does not supersede the original one, it
+adds a stronger candidate alongside it.
+
 ## 1. H1 (exact-signal) bootstrap — 400/400 successful
 
 Seed 55001, checkpointed resume from an earlier 150-iteration checkpoint. Wall clock

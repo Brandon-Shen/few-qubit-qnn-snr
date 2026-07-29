@@ -1,0 +1,14 @@
+{
+  "tag": "safety_n3_2",
+  "seed": 912000,
+  "iterations": 3,
+  "n_successful": 3,
+  "rss_after_load_gb": 4.659990528,
+  "rss_after_precompute_gb": 2.404573184,
+  "rss_after_run_gb": 0.747220992,
+  "peak_rss_gb": 4.659990528,
+  "t_load": 1.8489692211151123,
+  "t_precompute": 6.949002742767334,
+  "t_run": 242.31160616874695,
+  "start_time": 1785300823.607807
+}

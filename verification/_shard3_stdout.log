@@ -1,0 +1,2 @@
+[shard 3] loaded 6144000 rows in 1.1s
+[shard 3] precomputed cell index (204800 cells) in 7.8s; seed=96001, target=100 iterations, checkpoint=C:\Users\Brandon Shen\documents\few-qubit-qnn-snr\verification\_bootstrap_checkpoints\h2h4_boot_shard3.parquet

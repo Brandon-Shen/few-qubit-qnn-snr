@@ -46,19 +46,21 @@ function of *only* its own classical input and parameters — which is precisely
 self-contained-circuit reading.
 
 **"An upstream quantum parameter affects the final cost through subsequent
-re-encoding operations and quantum blocks."** Read literally, this sentence names
-exactly one channel: re-encoding (the classical `z -> x` feedback) into subsequent
-blocks. It does not say "through re-encoding *and* through continued unitary
-propagation" or "through the surviving quantum state." If a continued-statevector
-architecture were intended, an upstream parameter would affect the cost through *two*
-channels — direct continued propagation (present even with zero residual structure)
-and re-encoding — and a sentence naming the mechanism precisely would be expected to
-name both, or use general language ("affects the final cost downstream") rather than
-specifically "through re-encoding operations." Naming only re-encoding is evidence
-the paper does not consider a direct continued-propagation channel to exist at all.
+re-encoding operations and quantum blocks."** **Correction (this pass): this argument
+does not hold up and is downgraded to inconclusive — it should not be counted as
+corroboration.** The original reasoning here depended on this sentence naming
+*exactly one* channel (re-encoding). It doesn't: read literally, the sentence names
+*two* things — "re-encoding operations" **and** "quantum blocks" — not one. "Quantum
+blocks" is exactly the kind of phrase a continued-statevector reading would also use
+to name its second (direct-propagation) channel, so the absence of a more explicit
+phrase like "the surviving quantum state" cannot be read as ruling that channel out.
+This sentence is compatible with both readings and provides no evidence for either
+one on its own; it should not have been treated as pointing the same direction as the
+`z^(ℓ) = q_ℓ(...)` notation below.
 
-Both pieces of quoted text point the same direction, independently of A15b's own
-argument.
+Of the two pieces of quoted paper text, only the `z^(ℓ) = q_ℓ(x^(ℓ), θ^(ℓ))` notation
+actually supports the self-contained reading; the "re-encoding operations and quantum
+blocks" sentence is neutral, not corroborating.
 
 ## 3. A15b's internal argument (independent corroboration)
 
@@ -86,26 +88,35 @@ alternative reading was tried and found to break that formula outright.
 ## 4. Decision
 
 **The self-contained-circuit reading (current A15b implementation) matches the
-paper's intent.** All three independent lines of evidence agree:
+paper's intent.** This now rests on **two** independent lines of evidence, not three
+— §2's "re-encoding operations and quantum blocks" argument is struck (see the
+correction above) and no longer counted:
 
-1. The quoted `z^(ℓ) = q_ℓ(x^(ℓ), θ^(ℓ))` notation has no state-carryover argument.
-2. The quoted "affects the final cost through subsequent re-encoding operations and
-   quantum blocks" names only the re-encoding channel.
-3. Section 6's own exact gradient formula is only correct under this reading, and the
-   alternative was empirically tested and found to produce a formula that doesn't
-   match finite differences by a wide margin (per A15b's account of
-   `tests/test_gradients.py`'s development history).
+1. The quoted `z^(ℓ) = q_ℓ(x^(ℓ), θ^(ℓ))` notation has no state-carryover argument —
+   textual, suggestive on its own but not conclusive by itself.
+2. **Load-bearing.** Section 6's own exact gradient formula is only correct under this
+   reading, and the alternative was empirically tested and found to produce a formula
+   that doesn't match finite differences by a wide margin (per A15b's account of
+   `tests/test_gradients.py`'s development history). This is a mathematical/empirical
+   argument, independent of how any one sentence is parsed, and is what the decision
+   below actually rests on.
+
+Losing the struck argument does not overturn the decision — line 2 was always the
+strongest of the original three and is sufficient on its own — but the decision is now
+explicitly a two-line, not three-line, convergence, and should be cited that way.
 
 No divergence found. `A15b` does not need to change, and no re-simulation is implied
 by this resolution.
 
 ## 5. Residual uncertainty and what would firm this up further
 
-This decision rests on textual fragments (two quotes) plus one document's account of
-its own development history, not a full read of Section 5.2.2 or a look at the
-paper's actual printed Equation 7. The convergence across three independent lines of
-evidence makes this a reasonably confident call, but two things would make it
-airtight rather than "reasonably confident":
+This decision rests on one textual fragment (the `z^(ℓ)` notation) plus one
+document's account of its own development history, not a full read of Section 5.2.2
+or a look at the paper's actual printed Equation 7 (the "re-encoding operations and
+quantum blocks" quote, previously treated as a second textual line, no longer counts
+— see §2's correction and §4). The convergence across these two lines — one textual,
+one mathematical/empirical — makes this a reasonably confident call, but two things
+would make it airtight rather than "reasonably confident":
 
 - **The actual Section 5.2.2 text** ("circuit controls"), which this task named as
   load-bearing but did not quote. If it contains language describing depth as
@@ -150,3 +161,57 @@ record.
    under this now-corroborated reading), that would be a cheap follow-up fit-only
    check, not a re-simulation — flagged as optional, not started here since it wasn't
    asked for.
+
+## 7. A separate, unresolved tension: the entangling-schedule description (Section 5.2.2)
+
+This is a new open question raised in this pass, not resolved by the decision in §4
+above — the tension below is between two pieces of the paper's own text, not
+something that re-reading the same fragments harder would settle.
+
+**The quotes.** The paper's own description of the entangling schedule (Section
+5.2.2) states that the baseline (E=0) schedule produces "a causal path spanning the
+complete register within one entangling layer," while the restricted (E=1) schedule
+is such that "circuit-wide propagation requires multiple layers rather than occurring
+within one layer."
+
+**Why this is in tension with the self-contained/reset-per-block reading.** Both
+halves of this description are about entangling correlations *building up across
+layers* — the restricted schedule's defining property, per this text, is that it
+takes more layers (i.e., more of the `depths=[1,2,3,4,6]` sweep) for "circuit-wide
+propagation" to occur than the baseline schedule needs. That claim only makes sense if
+the entangling structure produced at layer `ell` can still influence what happens at
+layer `ell+k` for `k>1` — i.e., if there is a single continuously evolving quantum
+state that layer `ell+1`'s CNOTs act on top of, carrying forward whatever
+correlations layer `ell` already produced. Under the self-contained/reset-per-block
+reading confirmed in §4 (every block re-initialized fresh from `|0...0>`, per
+`qnn_snr/gradients.py` `forward_pass_exact` — see §1), there is no such carryover:
+block `ell+1`'s entangling layer acts on a fresh all-zero state, not on block `ell`'s
+output state, so "requires multiple layers to propagate" cannot describe what this
+implementation actually does — each block's entangling layer either spans the
+register on its own or it doesn't, independent of `d`, and nothing about that changes
+as `depths` increases.
+
+**This looks like underspecification in the source paper, not a misreading.** The
+entangling-schedule prose in Section 5.2.2 reads as though it was written with the
+standard continuous-multi-layer-circuit picture in mind — the same picture Section
+4's "depth sweep" language invites, per `ASSUMPTIONS.md` A15b's own opening paragraph
+— without full reconciliation with the residual/self-contained-block formalism
+introduced in Sections 5–6 that §4 above confirms the codebase correctly implements.
+The paper's own internal consistency between these two descriptions is not something
+this codebase's implementation choice can fix by being read more carefully; it is a
+property of the source text, and adjudicating which of the two passages should yield
+is a question for the paper's authors, not an implementation question. This section
+documents the tension rather than resolving it.
+
+**What this does *not* affect.** Section 6's gradient formula — the load-bearing
+argument in §4 — makes no reference to entangling-layer propagation at all; it is a
+statement about how `theta^(ell)` enters the cost through `z^(ell)`, orthogonal to
+whether the entangling gates *within* a block's own layer produce register-wide
+correlations. The self-contained-block architecture and its gradient formula stand
+regardless of how this tension is eventually resolved by the paper's authors.
+
+**Practical check and takeaway**: see `verification/depth_entanglement_by_depth_check.md`
+for a cheap, concrete data check of whether this tension is visible in the actual
+confirmatory run's entanglement diagnostics, and for the practical bottom line for
+H1–H4 validity and for how the companion paper's discussion section should describe
+this mechanism.
