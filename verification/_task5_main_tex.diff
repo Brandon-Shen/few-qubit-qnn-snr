@@ -1,0 +1,685 @@
+--- main.tex.bak_pre_task5_20260730	2026-07-30 00:47:17.107103600 -0700
++++ main.tex	2026-07-30 00:54:09.497395100 -0700
+@@ -71,8 +71,10 @@
+ $p_{\mathrm{Holm}}=0.013$) and at the end-to-end estimator-SNR level
+ ($\beta_{EL}=0.025$, $p_{\mathrm{Holm}}=0.002$), opposite to the companion
+ review's one directional expectation. The achieved end-to-end bootstrap for
+-H2 completed 40 iterations and did not independently corroborate the
+-Wald/Holm rejection. The $E\times R$ estimate is close to zero and provides
++H2 reached $n=443$ iterations and did not independently corroborate the
++Wald/Holm rejection; this pattern held stably as iterations increased from
++an initial $n=40$ diagnostic, rather than resolving with more resampling.
++The $E\times R$ estimate is close to zero and provides
+ no evidence of an interaction ($\beta_{ER}=-0.001$,
+ $p_{\mathrm{Holm}}=0.90$); equivalence was not tested. The
+ block-count-moderated $L\times R$ interaction is not rejected
+@@ -585,10 +587,17 @@
+ model uses the full prespecified $D$ sweep. A separate $D\ge3$ fit reports the
+ same residual-related coefficients as a post-run sensitivity analysis.
+ 
+-% REQUIRED SOFTWARE REPORTING BEFORE SUBMISSION (data not present in this source):
+-% Add language and package versions, optimizer, ML versus REML choice,
+-% convergence tolerances, singular-fit policy, random-seed generation and
+-% matching procedure, operating environment, and immutable code release.
++All mixed-effects models are fit in Python 3.12.10 with statsmodels
++0.14.6, REML, and an L-BFGS-first optimizer fallback order (BFGS, CG,
++Powell, Nelder--Mead attempted only if L-BFGS fails to converge); no
++custom convergence tolerances are set beyond each optimizer's library
++default. A fit is flagged singular if either variance component is within
++$10^{-8}$ of zero. Every confirmatory and sensitivity fit in this paper
++converged and none was singular; an independent BFGS refit of the adopted
++H2--H4 model agrees with the default L-BFGS fit to 8--9 significant figures
++(Section~\ref{sec:results-robustness}). Full package versions, random-seed
++derivation, and bootstrap sharding are reported in the Software
++Availability and Reproducibility Information section below.
+ 
+ \subsection{Inference and multiplicity}
+ 
+@@ -686,12 +695,102 @@
+ specific configurations rather than missing completely at random, inference
+ is conditional on this exclusion rule.
+ 
+-% DATA-DEPENDENT ROBUSTNESS CHECK REQUIRED BEFORE PROFESSIONAL-JOURNAL SUBMISSION:
+-% (1) refit H2--H4 after excluding all D=1 observations;
+-% (2) tabulate zero-variance exclusions by E, L, R, D, and B; and
+-% (3) report the change in beta_EL, beta_ER, and beta_LRD.
+-% The numerical outputs needed for this check were not present in the supplied
+-% LaTeX source, so no result has been invented here.
++\subsection{Zero-variance exclusion and block-count sensitivity}
++\label{sec:zero-variance-sensitivity}
++
++Two post-run robustness checks address the zero-variance exclusion rule
++introduced in Section~\ref{sec:results-calibration}: a $D=1$-exclusion
++refit of the H2--H4 model, and a full tabulation of where zero-variance
++exclusions occur. Both are post-run, data-dependent checks, not part of
++the prespecified confirmatory family, and neither replaces the full-sweep
++confirmatory H2--H4 model or the existing $D\ge3$ active-residual
++sensitivity fit (Section~\ref{sec:residual-arch}), which is a distinct,
++more aggressive exclusion (it additionally drops $D=2$).
++
++\textbf{$D=1$-exclusion sensitivity.} Refitting H2--H4 on
++$D\in\{2,3,4,6\}$ (excluding $D=1$ entirely, end-to-end mode, identical
++formula, coding, and $\widetilde D$ scaling to the full-sweep fit) gives:
++
++\begin{itemize}
++  \item $\beta_{EL}$: $0.024996\to0.032354$ (SE $0.007279\to0.007087$,
++    $p=0.000595\to4.99\times10^{-6}$), a shift of $+1.011$ original-standard-error
++    units. The sign agrees and the Wald confidence intervals overlap
++    extensively ($[0.010729,0.039263]$ vs.\ $[0.018464,0.046244]$).
++  \item $\beta_{ER}$: $-0.000958\to-0.000941$, a shift of $+0.002$
++    original-SE units---sign agrees, intervals overlap almost completely.
++  \item $\beta_{LRd}$: $-0.010179\to-0.009847$, a shift of $+0.062$
++    original-SE units---sign agrees, intervals overlap extensively.
++\end{itemize}
++
++$\beta_{ER}$ and $\beta_{LRd}$ show little sensitivity to excluding $D=1$.
++$\beta_{EL}$'s movement is flagged rather than dismissed: the estimate
++remains positive and becomes \emph{more} statistically separated from zero
++after removing $D=1$ (not less), which is inconsistent with $D=1$ alone
++generating the positive interaction---if $D=1$ were driving a spurious
++super-additive signal, removing it would be expected to shrink the estimate
++toward zero or widen its interval, not sharpen it. This pattern does not,
++however, explain \emph{why} the point estimate itself moves by
++approximately one original standard error under this specific exclusion; it
++is reported as a sensitivity of the estimated magnitude and precision to
++the depth range analyzed, not as proof that the movement is scientifically
++inconsequential.
++
++\textbf{Zero-variance exclusion audit.} Tabulating every pointwise cell
++excluded for exactly zero estimated replicate variance (the rule
++introduced in Section~\ref{sec:results-calibration}; no epsilon was added,
++and no excluded cell was imputed or regularized) reveals a pattern more
++extensive than a block-count-1 effect alone: \textbf{zero-variance
++exclusion is exactly confined to $L=0$} cells, in both the end-to-end and
++conditional estimator modes, across the complete depth and budget design.
++None of the 102,400 $L=1$ cells in either mode is ever excluded; all 1,833
++excluded cells (509 end-to-end, 1,324 conditional) come from the 102,400
++$L=0$ cells in each mode. The exclusion rate is highest at $D=1$ in
++end-to-end mode ($2.58\%$) but is not a $D=1$-specific phenomenon: it
++persists at every deeper block count ($D=2$ through $D=6$, approximately
++$0.27\%$--$0.66\%$), always confined to $L=0$.
++
++This is stated plainly because $L$ is one of the two factors in the paper's
++headline $E\times L$ interaction: the confirmatory estimator-SNR analysis
++is therefore conditional on an eligibility/exclusion process that is
++perfectly associated with cost type, not merely more common at low block
++count. The analysis documents this selection pattern but does not
++establish its physical or computational mechanism---no forced explanation
++is offered, and no claim is made that $L=1$ is a "better" condition merely
++because it produced no exactly-zero replicate-variance cells. An
++exploratory logistic model, $\text{zero-variance excluded}\sim E*L*R+\log_2(B)$,
++was attempted at $D=1$ and exhibited complete quasi-separation on $L$ (a
++mechanical consequence of $L=1$ contributing zero events in every stratum);
++no coefficient from that model is reported, and the descriptive tabulation
++above is presented as the defensible result instead.
++
++Figure~\ref{fig:d1-sensitivity} shows the full-sweep and $D\neq1$ Wald
++intervals for all three H2--H4 coefficients; Figure~\ref{fig:zero-variance-heatmap}
++shows the end-to-end, $D=1$ exclusion-rate heatmap by configuration and
++budget, the stratum in which the pattern above is most visible.
++
++\begin{figure}[t]
++\centering
++\includegraphics[width=\columnwidth]{figures/fig6_d1_exclusion_sensitivity.pdf}
++\caption{Adopted full-sweep ($D\in\{1,2,3,4,6\}$) and $D\neq1$-sensitivity
++($D\in\{2,3,4,6\}$) H2--H4 estimates with 95\% Wald confidence intervals.
++The $D\neq1$ model is a sensitivity analysis, not a replacement for the
++full-sweep confirmatory model; $\beta_{EL}$ moves further from zero and
++$\beta_{ER}$/$\beta_{LRd}$ are comparatively stable under this exclusion.}
++\label{fig:d1-sensitivity}
++\end{figure}
++
++\begin{figure}[t]
++\centering
++\includegraphics[width=\columnwidth]{figures/fig7_zero_variance_exclusion_rates.pdf}
++\caption{End-to-end, $D=1$ zero-variance exclusion percentage by
++configuration and shot budget $B$, with raw excluded/total counts
++annotated. This is a descriptive exclusion-rate tabulation, not a measure
++of gradient magnitude or estimator SNR; every nonzero cell in this figure
++has $L=0$, and every $L=1$ configuration (3, 5, 7, 8) shows exactly $0\%$
++at every budget. The pattern is descriptive of the selection process
++underlying the confirmatory model, not a causal claim about its mechanism.}
++\label{fig:zero-variance-heatmap}
++\end{figure}
+ 
+ \subsection{\texorpdfstring{H1---exact-signal $E\times L$ interaction ($\eta_{EL}$)}{H1---exact-signal E x L interaction}}
+ 
+@@ -729,14 +828,23 @@
+ and $0.0250$ for end-to-end mode, with overlapping Wald confidence intervals;
+ thus, this two-way coefficient is comparatively insensitive to the mode split.
+ 
+-The adopted end-to-end nested bootstrap completed $n=40$ iterations and gave
+-a median of $0.0224$ with percentile interval $[-0.00088,0.04728]$, which
+-includes zero. At this iteration count, percentile endpoints have limited
+-resolution, so the interval is treated as a low-iteration diagnostic that
+-does not independently corroborate the Wald/Holm rejection. Earlier
+-$n=8$, $n=100$, and $n=400$ bootstrap runs used pooled-mode data and are
+-retained only as superseded implementation history in
+-Appendix~\ref{app:verification}.
++The adopted end-to-end nested bootstrap was extended from an initial
++$n=40$ to a final $n=443$ completed iterations (0 failed fits), exceeding
++the required minimum of 400 and falling short of the preferred target of
++1000 achieved under a documented resource ceiling. The final percentile
++interval is $[-0.018024,0.065688]$ (median $0.023685$), which includes
++zero. The prespecified Wald/Holm rejection remains the confirmatory
++decision. The bootstrap does not independently corroborate H2, and this is
++no longer attributed to low iteration count or coarse endpoint resolution:
++across the roughly tenfold increase from $n=40$ to $n=443$, the interval
++did not narrow or move away from zero, and its width increased slightly
++(from $0.068$ to $0.084$). H2 is therefore supported by the prespecified
++Wald/Holm procedure and is stable in sign across the reported sensitivity
++analyses, but is not corroborated by the nested percentile bootstrap.
++Earlier $n=8$, $n=100$, and $n=400$ bootstrap runs used pooled-mode data
++and are retained only as superseded implementation history in
++Appendix~\ref{app:verification}; the achieved end-to-end-only extension is
++documented in full in Appendix~\ref{app:verification}, item A.18.
+ 
+ 
+ \begin{figure*}[t]
+@@ -757,7 +865,11 @@
+ $p_{\mathrm{Holm}}=0.896$: \textbf{not rejected}. The estimate is close to
+ zero, and the confirmatory analysis provides no evidence of an $E\times R$
+ interaction. This is not evidence of equivalence; no smallest effect of
+-interest or equivalence test was prespecified. The $D\ge3$ sensitivity fit
++interest or equivalence test was prespecified. The final $n=443$ end-to-end
++bootstrap gives a percentile interval $[-0.030298,0.024478]$ (median
++$-0.001868$), consistent with the Wald/Holm non-rejection and the broader
++clean-null pattern for this coefficient; inclusion of zero is reported
++alongside, not in place of, the non-rejection decision. The $D\ge3$ sensitivity fit
+ (block counts $3,4,6$ only, where $R$ can structurally matter---see
+ Section~\ref{sec:residual-arch}) gives $-0.002128$ (SE $0.007004$,
+ $p=0.761$), with extensive overlap between the confirmatory and sensitivity
+@@ -793,12 +905,20 @@
+     is consistent with the pooled estimate's near-zero value reflecting
+     partial cancellation between two effects moving in different directions
+     under pooling, not a genuinely near-zero effect in either mode alone.
+-  \item \textbf{Bootstrap}: the end-to-end-only run completed $n=40$
+-    iterations, below the targeted scale. Its percentile interval,
+-    $[-0.02177,0.00666]$, includes zero. Because the endpoint resolution is
+-    limited at this iteration count, the result is treated as an
+-    inconclusive diagnostic rather than as corroboration or contradiction of
+-    the Wald estimate.
++  \item \textbf{Bootstrap}: the end-to-end-only run was extended to a final
++    $n=443$ iterations (0 failed fits), well beyond the $n=40$ initial
++    diagnostic. The final percentile interval, $[-0.026975,0.006403]$
++    (median $-0.010811$), still includes zero. This interval's shape
++    stabilized earlier, across checkpoints, than the other two
++    coefficients', but interval-shape stability is not the same as
++    resolving the underlying near-boundary Wald result: the interval still
++    straddles zero, so the extended bootstrap neither corroborates nor
++    contradicts the Wald test's near-miss, consistent with every smaller
++    $n$ reported for this coefficient. H4 remains genuinely inconclusive
++    and fragile across depth range, estimator mode, and
++    leave-one-initialization-out perturbation
++    (Section~\ref{sec:results-robustness}) rather than a result awaiting
++    simple confirmation from additional bootstrap iterations.
+ \end{itemize}
+ 
+ \begin{figure*}[t]
+@@ -954,10 +1074,88 @@
+ intervals with the achieved bootstrap diagnostics. Appendix~\ref{app:verification}
+ documents gradient validation (A.1), block semantics (A.2), the residual
+ activation boundary (A.7), the entanglement-diagnostic correction (A.8),
+-computational checks (A.9), and the discovery and correction of inadvertent
+-mode pooling in the confirmatory fitting path (A.10--A.14). The correction
+-materially changed H4's estimate and interpretation while leaving the
+-family-level rejection pattern unchanged.
++computational checks (A.9), the discovery and correction of inadvertent
++mode pooling in the confirmatory fitting path (A.10--A.14), the
++$D=1$/zero-variance checks of Section~\ref{sec:zero-variance-sensitivity}
++(A.15--A.16), and the model-health and bootstrap-extension checks reported
++next (A.17--A.19). The mode-pooling correction materially changed H4's
++estimate and interpretation while leaving the family-level rejection
++pattern unchanged.
++
++\textbf{Model convergence and optimizer agreement.} The adopted end-to-end
++full-sweep H2--H4 fit converges (\texttt{singular\_fit=False}; neither the
++group-intercept nor the nested-parameter variance component is within
++$10^{-8}$ of zero) and emits one pre-existing convergence warning (the MLE
++sits near, not strictly on, a parameter-space boundary), unchanged from
++every other fit in this study that uses the same formula. Refitting with an
++independent optimizer (BFGS in place of the default L-BFGS, identical
++formula, data, coding, and likelihood) reproduces $\beta_{EL}$, $\beta_{ER}$,
++and $\beta_{LRd}$ to 8--9 significant figures and the log-likelihood and
++random-effect variances to approximately five significant figures---no
++meaningful optimizer sensitivity.
++
++\textbf{Residual diagnostics.} The adopted fit shows systematic, not
++merely incidental, heteroscedasticity: residual standard deviation falls
++from approximately $0.659$ at $D=1$ to $0.276$ at $D=6$, and rises from
++approximately $0.301$ at $B=250$ to $0.513$ at $B=2000$---opposite
++directions, both monotonic. Standardized residuals are moderately
++heavy-tailed (approximately $1.14\%$ exceed absolute value 3, roughly four
++times the normal-theory expectation). These diagnostics are a real caveat
++on model-based Wald standard errors, which assume homogeneous residual
++variance: the reported SEs may be mildly optimistic in low-block-count or
++high-budget regions specifically. They are not grounds for discarding the
++fit, which converges cleanly, is non-singular, and is optimizer-independent
++as above; no heteroscedasticity-robust mixed-model refinement was added
++post hoc.
++
++\textbf{Leave-one-initialization-out influence.} Refitting the adopted
++model 50 times, each time excluding one complete initialization (all 50
++converged, zero failures), finds no sign reversal for $\beta_{EL}$ or
++$\beta_{LRd}$ under any single deletion, and $\beta_{EL}$ remains
++$p<0.05$ (raw) in all 50 deletions---H2's rejection is not attributable to
++any one initialization. The largest single deletion (initialization 1)
++shifts $\beta_{EL}$ by $1.131$ original-standard-error units; this magnitude
++shift is flagged, not dismissed---$\beta_{EL}$'s sign and rejection
++direction are stable across every deletion, while its point estimate is
++more sensitive to individual initializations than the other two
++coefficients. $\beta_{ER}$ shows 16 of 50 sign flips but is never near
++significance in either direction, consistent with a coefficient centered
++near zero. $\beta_{LRd}$ shows 18 of 50 (36\%) raw-$p$ crossings of $0.05$
++relative to its already-borderline full-data value---the most fragile of
++the three coefficients by this diagnostic, and a fourth independent line of
++evidence (alongside depth range, estimator mode, and the extended
++bootstrap) that H4's near-boundary character is not a robust feature of
++the data. Figure~\ref{fig:residual-diagnostics} shows the residual and
++convergence diagnostics; Figure~\ref{fig:initialization-influence} shows
++all 50 leave-one-initialization-out estimates against the full-data
++reference for all three coefficients.
++
++\begin{figure}[t]
++\centering
++\includegraphics[width=\columnwidth]{figures/fig8_model_residual_diagnostics.pdf}
++\caption{Adopted H2--H4 fit diagnostics: residual-versus-fitted (a), normal
++Q--Q (b), residual standard deviation by block count (c), and by
++configuration (d). Residual spread falls with block count and rises with
++shot budget (not shown in the same panel scale; reported in text), and the
++Q--Q plot shows mild positive-tail heaviness relative to a normal
++reference. These are reported as caveats on Wald standard errors, not as
++evidence against the fit, which converges, is non-singular, and is
++optimizer-independent (main text).}
++\label{fig:residual-diagnostics}
++\end{figure}
++
++\begin{figure}[t]
++\centering
++\includegraphics[width=\columnwidth]{figures/fig9_initialization_influence.pdf}
++\caption{Leave-one-initialization-out estimates (sorted, $n=50$ deletions)
++for $\beta_{EL}$, $\beta_{ER}$, and $\beta_{LRd}$, against the full-data
++reference (dashed). $\beta_{EL}$ never crosses zero and remains
++raw-$p<0.05$ in every deletion; $\beta_{ER}$ straddles zero symmetrically,
++consistent with a clean null; $\beta_{LRd}$ remains entirely negative but
++shows the widest relative spread of the three, consistent with its
++near-boundary fragility.}
++\label{fig:initialization-influence}
++\end{figure}
+ 
+ \begin{table*}[t]
+ \centering
+@@ -971,18 +1169,24 @@
+ H1 & $\eta_{EL}$ & $0.00435$ & $0.00153$ & $0.0045$ & $0.0134$ &
+ $[0.00081,0.00803]$ (400) & Reject & Yes \\
+ H2 & $\beta_{EL}$ & $0.02500$ & $0.00728$ & $0.0006$ & $0.0024$ &
+-$[-0.00088,0.04728]$ (40) & Reject & Not established \\
++$[-0.01802,0.06569]$ (443) & Reject & No \\
+ H3 & $\beta_{ER}$ & $-0.00096$ & $0.00729$ & $0.896$ & $0.896$ &
+-$[-0.02408,0.02307]$ (40) & Not rejected & Not applicable \\
++$[-0.03030,0.02448]$ (443) & Not rejected & Not applicable$^\dagger$ \\
+ H4 & $\beta_{LRD}$ & $-0.01018$ & $0.00536$ & $0.0577$ & $0.115$ &
+-$[-0.02177,0.00666]$ (40) & Not rejected & Not applicable \\
++$[-0.02698,0.00640]$ (443) & Not rejected & Not applicable$^\dagger$ \\
+ \bottomrule
+ \end{tabularx}
+ \caption{Confirmatory summary for the adopted end-to-end analysis. The
+ formal decision column follows the prespecified Wald tests with Holm
+-correction. H1's $n=400$ bootstrap independently corroborates its rejection;
+-the $n=40$ H2--H4 intervals are low-iteration diagnostics with limited
+-percentile-endpoint resolution and are not given equal inferential weight.}
++correction; the bootstrap column is a diagnostic and does not replace it.
++H1's $n=400$ bootstrap independently corroborates its rejection. The
++$n=443$ H2--H4 bootstrap (extended from an initial $n=40$ diagnostic, 0
++failed fits, exceeding the required minimum of 400) does not corroborate
++H2's rejection, a pattern that held stably across the extension rather than
++narrowing with more iterations. $^\dagger$H3 and H4 have no confirmatory
++rejection to corroborate; their intervals including zero is consistent with,
++but is not proof of, their non-rejection---equivalence was not tested for
++either.}
+ \label{tab:confirmatory-summary}
+ \end{table*}
+ 
+@@ -992,12 +1196,31 @@
+ \caption{Prespecified Wald 95\% confidence intervals (solid, circles)
+ and achieved bootstrap percentile diagnostics (dashed, squares), with
+ Holm-adjusted $p$-values. H1 used $n=400$ bootstrap iterations. The adopted
+-end-to-end H2--H4 reruns completed $n=40$ and are shown to disclose the
+-resampling result, but their percentile endpoints have limited resolution
+-and are not treated as equally stable confidence intervals.}
++end-to-end H2--H4 reruns reached a final $n=443$ (extended from an initial
++$n=40$ diagnostic). H2's Wald interval excludes zero while its percentile
++bootstrap interval includes zero; this difference is reported rather than
++resolved by selecting one method, and the prespecified Wald/Holm decision
++remains the confirmatory one. Figure~\ref{fig:bootstrap-stability} shows
++how these intervals evolved across the extension.}
+ \label{fig:confirmatory-forest}
+ \end{figure}
+ 
++\begin{figure}[t]
++\centering
++\includegraphics[width=\columnwidth]{figures/fig10_bootstrap_endpoint_stability.pdf}
++\caption{Lower endpoint, median, and upper endpoint of the H2--H4
++percentile bootstrap intervals at each completed-iteration checkpoint
++($n=40,100,200,400,443$), from the same extension summarized in
++Table~\ref{tab:confirmatory-summary}. $\beta_{EL}$'s interval continued to
++include zero throughout and did not narrow or move away from zero as
++iterations increased; $\beta_{LRd}$'s interval also continued to straddle
++zero. Each checkpoint is a snapshot of the same accumulating resampling
++distribution, not an independent hypothesis test, and no convergence claim
++beyond what these machine-readable checkpoints show is inferred from visual
++inspection alone.}
++\label{fig:bootstrap-stability}
++\end{figure}
++
+ 
+ 
+ % ============================================================
+@@ -1025,17 +1248,20 @@
+ Wald/Holm procedure and two are not. H1 and H2 have the same positive
+ direction, providing model-based evidence of a super-additive $E\times L$
+ interaction in both exact-gradient magnitude and end-to-end estimator SNR.
+-The achieved end-to-end bootstrap did not independently corroborate H2, so
+-the finite-shot result should be read as Wald/Holm-supported rather than as
+-confirmed by two inferential procedures. On the secondary multiplicative
++The achieved $n=443$ end-to-end bootstrap did not independently corroborate
++H2, stably rather than as an artifact of too few iterations, so
++the finite-shot result should be read as Wald/Holm-supported and sign-stable
++across sensitivity analyses rather than as confirmed by two inferential
++procedures. On the secondary multiplicative
+ indices, the interaction corresponds to a 24.2\% shift in RMS exact-gradient
+ magnitude ($J_{EL}=1.242$) and a 3.4\% shift in RMS $\snrest$
+ ($I_{EL}=1.034$): directionally consistent, but operationally modest on the
+ SNR scale (Figure~\ref{fig:el-primary}). H3 yields an estimate close to zero
+ and no evidence of an $E\times R$ interaction, although equivalence was not
+ tested. H4 is not rejected, and its proximity to the unadjusted threshold is
+-fragile to the analyzed depth range and estimator mode; the low-iteration
+-bootstrap remains inconclusive.
++fragile to the analyzed depth range, estimator mode, and
++leave-one-initialization-out perturbation; the $n=443$ bootstrap remains
++genuinely inconclusive rather than a result awaiting more resampling.
+ 
+ \subsection{Comparison with the prespecified mechanistic prior}
+ 
+@@ -1126,17 +1352,40 @@
+ variational circuits with a single continuously evolving state. The
+ $D\ge3$ sensitivity analysis for H3/H4 is a post-run addition that does not
+ redefine the confirmatory population, even where it materially changes the
+-interpretation of a near-boundary result (H4). Block-count-1 estimates carry wider uncertainty than deeper block counts,
+-since the replicate-count calibration criterion did not converge there even
+-at a substantially raised ceiling; moreover, excluding zero-variance cells
+-could induce selection if those cells are configuration-dependent. A
+-professional-journal submission should therefore include the planned
+-$D=1$-exclusion and exclusion-rate sensitivity checks. The adopted
+-end-to-end H2--H4 bootstrap completed only $n=40$ iterations, far below the
+-targeted $2000$. Earlier $n=100$ and $n=400$ runs used pooled-mode data and
+-are superseded. The adopted bootstrap therefore does not independently
+-corroborate H2 and is inconclusive for H4; it should not be interpreted as a
+-stable characterization of either resampling distribution.
++interpretation of a near-boundary result (H4). Block-count-1 estimates
++carry wider uncertainty than deeper block counts, since the
++replicate-count calibration criterion did not converge there even at a
++substantially raised ceiling. The planned $D=1$-exclusion and
++exclusion-rate sensitivity checks (Section~\ref{sec:zero-variance-sensitivity})
++have since been completed, and the zero-variance selection concern they
++were meant to address turned out to be more serious than initially
++anticipated: exclusion is not merely concentrated at $D=1$, it is exactly
++confined to $L=0$ across the entire design, in both estimator modes. $L$ is
++one of the two factors in the paper's headline $E\times L$ interaction, so
++the confirmatory estimator-SNR model is conditional on an eligibility
++process perfectly associated with cost type. This does not establish that
++$\beta_{EL}$ is biased by it---the $D=1$-exclusion refit moves $\beta_{EL}$
++\emph{away} from, not toward, zero, the opposite of what a spurious,
++exclusion-driven signal would be expected to do---but the completed
++analysis does not rule out a subtler mechanism either, and the selection
++process's physical or computational origin remains uninvestigated.
++$\beta_{EL}$ also shifts by approximately $1.0$--$1.1$ original standard
++errors under two independent perturbations (excluding $D=1$; deleting the
++single most influential initialization), a magnitude worth carrying
++forward as an open precision/influence caveat even though neither
++perturbation reverses its sign or its rejection status. The adopted
++end-to-end H2--H4 bootstrap was extended from an initial $n=40$ diagnostic
++to a final $n=443$ (Section~\ref{sec:results-robustness}), exceeding the
++required minimum of 400 but short of the preferred target of 1000; at this
++achieved scale, the bootstrap does not independently corroborate H2 and
++remains inconclusive for H4, a pattern that held stably across the
++extension rather than resolving with more iterations. Residual diagnostics
++on the adopted fit also show real heteroscedasticity by block count and
++budget and moderately heavy tails (Section~\ref{sec:results-robustness}),
++meaning the model-based Wald standard errors rest on an imperfect
++homogeneous-residual approximation; no heteroscedasticity-robust or other
++variance-modeling refinement was undertaken. Finally, every result here is
++from noiseless simulation; no hardware-noise experiment was performed.
+ 
+ An important procedural limitation arose during the post-run audit. A post-run audit found that the originally reported
+ confirmatory H2--H4 numbers had silently pooled two estimator modes this
+@@ -1196,11 +1445,19 @@
+ analysis detects a positive $E\times L$ interaction in both exact-gradient
+ magnitude and end-to-end estimator SNR, opposite to the companion review's
+ one directional expectation. The corresponding SNR effect is modest on the
+-secondary multiplicative scale, and the achieved $n=40$ end-to-end bootstrap
+-does not independently corroborate H2. No evidence of an $E\times R$
++secondary multiplicative scale, and the achieved $n=443$ end-to-end bootstrap
++does not independently corroborate H2, stably across a roughly tenfold
++extension rather than as a consequence of too few iterations---H2 is
++therefore Wald/Holm-supported and sign-stable across sensitivity checks,
++not confirmed by two independent methods. No evidence of an $E\times R$
+ interaction is detected, although equivalence is not established, and the
+-non-rejected $L\times R\times D$ result is fragile to depth range and estimator
+-mode. The post-run correction of inadvertent mode pooling reinforces the
++non-rejected $L\times R\times D$ result is fragile to depth range, estimator
++mode, and leave-one-initialization-out perturbation. A post-run audit also
++found that zero-variance exclusion, initially suspected to concentrate at
++low block count, is instead exactly confined to the local-cost ($L=0$)
++arm of the design across every block count and both estimator modes---an
++unresolved selection concern reported alongside, not folded into, the
++$E\times L$ finding. The post-run correction of inadvertent mode pooling reinforces the
+ need for explicit implementation safeguards when operational finite-shot
+ diagnostics are used. Within its limited four-qubit, single-task, noiseless
+ scope, the study supports factorial interaction analysis as a useful way to
+@@ -1225,17 +1482,64 @@
+ 
+ 
+ \section*{Data Availability}
+-The analysis tables, matched-seed manifest, and figure-source data should be
+-archived in a public, versioned repository before submission. Replace this
+-sentence with the permanent repository DOI or URL:
++The repository includes the raw per-replicate simulation tables
++(\texttt{results/raw/\{exact,finite\_shot\_end\_to\_end,finite\_shot\_conditional\}.parquet}),
++the aggregated pointwise gradient/SNR statistics
++(\texttt{results/pointwise\_gradient\_statistics.parquet}), all confirmatory
++and sensitivity coefficient tables (including the D=1-exclusion, zero-variance
++audit, model-diagnostic, leave-one-initialization-out, and extended-bootstrap
++outputs described in Appendix~\ref{app:verification}, items A.15--A.18), the
++matched-seed manifest for the extended bootstrap
++(\texttt{results/bootstrap\_end\_to\_end\_h2\_h4\_seed\_manifest.csv}), and the
++figure-source data underlying every figure in this paper. SHA-256 hashes of
++the frozen input datasets are recorded in
++\texttt{verification/qmi\_qip\_analysis\_inputs.md} and
++\texttt{verification/qmi\_qip\_robustness\_package.md}. The repository is
++currently private; a public, versioned archive with a permanent DOI or URL
++will be created before submission:
+ \texttt{[add data repository DOI/URL before submission]}.
+ 
+ \section*{Code Availability}
+-The simulation, mixed-model, bootstrap, figure-generation, and regression-test
+-code should be archived with an immutable release before submission. Replace
+-this sentence with the permanent repository DOI or URL:
++The repository includes the quantum-simulation and gradient-assembly code,
++the mixed-model fitting and Holm-correction code, the production and
++low-memory-redesign nested-bootstrap implementations, all figure-generation
++scripts (including those for Figures~\ref{fig:d1-sensitivity}--\ref{fig:bootstrap-stability}),
++and the regression-test suite (140 tests at the time of writing, including
++the eight tests added for the checks in Appendix~\ref{app:verification}
++items A.15--A.19). No component was regenerated or modified in a way that
++altered the adopted confirmatory coefficients; this is verified directly by
++a dedicated regression test (Appendix~\ref{app:verification}, A.19). The
++repository is currently private; an immutable, citable release with a
++permanent DOI or URL will be created before submission:
+ \texttt{[add code repository DOI/URL before submission]}.
+ 
++\section*{Software Availability and Reproducibility Information}
++Analyses were run with Python 3.12.10, pandas 3.0.3, numpy 2.5.1,
++statsmodels 0.14.6, scipy 1.18.0, and matplotlib 3.11.0. Mixed-effects
++models use REML and an L-BFGS-first optimizer fallback (Methods); an
++independent BFGS refit of the adopted H2--H4 model reproduced every target
++coefficient to 8--9 significant figures (Section~\ref{sec:results-robustness}).
++A fit is flagged singular if either variance component is within $10^{-8}$
++of zero; every confirmatory and sensitivity fit in this paper converged and
++none was singular, though several (including the adopted fit) emitted a
++non-blocking convergence warning indicating the MLE sits near a
++parameter-space boundary, a documented pre-existing property of this
++model/data combination. Random seeds throughout the pipeline are derived
++deterministically from a root seed, a named stream, and integer/string ids
++via SHA-256 (\texttt{qnn\_snr.seeds.derive\_seed}), so any specific cell's
++numbers can be reproduced independently given the same root seed and
++config. The extended bootstrap (Appendix~\ref{app:verification}, A.18) used
++four non-overlapping seed streams (266001 and $366001+10{,}000k$ for shard
++$k\in\{0,1,2\}$), each mapping to a per-iteration RNG key of
++\texttt{(seed, iteration)}; overlap across streams was verified
++computationally, not merely asserted, both in a dedicated regression test
++and against the real checkpoint files. The raw finite-shot simulation data
++carries an embedded git commit
++(\texttt{cbbeafa853b0e87e153a783296fed1f9c750681a}) confirming it was not
++regenerated by any of the analyses in
++Appendix~\ref{app:verification}, items A.15--A.19, which were all run
++against a later commit of the analysis code only.
++
+ \printbibliography
+ 
+ \appendix
+@@ -1430,13 +1734,16 @@
+ the full sweep, with extensive CI overlap; notably, $\beta_{LRD}$'s
+ near-boundary character does \emph{not} survive restricting to $D\ge3$
+ (shrinking to $p=0.443$), indicating that the full-sweep estimate depends on
+-the low-block-count portion of the design. The adopted end-to-end bootstrap
+-completed $n=40$ iterations, below the targeted scale. H2's percentile
+-interval includes zero, and $\beta_{LRD}$'s interval also spans zero. Because
+-40 iterations provide limited percentile-endpoint resolution, both are
+-reported as low-iteration diagnostics. Larger bootstrap runs described in
+-A.5--A.6 used pooled-mode data and are superseded rather than used to claim
+-stability for the adopted end-to-end estimand.
++the low-block-count portion of the design. At the time of this item, the
++adopted end-to-end bootstrap had completed $n=40$ iterations, below the
++targeted scale; H2's percentile interval included zero, and
++$\beta_{LRD}$'s interval also spanned zero, and both were reported as
++low-iteration diagnostics given the limited percentile-endpoint resolution
++at that count. Larger bootstrap runs described in A.5--A.6 used pooled-mode
++data and are superseded rather than used to claim stability for the
++adopted end-to-end estimand. \textbf{This $n=40$ run was subsequently
++extended to a final $n=443$; it is not the final achieved result for the
++adopted end-to-end bootstrap---see item A.18.}
+ 
+ \medskip
+ \noindent\textbf{A.14---Exploratory quantities, end-to-end-only.} The
+@@ -1456,4 +1763,109 @@
+ all, confirmed directly rather than assumed, by comparing the old and new
+ tables cell-by-cell and finding them numerically identical.
+ 
++\medskip
++\noindent\textbf{A.15---$D=1$-exclusion sensitivity refit.} Post-run,
++data-dependent check (Section~\ref{sec:zero-variance-sensitivity}), not
++part of the prespecified confirmatory family. Input:
++\texttt{results/pointwise\_gradient\_statistics.parquet}, filtered to
++\texttt{finite\_shot\_end\_to\_end} and $D\neq1$; identical formula, coding,
++and $\widetilde D$ scaling to the full-sweep confirmatory fit (no
++re-centering on the subset). Command:
++\texttt{verification/run\_d1\_exclusion\_sensitivity.py}. Core result:
++$\beta_{EL}$ moves from $0.024996$ to $0.032354$ ($+1.011$ original-SE
++units, same sign, more significant); $\beta_{ER}$ and $\beta_{LRd}$ move by
++$+0.002$ and $+0.062$ original-SE units respectively. Does not change any
++confirmatory decision; does not establish why $\beta_{EL}$'s point estimate
++moves by approximately one original SE under this exclusion---reported as
++an open precision caveat (Section~\ref{sec:zero-variance-sensitivity},
++Section~\ref{sec:results-robustness}). Full record:
++\texttt{verification/d1\_exclusion\_sensitivity.md}.
++
++\medskip
++\noindent\textbf{A.16---Zero-variance exclusion audit.} Post-run,
++data-dependent check. Input: the production \texttt{zero\_variance\_flag}
++column in \texttt{results/pointwise\_gradient\_statistics.parquet} (exact
++zero across-replicate variance, no epsilon), audited directly rather than
++re-derived from any rounded output. Command:
++\texttt{verification/run\_zero\_variance\_audit.py}. Core result: exclusion
++is exactly confined to $L=0$ in both estimator modes across the complete
++depth/budget design (0 of 102,400 $L=1$ cells excluded per mode); highest
++at $D=1$ end-to-end ($2.58\%$), present at every deeper block count
++($\sim0.27$--$0.66\%$). An exploratory logistic model
++($\text{excluded}\sim E*L*R+\log_2(B)$ at $D=1$) exhibited complete
++quasi-separation on $L$ and is not reported as a fitted coefficient. Does
++not change any confirmatory decision; flagged because $L$ is one of the two
++factors in the headline $E\times L$ interaction, and the selection
++process's mechanism is not established. Full record:
++\texttt{verification/zero\_variance\_exclusion\_audit.md}.
++
++\medskip
++\noindent\textbf{A.17---Model health and leave-one-initialization-out
++diagnostics.} Post-run robustness checks on the adopted end-to-end
++full-sweep H2--H4 fit. Convergence/singularity: converges,
++\texttt{singular\_fit=False}, one pre-existing boundary-adjacent
++convergence warning (unchanged from every other fit using this formula).
++Independent optimizer check (BFGS vs.\ the default L-BFGS, identical
++formula/data/coding/likelihood): coefficients agree to 8--9 significant
++figures, log-likelihood and random-effect variances to approximately five
++figures---no optimizer sensitivity. Residual diagnostics: systematic
++heteroscedasticity by block count (residual SD $0.659\to0.276$, $D=1\to6$)
++and by budget (SD $0.301\to0.513$, $B{=}250\to2000$, opposite direction),
++and moderately heavy tails ($1.14\%$ of standardized residuals exceed
++$|3|$, roughly $4\times$ the normal expectation)---reported as a caveat on
++Wald SEs, not grounds to discard the fit. Leave-one-initialization-out (50
++refits, all converged, 0 failures): no sign reversal of $\beta_{EL}$ or
++$\beta_{LRd}$ under any single deletion; $\beta_{EL}$ stays raw-$p<0.05$ in
++all 50 deletions (H2's rejection is not attributable to one
++initialization), with its largest single-deletion shift at $1.131$
++original-SE units (initialization 1); $\beta_{ER}$ shows 16/50 sign flips,
++never near significance; $\beta_{LRd}$ shows 18/50 (36\%) raw-$p$
++crossings of $0.05$, the most fragile of the three by this diagnostic.
++Commands: \texttt{verification/run\_model\_diagnostics.py},
++\texttt{verification/run\_loo\_initialization.py}. Does not change any
++confirmatory decision. Full record:
++\texttt{verification/end\_to\_end\_model\_diagnostics.md}.
++
++\medskip
++\noindent\textbf{A.18---Extended adopted end-to-end bootstrap.} Extends
++the $n=40$ diagnostic reported in item A.13 to a final $n=443$ completed
++iterations (0 of 443 failed fits, 0.0\%), reusing the original 8-draw
++regression-check stream (seed 266001) and its two extended shards (seeds
++366001, 376001) plus one new shard (seed 386001), all end-to-end-mode
++only, with verified non-overlapping seed ranges. Checkpoints at
++$n=40,100,200,400,443$: the $\beta_{EL}$ interval neither narrowed nor
++moved away from zero across this roughly tenfold extension (width
++$0.068\to0.084$); $\beta_{ER}$'s interval stabilized in shape from $n=100$
++onward, consistent with a null; $\beta_{LRd}$'s interval was the most
++stable in shape of the three from $n=100$ onward but continued to include
++zero throughout. Final intervals: $\beta_{EL}$
++$[-0.018024,0.065688]$; $\beta_{ER}$ $[-0.030298,0.024478]$; $\beta_{LRd}$
++$[-0.026975,0.006403]$. \textbf{This final result supersedes the $n=40$
++figures reported in item A.13 for the adopted end-to-end bootstrap, without
++erasing that item's chronology.} The prespecified Wald/Holm decisions are
++unchanged by this extension. Commands:
++\texttt{verification/run\_h2h4\_bootstrap\_shard\_endtoend\_only.py},
++\texttt{verification/summarize\_bootstrap\_checkpoints.py},
++\texttt{verification/build\_bootstrap\_seed\_manifest.py}. Full record:
++\texttt{verification/bootstrap\_end\_to\_end\_extended.md}.
++
++\medskip
++\noindent\textbf{A.19---Regression-test and provenance closure.} Eight new
++regression tests were added covering: mixed-mode confirmatory input still
++raises by default; the $D\neq1$ sensitivity path preserves the original
++full-sweep block-count scaling; bootstrap shard seed ranges cannot overlap;
++resuming an interrupted bootstrap does not duplicate completed iterations
++(tested against the actual low-memory implementation used for item A.18's
++real shards); the bootstrap summary excludes failed fits but reports their
++count; the confirmatory forest-plot input uses only end-to-end bootstrap
++draws; the zero-variance audit reproduces the production eligibility count;
++and the adopted coefficients are unchanged by reporting-only code changes.
++The full test suite (140 tests) passed. The adopted coefficients
++($\beta_{EL}=0.024995843985971582$, $\beta_{ER}=-0.0009575787575784316$,
++$\beta_{LRd}=-0.010178757716721849$) were reproduced bit-for-bit from the
++frozen input files before any of items A.15--A.18 were run. No quantum
++simulation was regenerated at any point in items A.15--A.19; every check
++operates on the existing pointwise and raw replicate-level outputs. Full
++record: \texttt{verification/qmi\_qip\_robustness\_package.md}.
++
+ \end{document}
+\ No newline at end of file

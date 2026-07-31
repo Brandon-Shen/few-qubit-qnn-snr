@@ -1,0 +1,62 @@
+start RSS = 0.145 GB
+[pass_a] loaded 3072000 rows in 0.2s; RSS = 2.317 GB
+[pass_a] precomputed cell index (102400 cells) in 2.9s; RSS = 1.740 GB
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 0 done in 90.0s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 1 done in 79.7s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 2 done in 81.5s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 3 done in 96.0s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 4 done in 48.4s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 5 done in 71.7s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 6 done in 91.6s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 7 done in 86.2s
+[pass_a] run_h2h4_bootstrap_lowmem: 8/8 successful in 645.3s (80.7s/iter); RSS = 0.603 GB
+[pass_b] loaded 3072000 rows in 0.5s; RSS = 2.417 GB
+[pass_b] precomputed cell index (102400 cells) in 6.4s; RSS = 1.784 GB
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 0 done in 85.2s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 1 done in 275.6s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 2 done in 89.5s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 3 done in 133.4s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 4 done in 157.8s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 5 done in 166.7s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 6 done in 132.0s
+C:\Users\Brandon Shen\AppData\Local\Programs\Python\Python312\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.
+  warnings.warn(msg, ConvergenceWarning)
+  iteration 7 done in 130.0s
+[pass_b] run_h2h4_bootstrap_lowmem: 8/8 successful in 1170.3s (146.3s/iter); RSS = 0.628 GB
+OVERALL PEAK RSS (both passes, same process) = 2.737 GB
+
+OVERALL PASS (pass_a == pass_b, from-scratch reproducibility) = True
+  E:L: max_abs_diff=0.000e+00 allclose(1e-9,1e-6)=True
+  E:R: max_abs_diff=0.000e+00 allclose(1e-9,1e-6)=True
+  L:R:depth_z: max_abs_diff=0.000e+00 allclose(1e-9,1e-6)=True
+wrote C:\Users\Brandon Shen\Documents\few-qubit-qnn-snr\verification\h2h4_endtoend_regression_test_result.json

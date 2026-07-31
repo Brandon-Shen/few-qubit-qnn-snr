@@ -14,10 +14,12 @@ import pytest
 
 from qnn_snr.config import CONFIGURATION_TABLE
 from qnn_snr.stats.models import (
+    CONFIRMATORY_MODE,
     H1_FORMULA,
     H2_H4_FORMULA,
     build_h1_dataset,
     build_h2h4_dataset,
+    fit_h2h4_model,
     fit_mixed_model,
 )
 
@@ -142,3 +144,41 @@ def test_build_h2h4_dataset_applies_asinh_and_drops_nonfinite():
     out = build_h2h4_dataset(df)
     assert len(out) == 2
     assert np.allclose(sorted(out["y"]), sorted(np.arcsinh([1.0, 2.5])))
+
+
+def _two_mode_snr_df():
+    # Minimal frame with both modes present -- this is the shape that silently
+    # produced the pooled confirmatory fit before the guard existed.
+    return pd.DataFrame({
+        "SNR_est": [1.0, 2.0, 1.5, 2.5],
+        "analysis_mode": ["finite_shot_conditional", "finite_shot_conditional",
+                           "finite_shot_end_to_end", "finite_shot_end_to_end"],
+    })
+
+
+def test_build_h2h4_dataset_rejects_mixed_analysis_mode_by_default():
+    """Regression test for the mode-pooling bug (verification/mode_pooling_guard.md):
+    a dataframe spanning both finite_shot_conditional and finite_shot_end_to_end
+    must not silently fit as one pooled model."""
+    df = _two_mode_snr_df()
+    with pytest.raises(ValueError, match="analysis_mode"):
+        build_h2h4_dataset(df)
+
+
+def test_build_h2h4_dataset_allows_pooling_with_explicit_opt_in():
+    df = _two_mode_snr_df()
+    out = build_h2h4_dataset(df, pool_modes=True)
+    assert len(out) == 4
+
+
+def test_build_h2h4_dataset_single_mode_does_not_raise():
+    df = _two_mode_snr_df()
+    single = df[df["analysis_mode"] == CONFIRMATORY_MODE]
+    out = build_h2h4_dataset(single)
+    assert len(out) == 2
+
+
+def test_fit_h2h4_model_rejects_mixed_analysis_mode():
+    df = _two_mode_snr_df()
+    with pytest.raises(ValueError, match="analysis_mode"):
+        fit_h2h4_model(df)

@@ -1,0 +1,28 @@
+{
+  "full_sweep": {
+    "label": "full_sweep_adopted",
+    "converged": true,
+    "optimizer_used": "lbfgs",
+    "n_obs": 101891,
+    "n_groups": 50,
+    "n_vc_levels": 3200,
+    "condition_number": 118.88401608252401,
+    "singular_fit": false,
+    "group_intercept_var": 0.0011450168924117966,
+    "nested_param_var": 0.08772285108655965
+  },
+  "d_neq_1": {
+    "label": "d_neq_1_sensitivity",
+    "converged": true,
+    "optimizer_used": "lbfgs",
+    "n_obs": 95656,
+    "n_groups": 50,
+    "n_vc_levels": 3000,
+    "condition_number": 120.47057019253168,
+    "singular_fit": false,
+    "group_intercept_var": 0.0013484316628450215,
+    "nested_param_var": 0.07219250719552298
+  },
+  "full_sweep_wallclock_s": 30.82002592086792,
+  "d_neq_1_wallclock_s": 38.06084156036377
+}

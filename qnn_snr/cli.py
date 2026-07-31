@@ -33,7 +33,7 @@ from qnn_snr.stats.descriptive import configuration_summaries, physics_summary_r
 from qnn_snr.stats.exploratory import build_exploratory_table
 from qnn_snr.stats.holm import build_confirmatory_table
 from qnn_snr.stats.interactions import compute_interaction_indices
-from qnn_snr.stats.models import fit_h1_model, fit_h2h4_model, fit_sensitivity_model
+from qnn_snr.stats.models import CONFIRMATORY_MODE, fit_h1_model, fit_h2h4_model, fit_sensitivity_model
 from qnn_snr.stats.pointwise import pointwise_statistics, zero_variance_confirmatory_cells
 from qnn_snr.validate import validate_dataset
 
@@ -126,24 +126,46 @@ def cmd_aggregate(args):
 
 def cmd_fit(args):
     cfg = load_config(args.config)
+    mode = getattr(args, "mode", CONFIRMATORY_MODE)
+    is_confirmatory = mode == CONFIRMATORY_MODE
     df = _load_raw(cfg)
     exact_df = df[df["analysis_mode"] == "statevector_exact"]
     pw_path = _results_dir(cfg) / "pointwise_gradient_statistics.parquet"
-    pw = pd.read_parquet(pw_path) if pw_path.exists() else pointwise_statistics(df[df["analysis_mode"].isin(SHOT_MODES)])
+    pw_all = pd.read_parquet(pw_path) if pw_path.exists() else pointwise_statistics(df[df["analysis_mode"].isin(SHOT_MODES)])
+    pw = pw_all[pw_all["analysis_mode"] == mode]  # single-mode slice -- fit_h2h4_model refuses mixed-mode input
 
     zero_var = zero_variance_confirmatory_cells(pw)
     if len(zero_var) > 0:
-        print(f"WARNING: {len(zero_var)} confirmatory finite-shot cells have exactly zero replicate "
+        print(f"WARNING: {len(zero_var)} {mode} cells have exactly zero replicate "
               f"variance (Section 9) -- see pointwise_gradient_statistics.parquet's zero_variance_flag "
               f"column; no variance-floor policy is prespecified, so these cells are flagged but the "
               f"model still fits on the remaining finite-SNR cells.", file=sys.stderr)
 
-    h1 = fit_h1_model(exact_df)
     h2h4 = fit_h2h4_model(pw)
     fit_sensitivity_model(pw)  # sensitivity model run for completeness; not part of confirmatory outputs
 
     results_dir = _results_dir(cfg)
     results_dir.mkdir(parents=True, exist_ok=True)
+
+    if not is_confirmatory:
+        # Diagnostic-mode fit (e.g. finite_shot_conditional). Per the paper's Methods,
+        # only CONFIRMATORY_MODE is confirmatory -- this path never touches the
+        # confirmatory_hypotheses.csv/holm_adjustment.csv/snr_model_coefficients.csv
+        # files so a diagnostic run can never silently overwrite the confirmatory record.
+        print(f"NOTE: --mode={mode!r} is a diagnostic fit, not the confirmatory analysis "
+              f"(confirmatory mode is {CONFIRMATORY_MODE!r}). Writing to "
+              f"snr_model_coefficients_diagnostic_{mode}.csv only -- no confirmatory files "
+              f"touched. See verification/conditional_vs_endtoend_comparison.md.", file=sys.stderr)
+        pd.DataFrame([{"coefficient": k, "estimate": v, "se": h2h4.bse.get(k, float("nan"))}
+                      for k, v in h2h4.params.items()]).to_csv(
+            results_dir / f"snr_model_coefficients_diagnostic_{mode}.csv", index=False)
+        _append_manifest_step(cfg, f"fit-diagnostic:{mode}", h2h4_converged=h2h4.converged,
+                               n_zero_variance_cells=len(zero_var))
+        print(f"diagnostic {mode} SNR-model coefficients written to "
+              f"snr_model_coefficients_diagnostic_{mode}.csv")
+        return
+
+    h1 = fit_h1_model(exact_df)
     pd.DataFrame([{"coefficient": k, "estimate": v, "se": h1.bse.get(k, float("nan"))}
                   for k, v in h1.params.items()]).to_csv(results_dir / "exact_model_coefficients.csv", index=False)
     pd.DataFrame([{"coefficient": k, "estimate": v, "se": h2h4.bse.get(k, float("nan"))}
@@ -165,7 +187,7 @@ def cmd_bootstrap(args):
     n_iter = args.iterations or cfg.bootstrap_iterations()
     df = _load_raw(cfg)
     exact_df = df[df["analysis_mode"] == "statevector_exact"]
-    shot_df = df[df["analysis_mode"].isin(SHOT_MODES)]
+    shot_df = df[df["analysis_mode"] == CONFIRMATORY_MODE]  # confirmatory bootstrap: end-to-end mode only
     results_dir = _results_dir(cfg)
 
     h1_boot = run_h1_bootstrap(exact_df, n_iter, cfg.stats.bootstrap.seed, cfg.stats.bootstrap.min_success_fraction,
@@ -222,7 +244,7 @@ def cmd_report(args):
     interactions = compute_interaction_indices(pw, exact_df)
     interactions.to_csv(results_dir / "interaction_indices.csv", index=False)
 
-    h2h4 = fit_h2h4_model(pw)
+    h2h4 = fit_h2h4_model(pw[pw["analysis_mode"] == CONFIRMATORY_MODE])
     conf_path = results_dir / "confirmatory_hypotheses.csv"
     if conf_path.exists():
         confirmatory = pd.read_csv(conf_path)
@@ -287,7 +309,7 @@ def cmd_pilot_replicates(args):
 def cmd_pilot_initializations(args):
     cfg = load_config(args.config)
     df = _load_raw(cfg)
-    shot_df = df[df["analysis_mode"].isin(SHOT_MODES)]
+    shot_df = df[df["analysis_mode"] == CONFIRMATORY_MODE]
     pw = pointwise_statistics(shot_df, bootstrap_iterations=100)
     h2h4 = fit_h2h4_model(pw)
     out = select_initialization_count(cfg, None, h2h4)
@@ -319,7 +341,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--pointwise-bootstrap-iterations", dest="pointwise_bootstrap_iterations", type=int, default=500)
     p.set_defaults(func=cmd_aggregate)
 
-    p = sub.add_parser("fit"); add_config_arg(p); p.set_defaults(func=cmd_fit)
+    p = sub.add_parser("fit"); add_config_arg(p)
+    p.add_argument("--mode", default=CONFIRMATORY_MODE, choices=SHOT_MODES,
+                    help="analysis_mode to fit the H2-H4 model on. Default is the confirmatory "
+                         "mode (finite_shot_end_to_end); finite_shot_conditional produces a "
+                         "separate, explicitly-labeled diagnostic-only output.")
+    p.set_defaults(func=cmd_fit)
 
     p = sub.add_parser("bootstrap"); add_config_arg(p)
     p.add_argument("--iterations", type=int, default=None)

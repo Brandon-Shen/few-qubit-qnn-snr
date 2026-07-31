@@ -30,6 +30,14 @@ H1_FORMULA = "a ~ E*L*R + depth_z + E:depth_z + L:depth_z + R:depth_z"
 H2_H4_FORMULA = "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + L:R:depth_z"
 SENSITIVITY_FORMULA = H2_H4_FORMULA + " + E:L:depth_z + E:R:depth_z"
 
+# The paper's Methods designate finite_shot_end_to_end as the confirmatory
+# estimator; finite_shot_conditional is a diagnostic only (see
+# verification/conditional_vs_endtoend_comparison.md). Silently pooling both
+# into one fit was a bug (verification/mode_pooling_guard.md), not a valid
+# alternative design -- build_h2h4_dataset()/fit_h2h4_model() below refuse to
+# fit mixed-mode data unless the caller explicitly opts in.
+CONFIRMATORY_MODE = "finite_shot_end_to_end"
+
 
 @dataclass
 class MixedModelResult:
@@ -150,8 +158,20 @@ def build_h1_dataset(exact_df: pd.DataFrame) -> pd.DataFrame:
     return d
 
 
-def build_h2h4_dataset(pointwise_df: pd.DataFrame) -> pd.DataFrame:
+def build_h2h4_dataset(pointwise_df: pd.DataFrame, pool_modes: bool = False) -> pd.DataFrame:
     d = pointwise_df.copy()
+    if "analysis_mode" in d.columns:
+        modes = sorted(d["analysis_mode"].dropna().unique().tolist())
+        if len(modes) > 1 and not pool_modes:
+            raise ValueError(
+                f"build_h2h4_dataset() received {len(modes)} distinct analysis_mode values "
+                f"{modes}; the H2-H4 model must be fit on a single analysis_mode "
+                f"('{CONFIRMATORY_MODE}' is confirmatory, 'finite_shot_conditional' is a "
+                f"diagnostic only -- see verification/conditional_vs_endtoend_comparison.md and "
+                f"verification/mode_pooling_guard.md). Filter the input to one mode before "
+                f"calling, or pass pool_modes=True if pooling is genuinely intended for some "
+                f"future exploratory purpose."
+            )
     d = d[np.isfinite(d["SNR_est"])]  # excludes inf (zero-variance) and nan (undefined) cells from the model
     d["y"] = np.arcsinh(d["SNR_est"])
     return d
@@ -161,11 +181,11 @@ def fit_h1_model(exact_df: pd.DataFrame) -> MixedModelResult:
     return fit_mixed_model(H1_FORMULA, build_h1_dataset(exact_df), "a")
 
 
-def fit_h2h4_model(pointwise_df: pd.DataFrame) -> MixedModelResult:
-    return fit_mixed_model(H2_H4_FORMULA, build_h2h4_dataset(pointwise_df), "y")
+def fit_h2h4_model(pointwise_df: pd.DataFrame, pool_modes: bool = False) -> MixedModelResult:
+    return fit_mixed_model(H2_H4_FORMULA, build_h2h4_dataset(pointwise_df, pool_modes=pool_modes), "y")
 
 
-def fit_sensitivity_model(pointwise_df: pd.DataFrame) -> MixedModelResult:
+def fit_sensitivity_model(pointwise_df: pd.DataFrame, pool_modes: bool = False) -> MixedModelResult:
     """Preregistered sensitivity model adding E:L:depth_z and E:R:depth_z
     (Section 11) -- descriptive only, never part of the H1-H4 Holm family."""
-    return fit_mixed_model(SENSITIVITY_FORMULA, build_h2h4_dataset(pointwise_df), "y")
+    return fit_mixed_model(SENSITIVITY_FORMULA, build_h2h4_dataset(pointwise_df, pool_modes=pool_modes), "y")

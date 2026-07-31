@@ -1,0 +1,1 @@
+analysis_mode,configuration_id,E,L,R,depth,depth_centered,depth_z,budget,log2_budget,initialization_id,parameter_id,parameter_index,block_index,qubit_index,cost_type,gamma,n_replicates,mu_hat,exact_gradient,shot_variance,shot_sd,zero_variance_flag,SNR_est,SNR_exact,bias,absolute_bias,sign_agreement,signed_mean_ci_lo,signed_mean_ci_hi,signed_mean_ci_excludes_zero,_E_chk

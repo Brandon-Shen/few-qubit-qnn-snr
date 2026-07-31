@@ -1,0 +1,9 @@
+{
+  "shard_id": 1,
+  "seed": 376001,
+  "n_requested": 145,
+  "n_successful": 145,
+  "failed_iterations": [],
+  "wall_clock_seconds": 11824.957371234894,
+  "implementation": "lowmem_redesign_endtoend_only"
+}

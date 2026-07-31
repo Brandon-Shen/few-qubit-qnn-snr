@@ -1,0 +1,18 @@
+C:\Users\Brandon Shen\Documents\few-qubit-qnn-snr\paper\figures\fig0_el_primary.pdf already exists and fig0_el_primary_source.csv already exists, so this is a regeneration of this script's own prior validated output, not an untrusted placeholder -- overwriting directly, no additional backup made.
+Matched raw row count per configuration (pointwise, end-to-end): {1: 12800, 2: 12800, 3: 12800, 5: 12800}
+Matched raw row count per configuration (exact): {1: 3200, 2: 3200, 3: 3200, 5: 3200}
+Finite SNR_est count per configuration (after zero-variance exclusion): {1: 12571, 2: 12723, 3: 12800, 5: 12800} -- L=0 configs (1, 2) show exclusions, L=1 configs (3, 5) do not, consistent with the exactly-L=0-confined zero-variance pattern already documented in verification/zero_variance_exclusion_audit.md; this is expected, not an error.
+CONFIRMED: production function and independent recomputation agree to atol=1e-09 for both I_EL and J_EL.
+CONFIRMED: I_EL rounds to 1.034, J_EL rounds to 1.242 (validation targets, matched).
+
+Full precision: I_EL = 1.0340744657849426
+Full precision: J_EL = 1.2417603765323095
+Component aggregates (RMS): M_0=1.3036802298943113 M_E=1.2524286845690007 M_L=1.950204926802554 M_EL=1.9373763315763406
+Component aggregates (RMS): G_0=0.05449746205328429 G_E=0.04456191131530095 G_L=0.06717810025113201 G_EL=0.06821078510117906
+
+wrote C:\Users\Brandon Shen\Documents\few-qubit-qnn-snr\paper\figure_data\fig0_el_primary_source.csv
+source CSV sha256: f23053de9c1948a67fa97017ba8417556c1bd8711c53fb06193fbd21b7b48668
+
+wrote C:\Users\Brandon Shen\Documents\few-qubit-qnn-snr\paper\figures\fig0_el_primary.pdf
+PDF sha256: 03abe59de7d620d3a8f216086614b292079840e6c19b80c410441499e3bebcfd
+wrote C:\Users\Brandon Shen\Documents\few-qubit-qnn-snr\paper\figures\fig0_el_primary_preview.png
