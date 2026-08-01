@@ -1,0 +1,156 @@
+{
+  "generated_at_git_commit": "7b57e3e1a03fb4b2bea3e488842ca18cdface54b",
+  "input_file_sha256": {
+    "pointwise": "99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342",
+    "raw_exact": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+    "raw_end_to_end": "22b5e761f461c6bfde7a60a4efa7ac13bc59ae003488be84d2f0c1e57ddb7f39",
+    "raw_conditional": "b15b19088d22a0429f48158cdee5ee3caec52f6819815579b3e6aed189afe413"
+  },
+  "total_cells_by_mode": [
+    {
+      "analysis_mode": "finite_shot_conditional",
+      "n_cells": 102400
+    },
+    {
+      "analysis_mode": "finite_shot_end_to_end",
+      "n_cells": 102400
+    }
+  ],
+  "zero_variance_by_mode": [
+    {
+      "analysis_mode": "finite_shot_conditional",
+      "total": 102400,
+      "excluded": 1324,
+      "pct_excluded": 1.29296875
+    },
+    {
+      "analysis_mode": "finite_shot_end_to_end",
+      "total": 102400,
+      "excluded": 509,
+      "pct_excluded": 0.4970703125
+    }
+  ],
+  "end_to_end_total_cells": 102400,
+  "end_to_end_zero_variance_excluded": 509,
+  "end_to_end_zero_variance_pct": 0.4970703125,
+  "confined_to_L0": true,
+  "l0_excluded": 509,
+  "l1_excluded": 0,
+  "non_finite_snr_not_explained_by_zero_variance_flag": 0,
+  "h2h4_model": {
+    "formula": "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + L:R:depth_z",
+    "n_obs": 101891,
+    "n_groups": 50,
+    "converged": true,
+    "optimizer_used": "lbfgs",
+    "singular_fit": false,
+    "reproduced_beta_EL": 0.024995843985971582,
+    "adopted_beta_EL": 0.024995843985971582,
+    "beta_EL_matches_adopted_bit_for_bit": true
+  },
+  "wald_coefficients": [
+    {
+      "coefficient": "E:L",
+      "estimate": 0.024995843985971582,
+      "se": 0.007279011371641417,
+      "wald_z": 3.4339613870303682,
+      "p_unadjusted": 0.0005948289235313542,
+      "ci95_lo": 0.010729243854496907,
+      "ci95_hi": 0.039262444117446255
+    },
+    {
+      "coefficient": "E:R",
+      "estimate": -0.0009575787575784316,
+      "se": 0.007292917086826747,
+      "wald_z": -0.13130257017567273,
+      "p_unadjusted": 0.8955359586892191,
+      "ci95_lo": -0.015251433589995625,
+      "ci95_hi": 0.013336276074838763
+    },
+    {
+      "coefficient": "L:R:depth_z",
+      "estimate": -0.010178757716721849,
+      "se": 0.005362074992735445,
+      "wald_z": -1.8982870867177464,
+      "p_unadjusted": 0.05765827411115354,
+      "ci95_lo": -0.020688231584886193,
+      "ci95_hi": 0.0003307161514424957
+    }
+  ],
+  "bootstrap_summary_source": "results\\production_corrected_end_to_end\\bootstrap_end_to_end_h2_h4_summary.csv",
+  "bootstrap_summary": [
+    {
+      "coefficient": "E:L",
+      "n_pooled": 443,
+      "n_failed": 0,
+      "fit_failure_rate_pct": 0.0,
+      "median": 0.0236854648080451,
+      "ci_lo": -0.0180243482083222,
+      "ci_hi": 0.0656878879950304,
+      "width": 0.0837122362033526,
+      "includes_zero": true
+    },
+    {
+      "coefficient": "E:R",
+      "n_pooled": 443,
+      "n_failed": 0,
+      "fit_failure_rate_pct": 0.0,
+      "median": -0.0018676837644237,
+      "ci_lo": -0.0302982755992361,
+      "ci_hi": 0.0244783606838962,
+      "width": 0.0547766362831324,
+      "includes_zero": true
+    },
+    {
+      "coefficient": "L:R:depth_z",
+      "n_pooled": 443,
+      "n_failed": 0,
+      "fit_failure_rate_pct": 0.0,
+      "median": -0.0108112626682918,
+      "ci_lo": -0.0269750506541731,
+      "ci_hi": 0.0064031121402603,
+      "width": 0.0333781627944335,
+      "includes_zero": true
+    }
+  ],
+  "residual_sd_by_depth": [
+    {
+      "depth": 1,
+      "resid_sd": 0.6592752974175753
+    },
+    {
+      "depth": 2,
+      "resid_sd": 0.5392617126402137
+    },
+    {
+      "depth": 3,
+      "resid_sd": 0.4521001373286116
+    },
+    {
+      "depth": 4,
+      "resid_sd": 0.36596695588179995
+    },
+    {
+      "depth": 6,
+      "resid_sd": 0.27603260774395916
+    }
+  ],
+  "residual_sd_by_budget": [
+    {
+      "budget": 250,
+      "resid_sd": 0.3010579039402127
+    },
+    {
+      "budget": 500,
+      "resid_sd": 0.34602019465752065
+    },
+    {
+      "budget": 1000,
+      "resid_sd": 0.4225344432649439
+    },
+    {
+      "budget": 2000,
+      "resid_sd": 0.5132225710620099
+    }
+  ]
+}
