@@ -1,0 +1,22 @@
+method,dataset,coefficient,estimate,ci_lo,ci_hi,ci_excludes_zero,n_obs,category
+prespecified Wald/Holm (mixed model),original,E:L,0.024995843985971582,0.010729243854496907,0.039262444117446255,True,101891.0,confirmatory (prespecified)
+nested percentile bootstrap (n=443),original,E:L,0.023685464808045162,-0.018024348208322244,0.06568788799503045,False,101891.0,robustness
+cluster-robust OLS (initialization-level),original,E:L,0.0235498145787152,-0.0217389524922452,0.0688385816496757,False,101891.0,robustness
+"initialization-level resampling (n=50, w/ zero-variance logging)",original,E:L,0.03269450818437751,-0.0030383952653735306,0.0666064953830817,False,,robustness
+depth-stratified (D=1),original,E:L,-0.0902932043951488,-0.182127434717667,0.0015410259273692,False,6235.0,exploratory
+depth-stratified (D=2),original,E:L,-0.1117622279720737,-0.1649167916654578,-0.0586076642786896,True,12716.0,exploratory
+depth-stratified (D=3),original,E:L,0.098047850805505,0.0614395549266503,0.1346561466843597,True,19121.0,exploratory
+depth-stratified (D=4),original,E:L,0.066699853244573,0.0409248757768257,0.0924748307123204,True,25521.0,exploratory
+depth-stratified (D=6),original,E:L,0.0246317911669371,0.009123396381001,0.0401401859528732,True,38298.0,exploratory
+"decomposition: SNR_est (reference, not refit)",original,E:L,0.0249958439859715,0.0107292438544969,0.0392624441174462,True,101891.0,diagnostic
+decomposition: numerator (gradient-mean magnitude),original,E:L,0.0043146925346386,0.0030757036698196,0.0055536813994577,True,101891.0,diagnostic
+decomposition: denominator (repeated-shot SD),original,E:L,-0.149865530304003,-0.1735375122929403,-0.1261935483150657,True,101891.0,diagnostic
+zero-variance sensitivity (complete_case_exclusion (production baseline)),original,E:L,0.0249958439859715,0.0107292438544969,0.0392624441174462,True,101891.0,sensitivity
+zero-variance sensitivity (variance_floor=1.000e-12),original,E:L,0.0181695396370629,0.003884657501344,0.0324544217727818,True,102400.0,sensitivity
+zero-variance sensitivity (variance_floor=6.227e-11),original,E:L,0.0181695396370629,0.003884657501344,0.0324544217727818,True,102400.0,sensitivity
+zero-variance sensitivity (variance_floor=1.000e-09),original,E:L,0.0181695396370629,0.003884657501344,0.0324544217727818,True,102400.0,sensitivity
+zero-variance sensitivity (variance_floor=8.247e-07),original,E:L,0.0181695396370629,0.003884657501344,0.0324544217727818,True,102400.0,sensitivity
+zero-variance sensitivity (variance_floor=1.058e-05),original,E:L,0.0181695396370629,0.003884657501344,0.0324544217727818,True,102400.0,sensitivity
+zero-variance sensitivity (variance_floor=1.000e-03),original,E:L,0.0181695396370629,0.003884657501344,0.0324544217727818,True,102400.0,sensitivity
+prespecified Wald (mixed model),"replication (Stage 1, R_rep=30)",E:L,0.0492936750947691,0.035235563730092526,0.06335178645944567,True,,replication
+nested percentile bootstrap (n=30),"replication (Stage 1, R_rep=30)",E:L,,0.0156907084845034,0.06982819879762392,True,,replication
