@@ -23,8 +23,23 @@ was modified. All new code is `qnn_snr/stats/depth_heterogeneity.py` +
 
 | dataset | `E:L` (at mean depth) | `E:L:depth_z` | converged |
 |---|---|---|:-:|
-| Original | 0.011486, CI [-0.003874, 0.026845] (includes zero) | **0.024952, CI [0.014438, 0.035466]** (excludes zero) | Yes, not singular |
-| Replication | see `results/h2_replication_v1/depth_heterogeneity/replication_continuous_model.csv` | | Yes, not singular |
+| Original | 0.011486, CI [-0.003874, 0.026845] (includes zero) | **+0.024952, CI [0.014438, 0.035466]** (excludes zero) | Yes, not singular |
+| Replication | 0.063349, CI [0.048215, 0.078483] (excludes zero) | **-0.025942, CI [-0.036294, -0.015589]** (excludes zero) | Yes, not singular |
+
+**The linear moderation term's sign does not replicate**: `E:L:depth_z`
+is significantly *positive* in the original (deeper depth → larger
+`E:L`, on a straight-line fit) and significantly *negative* in the
+replication (deeper depth → smaller `E:L`). Both are individually
+significant in their own dataset. This is consistent with, and
+explained by, the non-monotonic categorical pattern in each: the
+original's sequence runs very-negative → very-negative → positive →
+positive → less-positive (net upward slope, D=1 to D=6), while the
+replication's sequence runs very-positive → positive → positive →
+positive → less-positive (net downward slope, D=1 to D=6) — a single
+linear term cannot distinguish "the sign flips at low depth" from "the
+effect is uniformly large and decays," and fitting one to each dataset
+separately produces opposite-signed slopes precisely because the two
+datasets differ most at low depth (Section 6).
 
 **Interpretation (linear depth-moderation diagnostic only)**: in the
 original data, the `E:L` effect *at the mean depth* is not
