@@ -1,0 +1,47 @@
+# H2 independent replication, Stage 1 (verification/h2_robustness_replication_plan.md
+# Section 3.4). Same design as configs/confirmatory.yaml (8 configurations,
+# depths [1,2,3,4,6], budgets [250,500,1000,2000], 50 initializations),
+# replicated at the ORIGINAL R_rep=30 for a clean apples-to-apples
+# independent-randomness replication. seed_root is a new, non-overlapping
+# namespace (see Section 3.1: sha256("h2_independent_replication_v1")[:4]
+# as a big-endian uint32) -- NOT the production seed_root (20260726), so no
+# shot draw in this config can coincide with any production shot draw.
+#
+# gradient.modes deliberately omits finite_shot_conditional (diagnostic-only
+# even in the original data; skipped here to keep Stage 1's cost close to
+# production's own generation time, per Section 3.2).
+#
+# This config has NEVER been used to overwrite or regenerate any original
+# confirmatory data. output.results_dir points to a disposable pipeline
+# working directory that will be reorganized into the results/h2_replication_v1/
+# suggested subdirectory structure after generation completes (see
+# scripts/reorganize_h2_replication_output.py, run only after Stage 1 finishes).
+name: h2_replication_v1_stage1
+seed_root: 3872531887
+
+task:
+  n_qubits: 4
+  J: 1.0
+  h: 0.5
+
+circuit:
+  depths: [1, 2, 3, 4, 6]
+
+budget:
+  values: [250, 500, 1000, 2000]
+
+design:
+  n_initializations: 50
+  replicates: 30
+  configurations: [1, 2, 3, 4, 5, 6, 7, 8]
+
+gradient:
+  modes: [statevector_exact, finite_shot_end_to_end]
+
+stats:
+  bootstrap:
+    iterations: 443
+    min_success_fraction: 0.9
+
+output:
+  results_dir: results/h2_replication_v1/_pipeline_output_stage1

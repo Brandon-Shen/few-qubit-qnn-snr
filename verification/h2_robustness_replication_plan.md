@@ -305,6 +305,22 @@ convention already does — but now the exclusion is visible).
   fixed now and will not be raised or lowered after inspecting how close
   the resulting CI is to including zero.**
 
+  > **Revision (feasibility only, recorded transparently, made before
+  > inspecting any coefficient value):** iteration 0's actual measured
+  > wall-clock was 145s, not the ≈32–40s the estimate above assumed —
+  > `pointwise_statistics()` recomputation over the full 3,072,000-row raw
+  > end-to-end dataset (needed because the inner resample changes which
+  > replicates fall in each cell) turned out to dominate the per-iteration
+  > cost far more than the model fit alone does. At 145s/iteration, n=200
+  > is an ~8-hour job. **Revised to n=50 (~2 hours)** — chosen the same way
+  > n=200 originally was (target ≈100–140 minutes), using only the
+  > wall-clock measurement from iteration 0, before that iteration's (or
+  > any iteration's) `E:L` coefficient was inspected. This is a feasibility
+  > adjustment of the kind explicitly permitted for the replication's
+  > Stage 1→2 expansion rule in §3.4, applied here for the same reason and
+  > with the same discipline (never triggered by, and never adjusted
+  > toward, a particular statistical outcome).
+
 **(C) Heteroscedasticity-aware alternative: cluster-robust regression at
 the initialization level.** Justification: the mixed model's Wald SEs
 assume the two modeled variance components are the *entire* correlation

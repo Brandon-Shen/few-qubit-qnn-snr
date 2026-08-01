@@ -1,0 +1,26 @@
+{
+  "pilot_config": {
+    "seed_root": 3872531887,
+    "n_initializations": 2,
+    "configurations": [
+      1
+    ],
+    "depths": [
+      4
+    ],
+    "budgets": [
+      1000
+    ],
+    "replicates": 20
+  },
+  "rows_generated": 640,
+  "wallclock_seconds": 0.18165040016174316,
+  "rss_before_bytes": 206860288,
+  "rss_after_bytes": 208797696,
+  "rss_delta_bytes": 1937408,
+  "disk_bytes_for_slice": 24582,
+  "per_replicate_eval_seconds_measured": 0.0002838287502527237,
+  "production_measured_full_end_to_end_generation_seconds": 1560,
+  "production_measured_seconds_per_R30_generation_row_group": 0.0065,
+  "note": "This is a cross-check pilot, not the primary estimate. The primary Stage 1 wall-clock estimate (~26-30 min) comes from production's own measured R=30 generation time (verification/h2_robustness_replication_plan.md Section 3.3), since Stage 1 uses the identical R_rep=30 and the identical design shape."
+}

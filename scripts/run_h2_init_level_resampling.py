@@ -41,7 +41,15 @@ OUT_DIR = REPO_ROOT / "results" / "h2_robustness" / "robust_inference"
 CHECKPOINT_PATH = OUT_DIR / "init_resample_checkpoint.parquet"
 DIAGNOSTICS_PATH = OUT_DIR / "init_resample_per_iteration_diagnostics.csv"
 
-N_ITERATIONS = 200
+# REVISED from the originally planned 200 (see verification/
+# h2_robustness_replication_plan.md Section 2.2(B) revision note): iteration
+# 0's measured wall-clock (145s, dominated by pointwise_statistics
+# recomputation over the full 3M-row raw dataset, not just the ~32-40s
+# model-fit cost the original 200-iteration estimate was based on) makes
+# n=200 an ~8-hour job. Revised to n=50 (~2 hours) BEFORE inspecting any
+# coefficient value from iteration 0 or any other iteration -- a pure
+# feasibility adjustment, not a significance-motivated one.
+N_ITERATIONS = 50
 SEED = 900001
 CHECKPOINT_EVERY = 10
 CONFIRMATORY_MODE = "finite_shot_end_to_end"
