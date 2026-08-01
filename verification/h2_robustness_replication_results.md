@@ -1,80 +1,71 @@
-# H2 robustness and replication: results (IN PROGRESS)
+# H2 robustness and replication: final results
 
-**Status as of this writing: Phases 1-3 complete; Phase 4 complete except
-(B) initialization-level resampling and the numerator/denominator
-extension of (E), both running in the background; Phase 5 (design +
-pilot benchmark) complete; Phase 6-7 (replication execution) not started,
-pending a go/no-go decision on Stage 1 (Section 5).** This document will
-be updated, not replaced, as the remaining background jobs complete —
-updates are appended with a timestamp, consistent with the rest of this
-repository's convention for post-run status updates.
+**Status: complete.** Governing plan: `verification/h2_robustness_replication_plan.md`
+(frozen at commit `7b57e3e`, before any result below was inspected).
+Machine-readable summary: `results/h2_robustness/h2_final_summary_table.csv`
+(21 rows). Full test suite: 210/210 passing (156 pre-existing + 54 new).
 
-Governing plan: `verification/h2_robustness_replication_plan.md` (frozen
-at commit `7b57e3e`, before any of the results below were inspected).
+No original confirmatory data, config, or output was modified. Everything
+in this package lives under `scripts/run_h2_*.py`,
+`results/h2_robustness/`, `results/h2_replication_v1/`,
+`configs/h2_replication_v1_stage1.yaml`, and the corresponding new test
+files.
 
 ---
 
 ## 1. Reproduced original findings (Phase 2)
 
-Independently reproduced from frozen `results/production_confirmatory/`
-inputs (`scripts/run_h2_zero_variance_audit.py`), matching the existing
-record bit-for-bit:
+Independently reproduced bit-for-bit from frozen `results/production_confirmatory/`
+inputs (`scripts/run_h2_zero_variance_audit.py`):
 
-- End-to-end pointwise cells: 102,400. Zero-variance excluded: **509**
-  (0.497%). **100% confined to `L=0`** (509/509 at `L=0`, 0/0 at `L=1`) —
-  reconfirmed independently.
-- Adopted `E:L` (H2): **0.024995843985971582**, reproduced bit-for-bit
-  (`atol=1e-9`) from the frozen `finite_shot_end_to_end` data.
-- Current bootstrap (`n=443`, from `results/production_corrected_end_to_end/`):
-  median `0.023685`, 95% percentile CI `[-0.018024, 0.065688]` — **includes
-  zero**, as previously documented.
-- Residual heteroscedasticity by depth (SD 0.659→0.276, D=1→D=6) and by
-  budget (SD 0.301→0.513, B=250→B=2000) reproduced exactly.
+- End-to-end pointwise cells: 102,400. Zero-variance excluded: 509
+  (0.497%), **100% confined to `L=0`**.
+- Adopted `E:L` (H2): `0.024995843985971582` (Wald 95% CI `[0.010729,
+  0.039262]`), Holm-adjusted `p=0.00238`, rejected.
+- Existing nested bootstrap (`n=443`): median `0.023685`, 95% CI
+  `[-0.018024, 0.065688]` — **includes zero**.
+- Residual heteroscedasticity by depth (SD 0.659→0.276) and budget (SD
+  0.301→0.513) reproduced exactly.
+- **New in this pass**: all 509 zero-variance cells have `mu_hat` exactly
+  `0.0`, not merely a tied nonzero value.
 
-**New finding in this pass**: all 509 zero-variance end-to-end cells have
-`mu_hat` (the mean of the 30 replicate gradient estimates) **exactly
-0.0**, not merely a tied nonzero value. This was not previously
-documented and matters directly for Phase 4(F) below.
+## 2. Mechanism: what drives the interaction? (Phase 3, diagnostic)
 
-## 2. Robustness analyses on the original data (Phase 3-4)
+| model | response | `E:L` estimate | 95% CI |
+|---|---|---:|---|
+| numerator (gradient-mean magnitude) | `arcsinh(\|mu_hat\|)` | +0.004315 | [0.003076, 0.005554] |
+| denominator (repeated-shot SD) | `log(shot_sd)` | -0.149866 | [-0.173538, -0.126194] |
 
-### 2.1 Numerator/denominator decomposition (Phase 3) — diagnostic
+Both components move in the direction that increases `SNR_est`, and
+neither's 95% CI includes zero. **The interaction is not an artifact of
+one component** — the gradient signal genuinely gets larger and the
+finite-shot noise genuinely gets smaller under `E=L=1`, and these combine
+multiplicatively in the ratio. Extended to all 50 leave-one-initialization-out
+deletions (Phase 4E): **no sign reversal in either component** (numerator
+always +0.0038 to +0.0049; denominator always -0.122 to -0.172) — this
+mechanistic finding is solid.
 
-| model | response | `E:L` estimate | 95% CI | role |
-|---|---|---:|---|---|
-| SNR_est (reference) | `arcsinh(SNR_est)` | 0.024996 | [0.010729, 0.039262] | reference |
-| numerator | `arcsinh(\|mu_hat\|)` | **0.004315** | [0.003076, 0.005554] | primary/diagnostic |
-| denominator | `log(shot_sd)` | **-0.149866** | [-0.173538, -0.126194] | primary/diagnostic |
+## 3. Is the statistical significance robust? (Phase 4, robustness — NO, not to three independent checks)
 
-**Both components show an `E:L` effect distinguishable from zero, and
-both point the same direction** (numerator increases the gradient-signal
-magnitude; denominator decreases the noise SD) — mechanistically coherent
-and mutually reinforcing, not an artifact of one weird component. This is
-a genuine strengthening of the *mechanistic* story behind H2, independent
-of the *inferential* question addressed next.
+| method | `E:L` 95% CI | excludes zero? |
+|---|---|:-:|
+| Prespecified Wald/Holm (mixed model) | [0.010729, 0.039262] | **Yes** (rejected) |
+| Existing nested bootstrap (n=443) | [-0.018024, 0.065688] | No |
+| Cluster-robust OLS (initialization-level, single fit, n=50 clusters) | [-0.021739, 0.068839] | No |
+| Initialization-level resampling, new implementation (n=50, with explicit zero-variance logging) | [-0.003038, 0.066606] | No |
 
-### 2.2 Robust inference (Phase 4)
+**Three methodologically distinct ways of relaxing the mixed model's
+homoscedasticity/variance-structure assumptions — a nested bootstrap
+(pre-existing), a single-fit cluster-robust reanalysis (new), and an
+independently-implemented initialization-level resampling with explicit
+diagnostic logging (new) — all produce a CI that includes zero.** Only
+the prespecified Wald/Holm test itself rejects. This is reported as a
+genuine, unresolved tension: the prespecified analysis plan's decision
+stands (H2 is rejected under the confirmatory procedure), but that
+decision is not independent of the specific variance assumptions of the
+mixed model.
 
-**(A) Baseline** — see Section 1 above.
-
-**(C) Cluster-robust OLS at the initialization level** — same fixed-effect
-formula, standard errors clustered on `initialization_id` (50 clusters),
-no assumption of the mixed model's parametric variance structure:
-
-| coefficient | estimate | cluster-robust SE | 95% CI | p |
-|---|---:|---:|---|---:|
-| `E:L` | 0.023550 | **0.023107** | **[-0.021739, 0.068839]** | 0.308 |
-
-**This CI includes zero and the effect is not significant at α=0.05.**
-The point estimate is nearly identical to the mixed model's (0.0236 vs.
-0.0250), but the standard error more than triples (0.0231 vs. 0.0073)
-once the homoscedasticity assumption is dropped. **This corroborates the
-existing bootstrap disagreement, via an entirely different, single-fit
-method**: two independent ways of relaxing the mixed model's variance
-assumptions (the nested bootstrap and cluster-robust SEs) both fail to
-corroborate the Wald/Holm rejection.
-
-**(D) Depth-stratified diagnostics** — exploratory, no Holm correction:
+### 3.1 Depth-stratified: the effect's sign is not stable (exploratory)
 
 | depth | `E:L` estimate | 95% CI | n_obs |
 |---:|---:|---|---:|
@@ -84,130 +75,96 @@ corroborate the Wald/Holm rejection.
 | 4 | +0.066700 | [0.040925, 0.092475] | 25,521 |
 | 6 | +0.024632 | [0.009123, 0.040140] | 38,298 |
 
-**The `E:L` coefficient changes sign across block counts.** At `D=2` it is
-significantly *negative* (CI excludes zero on the negative side); at
-`D=1` it is negative but not distinguishable from zero (CI upper bound
-+0.0015); at `D=3,4,6` it is positive and significant, most closely
-resembling the aggregate estimate at `D=6` (the largest stratum). The
-aggregate positive estimate is a weighted average dominated by the three
-deeper block counts (81% of eligible rows). **This is new information not
-previously documented anywhere in the existing verification record or the
-manuscript.** Budget-stratified diagnostics (B≤500: 0.0256 [0.0097,
-0.0416]; B>500: 0.0247 [0.0014, 0.0479]) show no comparable instability —
-the sign reversal is specific to block count, not shot budget.
+The effect is significantly *negative* at `D=2` and reverses to positive
+only from `D=3` onward; the pooled positive estimate is a weighted
+average dominated by the three deeper block counts (81% of eligible
+rows). Budget-stratified diagnostics show no comparable instability
+(both `B≤500` and `B>500` strata are positive and significant). This is
+new information, not previously documented anywhere in the existing
+verification record or the manuscript.
 
-**(F.2) Logistic model of `P(zero_variance_flag)`** — exhibits
-quasi-complete separation on `L` (since `L=1` has exactly zero exclusions,
-per Section 1), producing uninterpretable coefficient magnitudes/SEs for
-every term involving `L`. Reported as a failed/inconclusive check, not
-forced into a numeric interpretation — this is expected given the
-deterministic Phase 2 finding, not new information.
+### 3.2 Zero-variance sensitivity (Phase 4F)
 
-**(F.3) Variance-floor sensitivity grid** — 7 predefined floors
-(1e-12 to 1e-3): **all seven nonzero floors produce the identical `E:L`
-estimate (0.018170, CI [0.003885, 0.032454])**, because every one of the
-509 zero-variance cells has `mu_hat=0` exactly (Section 1) — the floor
-value is mathematically irrelevant to a ratio whose numerator is zero.
-The only real choice is *exclude* (adopted: 0.024996) vs. *include as a
-zero-response point* (0.018170) — both remain distinguishable from zero,
-so this particular robustness check does not overturn H2 on its own, but
-it does show the point estimate moving by roughly 1 original-SE unit
-depending on the exclusion convention.
+All 509 zero-variance cells have `mu_hat=0` exactly, so a variance floor
+is mathematically irrelevant to `SNR_est` for those cells (0/anything=0);
+all seven predefined nonzero floors (1e-12 to 1e-3) give the identical
+result: `E:L=0.018170`, 95% CI `[0.003885, 0.032454]` (still excludes
+zero). The only real choice is exclude (adopted, 0.024996) vs.
+include-as-zero-response (0.018170) — a ~1-original-SE-unit shift, not a
+reversal. The companion logistic model of `P(zero_variance_flag)` (F.2)
+exhibits quasi-complete separation on `L` (expected, since `L=1` has zero
+exclusions) and is reported as an inconclusive check, not misinterpreted
+numerically.
 
-**(B) initialization-level resampling and the (E) numerator/denominator
-LOO extension are running in the background; this section will be updated
-with their results.** (B)'s originally planned n=200 was revised to n=50
-after discovering the per-iteration cost (145s, not the ~32-40s assumed)
-would make n=200 an ~8-hour job — a feasibility-only revision made from
-wall-clock alone, before any coefficient was inspected (see the frozen
-plan's revision note).
+## 4. Independent replication (Phase 5-7)
 
-## 3. Assessment so far: is H2 robust?
+New seed namespace (`seed_root=3872531887`, verified non-overlapping),
+Stage 1 design matching production exactly (`R_rep=30`, 8×5×4×50,
+end-to-end mode). Executed in full: generation+fit+report in 19.4 minutes,
+bootstrap (n=30) completed 30/30 for both H1 and H2-H4.
 
-**Not unconditionally.** The prespecified Wald/Holm test rejects the null
-for H2, and that decision stands as the paper's prespecified confirmatory
-result — this package does not overturn it or claim authority to. But:
+| | original | replication |
+|---|---:|---:|
+| `E:L` Wald estimate | 0.024996 | **0.049294** |
+| Wald 95% CI | [0.010729, 0.039262] | [0.035236, 0.063352] |
+| Bootstrap 95% CI | [-0.018024, 0.065688] (n=443) | [0.015691, 0.069828] (n=30) |
+| Zero-variance excluded | 509/102,400 (0.497%) | 585/102,400 (0.571%) |
+| Confined to `L=0`? | Yes | Yes (independently reconfirmed) |
 
-- The nested bootstrap (existing, n=443) does not corroborate it (CI
-  includes zero).
-- An independent, single-fit cluster-robust method does not corroborate
-  it either (CI includes zero, p=0.308).
-- The effect's sign is not stable across block counts — it is
-  significantly *negative* at `D=2` and reverses to positive only from
-  `D=3` onward.
+**Interpretation (fixed decision rule, computed mechanically, `verification/h2_robustness_replication_plan.md`
+Section 6): "direction replicated but magnitude uncertain."** The
+replication independently reproduces a positive, significant `E:L`
+effect and independently reconfirms the `L=0` zero-variance confinement
+under entirely new randomness — both reassuring. But its point estimate
+is roughly double the original's (3.34 original-SE units away), which
+exceeds the frozen ≤2-SE-unit threshold for a clean match. This is
+reported exactly as it came out — not rounded up to "confirmed," not
+rounded down to "failed."
 
-**Three independent lines of evidence now agree that H2's statistical
-significance is not robust to relaxing the mixed model's variance
-assumptions or to stratifying by block count**, even though the
-*mechanism* (Section 2.1) is coherent and the *prespecified* test rejects.
-This is reported plainly, per the task's instruction, rather than
-resolved in either direction.
+*Caveat on the replication's own bootstrap*: its CI excludes zero, but at
+only `n=30` (vs. the original's `n=443`) this is a far less precise
+estimate and is not treated as equally strong evidence as the original's
+non-corroboration.
 
-## 4. Independent replication (Phase 5-7) — Stage 1 complete
+Stage 2 (`R_rep=300`) expansion rule was **not triggered**: the frozen
+plan's only data-driven trigger (zero-variance rate diverging by >2x) was
+not met (0.497% vs. 0.571%, a 1.15x ratio).
 
-Design frozen, seed namespace verified non-overlapping
-(`seed_root=3872531887`), pilot benchmark run. **Stage 1 executed**
-(user go-ahead): `R_rep=30`, full 8×5×4×50 design, end-to-end mode, new
-seed namespace. All 6 pipeline steps (`generate-exact`, `generate-shots`,
-`validate`, `aggregate`, `fit`, `report`) exited 0 in **19.4 minutes**
-(faster than the ~30-35 min estimate). 27 output files hashed
-(`results/h2_replication_v1/_pipeline_output_stage1/SHA256SUMS_stage1_output.json`).
+## 5. Interruptions (transparency note)
 
-| | original | replication | difference |
-|---|---:|---:|---:|
-| `E:L` estimate | 0.024996 | **0.049294** | +0.024298 (**3.34** original-SE units) |
-| 95% Wald CI | [0.010729, 0.039262] | [0.035236, 0.063352] | overlap: yes (barely, at the boundary) |
-| Sign | positive | positive | agree |
-| Eligible `n_obs` | 101,891 | 101,815 | -76 (-0.07%) |
-| Zero-variance excluded | 509 (0.497%) | 585 (0.571%) | +76, still 100% confined to `L=0` |
+Background execution in this session was repeatedly interrupted by
+something external (no Python-level error/traceback in any log; machine
+clock evidence points to sleep/suspend cycles, later confirmed by the
+user). Effect: zero data loss for (B) (checkpointed every 10 iterations)
+and for the replication bootstrap's H1 portion (completed before the
+first interruption); the replication bootstrap's H2-H4 portion had to
+restart once because the generic CLI's checkpoint interval (50) never
+triggered within a 30-iteration target — fixed by writing
+`scripts/run_h2_replication_stage1_bootstrap.py` with
+`checkpoint_every=3`. Recorded here per the task's own standard: record
+failures and interruptions explicitly.
 
-**Interpretation (fixed decision rule, computed mechanically):
-"direction replicated but magnitude uncertain."** The replication
-independently reproduces a positive, statistically significant `E:L`
-effect (its own 95% CI excludes zero) and independently reconfirms the
-100%-`L=0` zero-variance confinement under entirely new randomness — both
-substantively reassuring. But the replication's point estimate is
-roughly double the original's and 3.34 original-SE units away, which
-exceeds the frozen plan's ≤2-SE-unit threshold for "direction and
-magnitude replicated." This is reported exactly as it came out, not
-rounded toward either "confirmed" or "failed to replicate."
+## 6. Final assessment
 
-**Stage 2 (`R_rep=300`) expansion rule was NOT triggered**: the frozen
-plan's only data-driven trigger is a >2x divergence in zero-variance
-exclusion rate (production 0.497% vs. replication 0.571% — a 1.15x
-ratio, well under 2x). Stage 2 is available if wanted but is not
-mechanically indicated by the predefined rule.
-
-The replication's own initialization-level bootstrap (`n=30`, ~72 min
-projected) was launched separately and will be added to this section
-when complete.
-
-## 5. Interruption (transparency note)
-
-Both the (B) initialization-resampling job and the replication's own
-bootstrap job were terminated partway through by something external to
-this analysis (no Python-level error or traceback in either log; no
-process was found running afterward). Cause unknown -- not attributed to
-a code defect. Effect on each:
-
-- **(B)**: no data lost. 20/50 iterations were already checkpointed
-  (every 10 iterations); resumed cleanly from iteration 20.
-- **Replication bootstrap**: the H1 portion (30/30 iterations) had
-  already completed and saved; the H2-H4 portion had checkpointed
-  *nothing* (the generic `qnn_snr bootstrap` CLI's checkpoint interval,
-  100/50, never triggers within a 30-iteration target) and had to restart
-  from 0. Fixed by writing `scripts/run_h2_replication_stage1_bootstrap.py`,
-  which calls the same underlying bootstrap functions with
-  `checkpoint_every=3` so future interruptions lose at most 3 iterations.
-
-This is reported because the task's own standard is to record failures
-and interruptions explicitly rather than silently absorb them, not
-because it changes any finding above.
-
-## 6. Next steps
-
-1. (B)/(E) background jobs and the replication's own bootstrap (now with
-   tight checkpointing) are running again; this document will be updated
-   with their results.
-2. Phase 9 final deliverables (manuscript revision proposal update,
-   final honest summary) to follow.
+- **Reproduced original findings**: exact (Section 1).
+- **Mechanism**: solid — both numerator and denominator contribute, no
+  sign reversal under any single-initialization deletion (Section 2).
+- **Statistical robustness of the prespecified rejection**: **not
+  robust** to three independent methods that relax the mixed model's
+  variance assumptions, and **not stable in sign** across block counts
+  (Section 3). This is the most important limitation this package
+  surfaces.
+- **Independent replication**: direction and statistical significance
+  replicate; magnitude does not (roughly 2x larger, 3.34 original-SE
+  units) (Section 4). Not "confirmed."
+- **Unresolved**: why the replication's magnitude is larger; why `D=2`
+  specifically reverses sign; whether a hierarchical/hurdle model for the
+  zero-inflated numerator would change the picture (not implemented —
+  no vetted dependency for it in this stack, stated as a limitation,
+  not forced).
+- **Computational limits**: Stage 2 (`R_rep=300`) was designed but not
+  executed (not triggered by the predefined rule, and not requested).
+  This package's iteration counts (n=50 for initialization resampling,
+  n=30 for both bootstraps) were revised down once from originally
+  higher targets for measured feasibility reasons, documented
+  transparently before any coefficient was inspected each time.
