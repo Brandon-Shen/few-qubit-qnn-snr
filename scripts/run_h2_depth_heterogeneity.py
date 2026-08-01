@@ -144,13 +144,32 @@ def run_one_dataset(label: str, pointwise_path: Path, out_dir: Path,
 
     eq_w = dh.compute_weighted_contrast(raw_b, eligible, dh.equal_depth_weights(), "equal_depth")
     obs_w = dh.compute_weighted_contrast(raw_b, eligible, dh.observation_count_weights(eligible), "observation_count")
-    weighted = pd.DataFrame([eq_w, obs_w, {
-        "weighting": "adopted_confirmatory_pooled", "estimate": ADOPTED_BETA_EL,
-        "se": ADOPTED_BETA_EL_SE,
-        "ci95_lo": ADOPTED_BETA_EL - dh.Z975 * ADOPTED_BETA_EL_SE,
-        "ci95_hi": ADOPTED_BETA_EL + dh.Z975 * ADOPTED_BETA_EL_SE,
-        "p_unadjusted": None, "n_obs_total": fit_b.result.n_obs,
-    }])
+    pooled_rows = [eq_w, obs_w]
+    if label == "original":
+        pooled_rows.append({
+            "weighting": "adopted_confirmatory_pooled", "estimate": ADOPTED_BETA_EL,
+            "se": ADOPTED_BETA_EL_SE,
+            "ci95_lo": ADOPTED_BETA_EL - dh.Z975 * ADOPTED_BETA_EL_SE,
+            "ci95_hi": ADOPTED_BETA_EL + dh.Z975 * ADOPTED_BETA_EL_SE,
+            "p_unadjusted": None, "n_obs_total": fit_b.result.n_obs,
+        })
+    else:
+        # The replication's own pooled Wald estimate, from the prior H2
+        # robustness package's production-formula fit on the replication
+        # data (results/h2_replication_v1/_pipeline_output_stage1/) --
+        # read from the existing generated CSV, never retyped by hand.
+        repl_snr_coef = pd.read_csv(
+            REPO_ROOT / "results" / "h2_replication_v1" / "_pipeline_output_stage1" / "snr_model_coefficients.csv"
+        )
+        r = repl_snr_coef[repl_snr_coef["coefficient"] == "E:L"].iloc[0]
+        pooled_rows.append({
+            "weighting": "replication_pooled_wald", "estimate": float(r["estimate"]),
+            "se": float(r["se"]),
+            "ci95_lo": float(r["estimate"]) - dh.Z975 * float(r["se"]),
+            "ci95_hi": float(r["estimate"]) + dh.Z975 * float(r["se"]),
+            "p_unadjusted": None, "n_obs_total": fit_b.result.n_obs,
+        })
+    weighted = pd.DataFrame(pooled_rows)
     results["weighted_contrasts"] = weighted
 
     # --- E. Cluster-robust categorical sensitivity ---

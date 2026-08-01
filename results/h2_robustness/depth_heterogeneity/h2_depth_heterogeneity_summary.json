@@ -68,11 +68,11 @@
       "n_obs_total": 101815
     },
     {
-      "weighting": "adopted_confirmatory_pooled",
-      "estimate": 0.0249958439859715,
-      "se": 0.0072790113716414,
-      "ci95_lo": 0.0107292438544969,
-      "ci95_hi": 0.0392624441174462,
+      "weighting": "replication_pooled_wald",
+      "estimate": 0.0492936750947691,
+      "se": 0.0071726375972034,
+      "ci95_lo": 0.0352355637300925,
+      "ci95_hi": 0.0633517864594456,
       "p_unadjusted": NaN,
       "n_obs_total": 101815
     }
