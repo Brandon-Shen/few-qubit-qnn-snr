@@ -1,0 +1,24 @@
+{
+  "n_iterations_requested": 50,
+  "n_iterations_successful": 50,
+  "seed": 900001,
+  "percentile_ci": {
+    "E:L": [
+      -0.0030383952653735306,
+      0.0666064953830817
+    ],
+    "E:R": [
+      -0.018400740589931637,
+      0.03434799120085531
+    ],
+    "L:R:depth_z": [
+      -0.02432419659391155,
+      0.004729547339266686
+    ]
+  },
+  "median_E_L": 0.03269450818437751,
+  "mean_n_zero_variance_per_iteration": 848.36,
+  "max_n_zero_variance_in_a_single_iteration": 1052,
+  "any_l1_zero_variance_ever_observed_across_resamples": false,
+  "any_non_finite_unexplained_ever_observed": false
+}
