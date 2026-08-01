@@ -182,9 +182,32 @@ The replication's own initialization-level bootstrap (`n=30`, ~72 min
 projected) was launched separately and will be added to this section
 when complete.
 
-## 5. Next steps
+## 5. Interruption (transparency note)
 
-1. (B)/(E) background jobs and the replication's own bootstrap are
-   completing; this document will be updated with their results.
+Both the (B) initialization-resampling job and the replication's own
+bootstrap job were terminated partway through by something external to
+this analysis (no Python-level error or traceback in either log; no
+process was found running afterward). Cause unknown -- not attributed to
+a code defect. Effect on each:
+
+- **(B)**: no data lost. 20/50 iterations were already checkpointed
+  (every 10 iterations); resumed cleanly from iteration 20.
+- **Replication bootstrap**: the H1 portion (30/30 iterations) had
+  already completed and saved; the H2-H4 portion had checkpointed
+  *nothing* (the generic `qnn_snr bootstrap` CLI's checkpoint interval,
+  100/50, never triggers within a 30-iteration target) and had to restart
+  from 0. Fixed by writing `scripts/run_h2_replication_stage1_bootstrap.py`,
+  which calls the same underlying bootstrap functions with
+  `checkpoint_every=3` so future interruptions lose at most 3 iterations.
+
+This is reported because the task's own standard is to record failures
+and interruptions explicitly rather than silently absorb them, not
+because it changes any finding above.
+
+## 6. Next steps
+
+1. (B)/(E) background jobs and the replication's own bootstrap (now with
+   tight checkpointing) are running again; this document will be updated
+   with their results.
 2. Phase 9 final deliverables (manuscript revision proposal update,
    final honest summary) to follow.
