@@ -40,7 +40,13 @@ gradient:
 
 stats:
   bootstrap:
-    iterations: 443
+    # NOT 443: at the measured ~145s/iteration cost for this dataset size
+    # (verification/h2_robustness_replication_plan.md Section 2.2(B)
+    # revision note), 443 iterations would take ~18 hours. Fixed here at
+    # n=30 (~72 minutes), a separate, explicitly time-boxed step run AFTER
+    # Stage 1's generate+fit (~30-35 min), not part of the same job --
+    # chosen for feasibility before any replication coefficient was seen.
+    iterations: 30
     min_success_fraction: 0.9
 
 output:
