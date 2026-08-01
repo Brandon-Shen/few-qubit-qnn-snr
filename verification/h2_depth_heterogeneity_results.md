@@ -246,6 +246,30 @@ neither of these two schemes, and no claim is made that it should be.
   from the prior package; still not implemented here — no vetted
   dependency for it in this stack).
 
+## 7.5 Manuscript integration and LaTeX validation (Phase 6-7)
+
+`paper/main.tex` was edited directly (not a separate proposal file):
+Abstract (256 words, within 150-250), a new Methods subsection
+(`sec:h2-depth-methods`), the H2 Results paragraphs, the Robustness
+section (Figure 11 + generated table), Discussion (three subsections),
+Limitations, Future Work, Conclusion, Appendix A.7/A.8, Table 3, and
+Data/Code availability were all updated. "Stable in sign across the
+reported sensitivity analyses" and the now-false "no heteroscedasticity-
+robust ... refinement was undertaken" sentence were both removed; no
+instance of "confirmed," "proven," "real mechanism," or an unqualified
+"model-independent" claim about H2 was introduced (verified by direct
+grep after editing).
+
+No LaTeX toolchain (`pdflatex`/`biber`/`latexmk`) is available in this
+environment (consistent with every prior session in this repository).
+`paper/scripts/structural_check.py` — the established substitute,
+extended in this pass to expand `\input{}` directives so the new
+generated table's label resolves — passes: 30 environments balanced, 30
+unique labels, 94 refs resolve, 12 `\includegraphics` targets found. This
+is not a real compile and cannot catch LaTeX syntax errors a real
+`pdflatex` run would; it is reported as exactly that level of validation,
+not overstated as a successful build.
+
 ## 8. Deviations from the frozen plan
 
 None. Every formula, contrast definition, weighting scheme, cluster
