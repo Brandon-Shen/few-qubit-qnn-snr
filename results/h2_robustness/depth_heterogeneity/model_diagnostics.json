@@ -1,0 +1,201 @@
+{
+  "git_commit": "87a46d4fdd652d33629980091cd32a3093e231ac",
+  "package_versions": {
+    "pandas": "3.0.3",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "statsmodels": "0.14.6",
+    "patsy": "1.0.2"
+  },
+  "original": {
+    "continuous_model": {
+      "formula": "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + E:L:depth_z + L:R:depth_z",
+      "converged": true,
+      "optimizer_used": "lbfgs",
+      "attempted_optimizers": "[\"lbfgs\"]",
+      "singular_fit": false,
+      "n_obs": 101891,
+      "n_groups": 50,
+      "n_vc_levels": 3200,
+      "condition_number": 120.23618927332059,
+      "group_intercept_var": 0.0011423338309318333,
+      "nested_param_var": 0.08771176484913958,
+      "resid_mean": 2.663898921988775e-16,
+      "resid_sd": 0.40424353797915746,
+      "log_likelihood": -58492.24994824722,
+      "n_warnings_captured": 1,
+      "warnings_captured": "[\"ConvergenceWarning: The MLE may be on the boundary of the parameter space.\"]",
+      "error": null
+    },
+    "categorical_model": {
+      "formula": "y ~ E*L*R + C(depth, Sum) + log2_budget + E:C(depth, Sum) + L:C(depth, Sum) + R:C(depth, Sum) + E:L:C(depth, Sum) + L:R:C(depth, Sum)",
+      "converged": true,
+      "optimizer_used": "lbfgs",
+      "attempted_optimizers": "[\"lbfgs\"]",
+      "singular_fit": false,
+      "n_obs": 101891,
+      "n_groups": 50,
+      "n_vc_levels": 3200,
+      "condition_number": 211.56965375814414,
+      "group_intercept_var": 0.0012784268554745057,
+      "nested_param_var": 0.07973992840374564,
+      "resid_mean": -8.065616474272819e-16,
+      "resid_sd": 0.40251133718263427,
+      "log_likelihood": -57985.41024784872,
+      "n_warnings_captured": 1,
+      "warnings_captured": "[\"ConvergenceWarning: The MLE may be on the boundary of the parameter space.\"]",
+      "error": null
+    },
+    "cluster_robust_omnibus": {
+      "term": "E:L:C(depth, Sum)",
+      "statistic": 6.705557429666976,
+      "df_numerator": 4.0,
+      "df_denominator": null,
+      "p_unadjusted": 0.15229066893050122,
+      "test_type": "joint Wald chi-square (statsmodels wald_test_terms, scalar=True)"
+    },
+    "cluster_robust_weighted": [
+      {
+        "weighting": "equal_depth",
+        "estimate": -0.008963527784602986,
+        "se": 0.02455765323071077,
+        "ci95_lo": -0.057095643661619795,
+        "ci95_hi": 0.039168588092413824,
+        "p_unadjusted": 0.7151118817875886,
+        "n_obs_total": 101891
+      },
+      {
+        "weighting": "observation_count",
+        "estimate": 0.013574485647067293,
+        "se": 0.017371520097933017,
+        "ci95_lo": -0.020473068101595132,
+        "ci95_hi": 0.04762203939572972,
+        "p_unadjusted": 0.4345544148541306,
+        "n_obs_total": 101891
+      }
+    ],
+    "include_zero_model": {
+      "formula": "y ~ E*L*R + C(depth, Sum) + log2_budget + E:C(depth, Sum) + L:C(depth, Sum) + R:C(depth, Sum) + E:L:C(depth, Sum) + L:R:C(depth, Sum)",
+      "converged": true,
+      "optimizer_used": "lbfgs",
+      "attempted_optimizers": "[\"lbfgs\"]",
+      "singular_fit": false,
+      "n_obs": 102400,
+      "n_groups": 50,
+      "n_vc_levels": 3200,
+      "condition_number": 207.73189140698148,
+      "group_intercept_var": 0.0014190307415208406,
+      "nested_param_var": 0.07906876370498425,
+      "resid_mean": -4.1685405127722676e-16,
+      "resid_sd": 0.40415075753933716,
+      "log_likelihood": -58644.47888467158,
+      "n_warnings_captured": 1,
+      "warnings_captured": "[\"ConvergenceWarning: The MLE may be on the boundary of the parameter space.\"]",
+      "error": null
+    },
+    "include_zero_omnibus": {
+      "term": "E:L:C(depth, Sum)",
+      "statistic": 179.02764146226977,
+      "df_numerator": 4.0,
+      "df_denominator": null,
+      "p_unadjusted": 1.2060255260404986e-37,
+      "test_type": "joint Wald chi-square (statsmodels wald_test_terms, scalar=True)"
+    },
+    "include_zero_weighted": [
+      {
+        "weighting": "equal_depth",
+        "estimate": -0.01996577496078799,
+        "se": 0.006153976323200054,
+        "ci95_lo": -0.03202734691597232,
+        "ci95_hi": -0.00790420300560366,
+        "p_unadjusted": 0.0011771081543576864,
+        "n_obs_total": 102400
+      },
+      {
+        "weighting": "observation_count",
+        "estimate": 0.007950587901932045,
+        "se": 0.00512831360266673,
+        "ci95_lo": -0.002100722060721599,
+        "ci95_hi": 0.01800189786458569,
+        "p_unadjusted": 0.12106188712439846,
+        "n_obs_total": 102400
+      }
+    ],
+    "input_sha256": "99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342",
+    "eligible_n_obs": 101891,
+    "total_cells": 102400,
+    "zero_variance_excluded": 509
+  },
+  "replication": {
+    "continuous_model": {
+      "formula": "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + E:L:depth_z + L:R:depth_z",
+      "converged": true,
+      "optimizer_used": "lbfgs",
+      "attempted_optimizers": "[\"lbfgs\"]",
+      "singular_fit": false,
+      "n_obs": 101815,
+      "n_groups": 50,
+      "n_vc_levels": 3200,
+      "condition_number": 120.25497778251506,
+      "group_intercept_var": 0.0007364622455107874,
+      "nested_param_var": 0.0889445907586323,
+      "resid_mean": -8.814177432254643e-17,
+      "resid_sd": 0.3980887312377902,
+      "log_likelihood": -56956.9726473511,
+      "n_warnings_captured": 1,
+      "warnings_captured": "[\"ConvergenceWarning: The MLE may be on the boundary of the parameter space.\"]",
+      "error": null
+    },
+    "categorical_model": {
+      "formula": "y ~ E*L*R + C(depth, Sum) + log2_budget + E:C(depth, Sum) + L:C(depth, Sum) + R:C(depth, Sum) + E:L:C(depth, Sum) + L:R:C(depth, Sum)",
+      "converged": true,
+      "optimizer_used": "lbfgs",
+      "attempted_optimizers": "[\"lbfgs\"]",
+      "singular_fit": false,
+      "n_obs": 101815,
+      "n_groups": 50,
+      "n_vc_levels": 3200,
+      "condition_number": 210.48953732967522,
+      "group_intercept_var": 0.0009246091866760037,
+      "nested_param_var": 0.07637700994900606,
+      "resid_mean": 1.0035460924451447e-16,
+      "resid_sd": 0.39713474082191597,
+      "log_likelihood": -56547.727180012036,
+      "n_warnings_captured": 1,
+      "warnings_captured": "[\"ConvergenceWarning: The MLE may be on the boundary of the parameter space.\"]",
+      "error": null
+    },
+    "cluster_robust_omnibus": {
+      "term": "E:L:C(depth, Sum)",
+      "statistic": 2.793173090780284,
+      "df_numerator": 4.0,
+      "df_denominator": null,
+      "p_unadjusted": 0.5930117336909319,
+      "test_type": "joint Wald chi-square (statsmodels wald_test_terms, scalar=True)"
+    },
+    "cluster_robust_weighted": [
+      {
+        "weighting": "equal_depth",
+        "estimate": 0.05886990355298487,
+        "se": 0.021524805200414086,
+        "ci95_lo": 0.0166820605859328,
+        "ci95_hi": 0.10105774652003693,
+        "p_unadjusted": 0.006238413831433652,
+        "n_obs_total": 101815
+      },
+      {
+        "weighting": "observation_count",
+        "estimate": 0.04121149424905432,
+        "se": 0.014552865415228239,
+        "ci95_lo": 0.012688402163348433,
+        "ci95_hi": 0.0697345863347602,
+        "p_unadjusted": 0.00462799280831266,
+        "n_obs_total": 101815
+      }
+    ],
+    "input_sha256": "e85f31d8f33ac46d717795bfd9879bd79dfa72a3095e517eedfe3b042c159998",
+    "eligible_n_obs": 101815,
+    "total_cells": 102400,
+    "zero_variance_excluded": 585
+  }
+}

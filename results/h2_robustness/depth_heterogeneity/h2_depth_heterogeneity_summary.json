@@ -1,0 +1,84 @@
+{
+  "depth_pattern_classification": "original and replication depth patterns partially agree (3/5 depths same-sign and overlapping)",
+  "n_depths_agreeing": 3,
+  "original_omnibus": {
+    "model": "categorical_mixed",
+    "term": "E:L:C(depth, Sum)",
+    "statistic": 154.0454739643424,
+    "df_numerator": 4.0,
+    "df_denominator": NaN,
+    "p_unadjusted": 2.764849706004292e-32,
+    "test_type": "joint Wald chi-square (statsmodels wald_test_terms, scalar=True)"
+  },
+  "replication_omnibus": {
+    "model": "categorical_mixed",
+    "term": "E:L:C(depth, Sum)",
+    "statistic": 37.76742386015621,
+    "df_numerator": 4.0,
+    "df_denominator": NaN,
+    "p_unadjusted": 1.2514271517975137e-07,
+    "test_type": "joint Wald chi-square (statsmodels wald_test_terms, scalar=True)"
+  },
+  "original_weighted_contrasts": [
+    {
+      "weighting": "equal_depth",
+      "estimate": -0.0101106951650027,
+      "se": 0.0061813619262963,
+      "ci95_lo": -0.0222259419159506,
+      "ci95_hi": 0.0020045515859451,
+      "p_unadjusted": 0.1019077600288509,
+      "n_obs_total": 101891
+    },
+    {
+      "weighting": "observation_count",
+      "estimate": 0.0142885779984392,
+      "se": 0.0051223408794199,
+      "ci95_lo": 0.0042489743582389,
+      "ci95_hi": 0.0243281816386394,
+      "p_unadjusted": 0.0052795603683003,
+      "n_obs_total": 101891
+    },
+    {
+      "weighting": "adopted_confirmatory_pooled",
+      "estimate": 0.0249958439859715,
+      "se": 0.0072790113716414,
+      "ci95_lo": 0.0107292438544969,
+      "ci95_hi": 0.0392624441174462,
+      "p_unadjusted": NaN,
+      "n_obs_total": 101891
+    }
+  ],
+  "replication_weighted_contrasts": [
+    {
+      "weighting": "equal_depth",
+      "estimate": 0.061147078260344,
+      "se": 0.0060933560719741,
+      "ci95_lo": 0.0492043198142961,
+      "ci95_hi": 0.0730898367063918,
+      "p_unadjusted": 1.069149334288965e-23,
+      "n_obs_total": 101815
+    },
+    {
+      "weighting": "observation_count",
+      "estimate": 0.0431340956296903,
+      "se": 0.0050562276076806,
+      "ci95_lo": 0.0332240716209991,
+      "ci95_hi": 0.0530441196383815,
+      "p_unadjusted": 1.4523250849626368e-17,
+      "n_obs_total": 101815
+    },
+    {
+      "weighting": "adopted_confirmatory_pooled",
+      "estimate": 0.0249958439859715,
+      "se": 0.0072790113716414,
+      "ci95_lo": 0.0107292438544969,
+      "ci95_hi": 0.0392624441174462,
+      "p_unadjusted": NaN,
+      "n_obs_total": 101815
+    }
+  ],
+  "d2_reversal": {
+    "original_depth2_estimate": -0.1177160372473593,
+    "original_depth2_ci_excludes_zero_negative": true
+  }
+}

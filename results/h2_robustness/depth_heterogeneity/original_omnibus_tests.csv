@@ -1,0 +1,2 @@
+model,term,statistic,df_numerator,df_denominator,p_unadjusted,test_type
+categorical_mixed,"E:L:C(depth, Sum)",154.0454739643424,4.0,,2.764849706004292e-32,"joint Wald chi-square (statsmodels wald_test_terms, scalar=True)"

@@ -1,0 +1,6 @@
+depth,original_estimate,original_ci_excludes_zero,replication_estimate,replication_ci_excludes_zero,same_sign,interval_overlap
+1,-0.0822644632611654,True,0.1332233527677039,True,False,False
+2,-0.1177160372473593,True,0.0479488397319657,True,False,False
+3,0.0928186533774162,True,0.0766633464696114,True,True,True
+4,0.0373404802849374,True,0.027226257430534,True,True,True
+6,0.0192678910211575,True,0.0206735949019049,True,True,True
