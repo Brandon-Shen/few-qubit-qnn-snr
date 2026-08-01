@@ -10,6 +10,6 @@
 # parent commit -- see `git log --oneline -2` from this file's commit to
 # confirm.
 
-PENDING: to be filled in by the commit immediately following the one that
-introduces this reproducibility reorganization. See git log for the parent
-commit hash if you are reading this before that follow-up commit lands.
+77cf2c6806985a708733f137c14b667978145b4b
+
+git checkout 77cf2c6806985a708733f137c14b667978145b4b
