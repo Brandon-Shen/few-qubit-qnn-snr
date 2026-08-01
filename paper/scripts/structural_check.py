@@ -8,6 +8,10 @@ this is a stand-in, not a real compile). Checks:
   - every \\label is unique
   - every \\ref/\\Cref target has a matching \\label
   - every \\includegraphics file exists on disk
+
+\\input{...} directives are expanded (recursively) before any check runs,
+matching what a real LaTeX compile would see, so labels/refs defined in an
+\\input-ed file (e.g. a generated table) resolve correctly.
 """
 from __future__ import annotations
 
@@ -20,8 +24,23 @@ MAIN_TEX = Path(__file__).resolve().parents[1] / "main.tex"
 PAPER_DIR = MAIN_TEX.parent
 
 
+def expand_inputs(text: str, base_dir: Path, seen: frozenset[Path] = frozenset()) -> str:
+    def replace(match: re.Match) -> str:
+        rel = match.group(1)
+        path = base_dir / rel
+        if not path.suffix:
+            path = path.with_suffix(".tex")
+        if not path.exists() or path in seen:
+            return match.group(0)  # leave as-is; MISSING GRAPHIC-style checks aren't done for \input
+        included = path.read_text(encoding="utf-8")
+        return expand_inputs(included, path.parent, seen | {path})
+
+    return re.sub(r"\\input\{([^}]+)\}", replace, text)
+
+
 def check():
     text = MAIN_TEX.read_text(encoding="utf-8")
+    text = expand_inputs(text, PAPER_DIR)
     problems = []
 
     begins = re.findall(r"\\begin\{([^}]+)\}", text)
