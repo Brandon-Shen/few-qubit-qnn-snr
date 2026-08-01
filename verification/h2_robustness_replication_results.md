@@ -143,21 +143,48 @@ assumptions or to stratifying by block count**, even though the
 This is reported plainly, per the task's instruction, rather than
 resolved in either direction.
 
-## 4. Independent replication (Phase 5-7)
+## 4. Independent replication (Phase 5-7) — Stage 1 complete
 
 Design frozen, seed namespace verified non-overlapping
-(`seed_root=3872531887`), pilot benchmark run
-(`results/h2_robustness/replication_design/pilot_benchmark.json`).
-**Stage 1 (`R_rep=30`, full 8×5×4×50 design, end-to-end mode, ~30-35
-minutes projected) has not been executed.** This is an explicit go/no-go
-checkpoint (see the frozen plan §3.4): unlike Phases 2-4, Stage 1 commits
-wall-clock time to generating genuinely new quantum-simulation data.
+(`seed_root=3872531887`), pilot benchmark run. **Stage 1 executed**
+(user go-ahead): `R_rep=30`, full 8×5×4×50 design, end-to-end mode, new
+seed namespace. All 6 pipeline steps (`generate-exact`, `generate-shots`,
+`validate`, `aggregate`, `fit`, `report`) exited 0 in **19.4 minutes**
+(faster than the ~30-35 min estimate). 27 output files hashed
+(`results/h2_replication_v1/_pipeline_output_stage1/SHA256SUMS_stage1_output.json`).
 
-## 5. Next steps (awaiting input)
+| | original | replication | difference |
+|---|---:|---:|---:|
+| `E:L` estimate | 0.024996 | **0.049294** | +0.024298 (**3.34** original-SE units) |
+| 95% Wald CI | [0.010729, 0.039262] | [0.035236, 0.063352] | overlap: yes (barely, at the boundary) |
+| Sign | positive | positive | agree |
+| Eligible `n_obs` | 101,891 | 101,815 | -76 (-0.07%) |
+| Zero-variance excluded | 509 (0.497%) | 585 (0.571%) | +76, still 100% confined to `L=0` |
 
-1. (B)/(E) background jobs (~2-3 hours combined) will complete and this
-   document will be updated with their results.
-2. **Decision needed**: run Stage 1 replication now (~30-35 min,
-   background) or defer.
-3. Phase 9 deliverables (manuscript revision proposal, final honest
-   summary) will be completed after 1-2 above.
+**Interpretation (fixed decision rule, computed mechanically):
+"direction replicated but magnitude uncertain."** The replication
+independently reproduces a positive, statistically significant `E:L`
+effect (its own 95% CI excludes zero) and independently reconfirms the
+100%-`L=0` zero-variance confinement under entirely new randomness — both
+substantively reassuring. But the replication's point estimate is
+roughly double the original's and 3.34 original-SE units away, which
+exceeds the frozen plan's ≤2-SE-unit threshold for "direction and
+magnitude replicated." This is reported exactly as it came out, not
+rounded toward either "confirmed" or "failed to replicate."
+
+**Stage 2 (`R_rep=300`) expansion rule was NOT triggered**: the frozen
+plan's only data-driven trigger is a >2x divergence in zero-variance
+exclusion rate (production 0.497% vs. replication 0.571% — a 1.15x
+ratio, well under 2x). Stage 2 is available if wanted but is not
+mechanically indicated by the predefined rule.
+
+The replication's own initialization-level bootstrap (`n=30`, ~72 min
+projected) was launched separately and will be added to this section
+when complete.
+
+## 5. Next steps
+
+1. (B)/(E) background jobs and the replication's own bootstrap are
+   completing; this document will be updated with their results.
+2. Phase 9 final deliverables (manuscript revision proposal update,
+   final honest summary) to follow.
