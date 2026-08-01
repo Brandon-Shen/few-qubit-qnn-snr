@@ -1,0 +1,78 @@
+[
+  {
+    "step_name": "generate-exact",
+    "args": [
+      "generate-exact",
+      "--config",
+      "C:\\Users\\Brandon Shen\\Documents\\few-qubit-qnn-snr\\configs\\h2_replication_v1_stage1.yaml"
+    ],
+    "exit_code": 0,
+    "wallclock_s": 14.402328252792358,
+    "stdout_tail": "Estimated exact-mode rows: ~24000 (2000 (depth,init,config) cells, up to 4 params/block)\nwrote 25600 rows to results\\h2_replication_v1\\_pipeline_output_stage1\\raw\\exact.parquet\n",
+    "stderr_tail": ""
+  },
+  {
+    "step_name": "generate-shots",
+    "args": [
+      "generate-shots",
+      "--config",
+      "C:\\Users\\Brandon Shen\\Documents\\few-qubit-qnn-snr\\configs\\h2_replication_v1_stage1.yaml",
+      "--mode",
+      "finite_shot_end_to_end"
+    ],
+    "exit_code": 0,
+    "wallclock_s": 1038.0581290721893,
+    "stdout_tail": "Estimated finite-shot replicate computations: 240000 (mode=finite_shot_end_to_end; each computation runs O(depth) block re-evaluations)\nwrote 3072000 rows to results\\h2_replication_v1\\_pipeline_output_stage1\\raw\\finite_shot_end_to_end.parquet\n",
+    "stderr_tail": ""
+  },
+  {
+    "step_name": "validate",
+    "args": [
+      "validate",
+      "--config",
+      "C:\\Users\\Brandon Shen\\Documents\\few-qubit-qnn-snr\\configs\\h2_replication_v1_stage1.yaml"
+    ],
+    "exit_code": 0,
+    "wallclock_s": 8.39104962348938,
+    "stdout_tail": "{\n  \"passed\": true,\n  \"errors\": []\n}\n",
+    "stderr_tail": ""
+  },
+  {
+    "step_name": "aggregate",
+    "args": [
+      "aggregate",
+      "--config",
+      "C:\\Users\\Brandon Shen\\Documents\\few-qubit-qnn-snr\\configs\\h2_replication_v1_stage1.yaml",
+      "--pointwise-bootstrap-iterations",
+      "20"
+    ],
+    "exit_code": 0,
+    "wallclock_s": 29.03492021560669,
+    "stdout_tail": "wrote 102400 pointwise cells to results\\h2_replication_v1\\_pipeline_output_stage1\\pointwise_gradient_statistics.parquet\n",
+    "stderr_tail": ""
+  },
+  {
+    "step_name": "fit",
+    "args": [
+      "fit",
+      "--config",
+      "C:\\Users\\Brandon Shen\\Documents\\few-qubit-qnn-snr\\configs\\h2_replication_v1_stage1.yaml"
+    ],
+    "exit_code": 0,
+    "wallclock_s": 50.530029296875,
+    "stdout_tail": "hypothesis coefficient_label  estimate  p_unadjusted       p_holm  reject_after_holm\n        H1            eta_EL  0.006349  3.738324e-05 1.121497e-04               True\n        H2           beta_EL  0.049294  6.310286e-12 2.524114e-11               True\n        H3           beta_ER -0.014240  4.758401e-02 9.516802e-02              False\n        H4          beta_LRd -0.007260  1.691051e-01 1.691051e-01              False\n",
+    "stderr_tail": "WARNING: 585 finite_shot_end_to_end cells have exactly zero replicate variance (Section 9) -- see pointwise_gradient_statistics.parquet's zero_variance_flag column; no variance-floor policy is prespecified, so these cells are flagged but the model still fits on the remaining finite-SNR cells.\nC:\\Users\\Brandon Shen\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\statsmodels\\regression\\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.\n  warnings.warn(msg, ConvergenceWarning)\nC:\\Users\\Brandon Shen\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\statsmodels\\regression\\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.\n  warnings.warn(msg, ConvergenceWarning)\nC:\\Users\\Brandon Shen\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\statsmodels\\regression\\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.\n  warnings.warn(msg, ConvergenceWarning)\n"
+  },
+  {
+    "step_name": "report",
+    "args": [
+      "report",
+      "--config",
+      "C:\\Users\\Brandon Shen\\Documents\\few-qubit-qnn-snr\\configs\\h2_replication_v1_stage1.yaml"
+    ],
+    "exit_code": 0,
+    "wallclock_s": 25.884931802749634,
+    "stdout_tail": "report written to results\\h2_replication_v1\\_pipeline_output_stage1\n",
+    "stderr_tail": "C:\\Users\\Brandon Shen\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\statsmodels\\regression\\mixed_linear_model.py:2237: ConvergenceWarning: The MLE may be on the boundary of the parameter space.\n  warnings.warn(msg, ConvergenceWarning)\n"
+  }
+]

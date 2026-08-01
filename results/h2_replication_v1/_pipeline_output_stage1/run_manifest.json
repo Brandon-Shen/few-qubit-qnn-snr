@@ -1,0 +1,233 @@
+{
+  "experiment_name": "h2_replication_v1_stage1",
+  "config": {
+    "name": "h2_replication_v1_stage1",
+    "seed_root": 3872531887,
+    "seed_streams": {
+      "initialization": 1,
+      "shot_sampling": 2,
+      "optimization": 3,
+      "bootstrap": 4
+    },
+    "task": {
+      "n_qubits": 4,
+      "J": 1.0,
+      "h": 0.5,
+      "expected_E0": -3.427,
+      "expected_Emax": 3.427,
+      "spectrum_tol": 0.005
+    },
+    "circuit": {
+      "depths": [
+        1,
+        2,
+        3,
+        4,
+        6
+      ],
+      "init_low": 0.0,
+      "init_high": 6.283185307179586
+    },
+    "cost_mapping": {
+      "L0": "global",
+      "L1": "local"
+    },
+    "residual": {
+      "gamma_R0": 0.0,
+      "gamma_R1": 1.0,
+      "blocks_per_depth": "one_per_layer",
+      "x0_init": "zeros",
+      "hidden_dim": "n_qubits",
+      "weight_init": "glorot_uniform",
+      "bias_init": "zeros",
+      "gamma_sensitivity_values": [
+        0.5,
+        1.0
+      ]
+    },
+    "gradient": {
+      "modes": [
+        "statevector_exact",
+        "finite_shot_end_to_end"
+      ],
+      "hardware_noisy_enabled": false,
+      "hardware_noisy_kind": "depolarizing"
+    },
+    "budget": {
+      "values": [
+        250,
+        500,
+        1000,
+        2000
+      ],
+      "allocator": "equal_deterministic_remainder",
+      "remainder_policy": "deterministic_sorted",
+      "sensitivity_allocator": "pilot_variance_optimized"
+    },
+    "design": {
+      "n_initializations": 50,
+      "replicates": 30,
+      "configurations": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "pilot": {
+      "replicate_count": {
+        "start_R": 30,
+        "increment": 10,
+        "max_R": 200,
+        "abs_halfwidth_tolerance": 0.05,
+        "rel_halfwidth_tolerance": 0.1,
+        "representative_cells": [
+          {
+            "configuration_id": 1,
+            "depth": 1,
+            "budget": 250
+          },
+          {
+            "configuration_id": 1,
+            "depth": 1,
+            "budget": 2000
+          },
+          {
+            "configuration_id": 1,
+            "depth": 6,
+            "budget": 250
+          },
+          {
+            "configuration_id": 1,
+            "depth": 6,
+            "budget": 2000
+          },
+          {
+            "configuration_id": 8,
+            "depth": 1,
+            "budget": 250
+          },
+          {
+            "configuration_id": 8,
+            "depth": 1,
+            "budget": 2000
+          },
+          {
+            "configuration_id": 8,
+            "depth": 6,
+            "budget": 250
+          },
+          {
+            "configuration_id": 8,
+            "depth": 6,
+            "budget": 2000
+          }
+        ]
+      },
+      "initialization_count": {
+        "start_n": 50,
+        "increment": 25,
+        "max_n": 300,
+        "target_percentile": 90.0,
+        "target_halfwidth": 0.2
+      }
+    },
+    "stats": {
+      "alpha_family_wise": 0.05,
+      "p_value_method": "wald_normal",
+      "variance_zero_policy": "flag_and_stop",
+      "bootstrap": {
+        "iterations_dev": 200,
+        "iterations_publication": 2000,
+        "iterations": 30,
+        "seed": 12345,
+        "min_success_fraction": 0.9,
+        "ci_method": "percentile",
+        "n_workers": 1
+      }
+    },
+    "output": {
+      "results_dir": "results/h2_replication_v1/_pipeline_output_stage1"
+    }
+  },
+  "config_hash": "e6aa0ff9c1e2472d",
+  "git_commit": "6239372cb20a61000259ca9b15864bca0bdbb0cb",
+  "package_versions": {
+    "pennylane": "0.45.1",
+    "numpy": "2.5.1",
+    "pandas": "3.0.3",
+    "scipy": "1.18.0",
+    "statsmodels": "0.14.6",
+    "pyarrow": "25.0.0",
+    "matplotlib": "3.11.0",
+    "yaml": "6.0.3"
+  },
+  "quantum_backend": "pennylane/default.qubit",
+  "host_info": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.12.10",
+    "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel"
+  },
+  "start_time": "2026-08-01T08:16:40.547032+00:00",
+  "end_time": "2026-08-01T08:35:52.665145+00:00",
+  "steps_run": [
+    {
+      "step": "generate-exact",
+      "time": "2026-08-01T08:16:40.628895+00:00",
+      "n_rows": 25600
+    },
+    {
+      "step": "generate-shots:finite_shot_end_to_end",
+      "time": "2026-08-01T08:33:57.860066+00:00",
+      "n_rows": 3072000
+    },
+    {
+      "step": "validate",
+      "time": "2026-08-01T08:34:07.119713+00:00",
+      "passed": true,
+      "n_errors": 0
+    },
+    {
+      "step": "aggregate",
+      "time": "2026-08-01T08:34:36.205385+00:00",
+      "n_cells": 102400
+    },
+    {
+      "step": "fit",
+      "time": "2026-08-01T08:35:26.833704+00:00",
+      "h1_converged": true,
+      "h2h4_converged": true,
+      "n_zero_variance_cells": 585
+    },
+    {
+      "step": "report",
+      "time": "2026-08-01T08:35:52.665145+00:00"
+    }
+  ],
+  "random_seeds": {
+    "seed_root": 3872531887,
+    "seed_streams": {
+      "initialization": 1,
+      "shot_sampling": 2,
+      "optimization": 3,
+      "bootstrap": 4
+    }
+  },
+  "model_formulas": {
+    "H1_exact_signal": "a ~ E*L*R + depth_z + E:depth_z + L:depth_z + R:depth_z",
+    "H2_H4_estimator_snr": "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + L:R:depth_z",
+    "sensitivity_estimator_snr": "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + L:R:depth_z + E:L:depth_z + E:R:depth_z"
+  },
+  "transform_definitions": {
+    "H1_response": "a = asinh(abs(exact_gradient))",
+    "H2_H4_response": "y = asinh(SNR_est)",
+    "depth_standardization": "depth_z = (depth - mean(design.depths)) / std(design.depths, ddof=0)"
+  },
+  "bootstrap_iterations": {},
+  "failed_fit_counts": {},
+  "pilot_status": {}
+}
