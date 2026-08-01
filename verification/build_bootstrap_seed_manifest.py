@@ -35,7 +35,7 @@ POOL_SOURCES = [
 ]
 
 INPUT_FILES = [
-    REPO_ROOT / "results" / "raw" / "finite_shot_end_to_end.parquet",
+    REPO_ROOT / "results" / "production_confirmatory" / "raw" / "finite_shot_end_to_end.parquet",
 ]
 
 
@@ -87,7 +87,7 @@ def main():
             })
 
     manifest = pd.DataFrame(rows).sort_values(["stream", "iteration"])
-    out_path = REPO_ROOT / "results" / "bootstrap_end_to_end_h2_h4_seed_manifest.csv"
+    out_path = REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_seed_manifest.csv"
     manifest.to_csv(out_path, index=False)
     print(f"wrote {out_path} ({len(manifest)} rows across {manifest['stream'].nunique()} streams)")
     print(manifest.groupby(["stream", "status"]).size())

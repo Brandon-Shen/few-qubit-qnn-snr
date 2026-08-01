@@ -22,15 +22,15 @@ Checking `qnn_snr/cli.py` (`cmd_fit`, `cmd_report`) and
   (`initialization_id`, nested by `depth`/`parameter_id`) does not condition
   on mode either. So the model has no way to distinguish which mode a row
   came from — it is fit as if all rows were exchangeable observations.
-- Confirmed empirically: `results/pointwise_gradient_statistics.parquet` has
+- Confirmed empirically: `results/production_confirmatory/pointwise_gradient_statistics.parquet` has
   102,400 `finite_shot_conditional` rows and 102,400 `finite_shot_end_to_end`
   rows, 204,800 total, and refitting `fit_h2h4_model()` on that full,
-  unfiltered table reproduces `results/confirmatory_hypotheses.csv` exactly
+  unfiltered table reproduces `results/production_confirmatory/confirmatory_hypotheses.csv` exactly
   (`E:L=0.023732`, `E:R=0.003528`, `L:R:depth_z=0.000511` — bit-for-bit match
   down to the value stored in the CSV).
 
 So the number currently in `results_and_discussion.md` /
-`results/confirmatory_hypotheses.csv` is a **pooled fit across both modes**,
+`results/production_confirmatory/confirmatory_hypotheses.csv` is a **pooled fit across both modes**,
 not an end-to-end-only fit. This document therefore reports three fits, not
 two: conditional-only, end-to-end-only, and the existing pooled number for
 reference — so the comparison the paper's Methods section actually promises
@@ -40,7 +40,7 @@ reference — so the comparison the paper's Methods section actually promises
 
 Same formula and random-effect structure as the confirmatory fit
 (`H2_H4_FORMULA`, full block-count sweep `D∈{1,2,3,4,6}`), applied to
-`results/pointwise_gradient_statistics.parquet` filtered to a single
+`results/production_confirmatory/pointwise_gradient_statistics.parquet` filtered to a single
 `analysis_mode` value per fit:
 
 ```python
@@ -126,7 +126,7 @@ forward-feature sampling design choice.
 import pandas as pd
 from qnn_snr.stats.models import fit_h2h4_model
 
-pw = pd.read_parquet("results/pointwise_gradient_statistics.parquet")
+pw = pd.read_parquet("results/production_confirmatory/pointwise_gradient_statistics.parquet")
 for mode in ("finite_shot_conditional", "finite_shot_end_to_end"):
     res = fit_h2h4_model(pw[pw["analysis_mode"] == mode])
 ```

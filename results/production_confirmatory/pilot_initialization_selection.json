@@ -1,0 +1,25 @@
+{
+  "selected_n": 50,
+  "candidates": [
+    {
+      "n": 50,
+      "p90_halfwidth": {
+        "E:L": 0.1026212747780318,
+        "E:R": 0.10253728880520716,
+        "L:R:depth_z": 0.07250672321768473
+      },
+      "meets_target": true
+    }
+  ],
+  "assumptions": {
+    "group_var": 0.0011450168924117966,
+    "nested_var": 0.08772285108655965,
+    "resid_sd": 0.40428786682947937,
+    "true_coefs_from_pilot": {
+      "E:L": 0.024995843985971582,
+      "E:R": -0.0009575787575784316,
+      "L:R:depth_z": -0.010178757716721849
+    }
+  },
+  "note": "pilot initializations used to estimate variance components are excluded from the confirmatory dataset"
+}

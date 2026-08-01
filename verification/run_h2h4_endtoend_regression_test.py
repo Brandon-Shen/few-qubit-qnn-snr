@@ -82,7 +82,7 @@ def rss_gb():
 def one_pass(tag: str, checkpoint_path: Path) -> dict:
     """Completely independent load + precompute + 8-iteration run."""
     t0 = time.time()
-    raw_shot_df = read_tidy_dataset(REPO_ROOT / "results" / "raw" / f"{CONFIRMATORY_MODE}.parquet")
+    raw_shot_df = read_tidy_dataset(REPO_ROOT / "results" / "production_confirmatory" / "raw" / f"{CONFIRMATORY_MODE}.parquet")
     t_load = time.time() - t0
     print(f"[{tag}] loaded {len(raw_shot_df)} rows in {t_load:.1f}s; RSS = {rss_gb():.3f} GB", flush=True)
 

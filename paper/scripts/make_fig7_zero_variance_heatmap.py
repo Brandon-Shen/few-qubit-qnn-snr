@@ -1,7 +1,7 @@
 """Figure 7 (fig:zero-variance-heatmap): end-to-end D=1 zero-variance
 exclusion percentage by configuration x budget, annotated with raw
 excluded/total counts. Read directly from
-results/zero_variance_exclusions_d1_config_budget.csv
+results/sensitivity_analyses/zero_variance_exclusions_d1_config_budget.csv
 (verification/run_zero_variance_audit.py) -- nothing retyped by hand.
 
 The near-total zero column-block for configurations 3, 5, 7, 8 (all L=1) is
@@ -26,7 +26,7 @@ from plot_style import TEXT_WIDTH_IN, ANNOTATION_FONT_SIZE, apply_style
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_PATH = Path(__file__).resolve().parents[1] / "figures" / "fig7_zero_variance_exclusion_rates.pdf"
 
-df = pd.read_csv(REPO_ROOT / "results" / "zero_variance_exclusions_d1_config_budget.csv")
+df = pd.read_csv(REPO_ROOT / "results" / "sensitivity_analyses" / "zero_variance_exclusions_d1_config_budget.csv")
 budgets = [250, 500, 1000, 2000]
 configs = list(range(1, 9))
 

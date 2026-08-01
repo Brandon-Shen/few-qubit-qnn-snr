@@ -59,13 +59,13 @@ Modestly, and mostly in the E_L/E_R direction rather than L_R:
   genuinely borderline case whose sub-/super-additive label flips with small
   changes in which rows feed the RMS, not a robust qualitative finding in
   either direction**. The flip itself is the useful piece of information:
-  it says the L_R fold-change label in the existing `results/interaction_indices.csv`
+  it says the L_R fold-change label in the existing `results/production_confirmatory/interaction_indices.csv`
   (pooled, "sub-additive") should not be read as a confident categorical
   claim.
 
 ## 2. Bias distribution and sign-agreement fraction, split by mode
 
-Computed directly from `results/pointwise_gradient_statistics.parquet`
+Computed directly from `results/production_confirmatory/pointwise_gradient_statistics.parquet`
 (102,400 cells per mode), not through `configuration_summaries` (which
 would require re-deriving `physics_df`/`resource_df` for no benefit — the
 relevant columns, `absolute_bias`/`bias`/`sign_agreement`/
@@ -123,8 +123,8 @@ level, of the same mechanism invoked in
 import pandas as pd
 from qnn_snr.stats.interactions import compute_interaction_indices
 
-pw = pd.read_parquet("results/pointwise_gradient_statistics.parquet")
-exact_df = pd.read_parquet("results/raw/exact.parquet")
+pw = pd.read_parquet("results/production_confirmatory/pointwise_gradient_statistics.parquet")
+exact_df = pd.read_parquet("results/production_confirmatory/raw/exact.parquet")
 exact_df = exact_df[exact_df["analysis_mode"] == "statevector_exact"]
 
 for mode in ("finite_shot_end_to_end", "finite_shot_conditional"):

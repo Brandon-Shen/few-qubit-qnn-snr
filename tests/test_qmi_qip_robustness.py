@@ -153,12 +153,12 @@ def test_pooled_summary_excludes_failed_fits_but_counts_them(tmp_path, monkeypat
     monkeypatch.setattr(mod, "CKPT_DIR", ckpt_dir)
     monkeypatch.setattr(mod, "POOL_SOURCES", [("regression_a", "h2h4_boot_endtoend_regression_a", 266001)])
     monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
-    (tmp_path / "results").mkdir(exist_ok=True)
+    (tmp_path / "results" / "production_corrected_end_to_end").mkdir(parents=True, exist_ok=True)
     (tmp_path / "verification").mkdir(exist_ok=True)
 
     mod.main()
 
-    summary = pd.read_csv(tmp_path / "results" / "bootstrap_end_to_end_h2_h4_summary.csv")
+    summary = pd.read_csv(tmp_path / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_summary.csv")
     assert (summary["n_pooled"] == 2).all(), "successful-draw count should exclude the 3 failed iterations"
     assert (summary["n_failed"] == 3).all(), "failed-iteration count must still be reported"
     assert np.isclose(summary["fit_failure_rate_pct"].iloc[0], 100 * 3 / 5)
@@ -218,7 +218,7 @@ ADOPTED_COEFFICIENTS = {
     "E:R": -0.0009575787575784316,
     "L:R:depth_z": -0.010178757716721849,
 }
-ADOPTED_DATA_PATH = REPO_ROOT / "results" / "pointwise_gradient_statistics.parquet"
+ADOPTED_DATA_PATH = REPO_ROOT / "results" / "production_confirmatory" / "pointwise_gradient_statistics.parquet"
 
 
 @pytest.mark.skipif(not ADOPTED_DATA_PATH.exists(), reason="full confirmatory dataset not present in this checkout")

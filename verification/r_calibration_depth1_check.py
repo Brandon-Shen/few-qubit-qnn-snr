@@ -1,9 +1,9 @@
 """Task D: re-run the replicate-count (R) pilot calibration for depth=1 cells
 specifically, with max_R raised from the confirmatory config's 200 to 500, to see
-whether the non-convergence documented in results/pilot_replicate_selection.json
+whether the non-convergence documented in results/production_confirmatory/pilot_replicate_selection.json
 (4/8 representative cells, all depth=1) resolves at a higher ceiling.
 
-Does not touch results/pilot_replicate_selection.json or any confirmatory output --
+Does not touch results/production_confirmatory/pilot_replicate_selection.json or any confirmatory output --
 writes only to verification/. Uses the same select_replicate_count() the pipeline's
 `pilot-replicates` CLI command calls, restricted to the depth=1 subset of the
 confirmatory config's prespecified representative_cells (A12) with max_R raised.

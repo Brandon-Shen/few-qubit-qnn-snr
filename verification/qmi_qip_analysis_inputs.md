@@ -23,7 +23,7 @@ document does not change any adopted number; it is a provenance record.
   `verification/mode_pooling_guard.md`) show as modified relative to HEAD --
   i.e. the fitting/bootstrap production code this package depends on is the
   code actually at `3f4c04e`, not a further uncommitted edit.
-- **Raw simulation data provenance**: `results/raw/finite_shot_end_to_end.parquet`
+- **Raw simulation data provenance**: `results/production_confirmatory/raw/finite_shot_end_to_end.parquet`
   (and its `finite_shot_conditional`/`exact` siblings) carry an embedded
   `git_commit` column recorded at generation time:
   `cbbeafa853b0e87e153a783296fed1f9c750681a` ("Replace pilot codebase with
@@ -41,14 +41,14 @@ document does not change any adopted number; it is a provenance record.
 
 | Item | Path | Notes |
 |---|---|---|
-| Pointwise statistics | `results/pointwise_gradient_statistics.parquet` | 204,800 rows (102,400 `finite_shot_end_to_end` + 102,400 `finite_shot_conditional`); SHA-256 `99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342` |
-| Replicate-level finite-shot data (bootstrap inner-resampling source) | `results/raw/finite_shot_end_to_end.parquet` | SHA-256 `22b5e761f461c6bfde7a60a4efa7ac13bc59ae003488be84d2f0c1e57ddb7f39` |
-| (diagnostic-only sibling, not used by the confirmatory bootstrap) | `results/raw/finite_shot_conditional.parquet` | SHA-256 `b15b19088d22a0429f48158cdee5ee3caec52f6819815579b3e6aed189afe413` |
-| Exact-gradient data (H1 only, no finite-shot mode) | `results/raw/exact.parquet` | SHA-256 `77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542` |
+| Pointwise statistics | `results/production_confirmatory/pointwise_gradient_statistics.parquet` | 204,800 rows (102,400 `finite_shot_end_to_end` + 102,400 `finite_shot_conditional`); SHA-256 `99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342` |
+| Replicate-level finite-shot data (bootstrap inner-resampling source) | `results/production_confirmatory/raw/finite_shot_end_to_end.parquet` | SHA-256 `22b5e761f461c6bfde7a60a4efa7ac13bc59ae003488be84d2f0c1e57ddb7f39` |
+| (diagnostic-only sibling, not used by the confirmatory bootstrap) | `results/production_confirmatory/raw/finite_shot_conditional.parquet` | SHA-256 `b15b19088d22a0429f48158cdee5ee3caec52f6819815579b3e6aed189afe413` |
+| Exact-gradient data (H1 only, no finite-shot mode) | `results/production_confirmatory/raw/exact.parquet` | SHA-256 `77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542` |
 | Confirmatory formula | `qnn_snr/stats/models.py:30` | `H2_H4_FORMULA = "y ~ E*L*R + depth_z + log2_budget + E:depth_z + L:depth_z + R:depth_z + L:R:depth_z"` |
 | Official end-to-end fitting function | `qnn_snr.stats.models.fit_h2h4_model` (calls `fit_mixed_model(H2_H4_FORMULA, build_h2h4_dataset(pointwise_df, pool_modes=False), "y")`) | `build_h2h4_dataset` raises `ValueError` if more than one `analysis_mode` value is present unless `pool_modes=True` is passed explicitly |
 | Production CLI confirmatory path | `qnn_snr/cli.py:cmd_fit` (default `--mode` = `CONFIRMATORY_MODE`) | Filters `pw_all` to one mode (line 134/152 region) before calling `fit_h2h4_model`/`fit_sensitivity_model`; a separate `--mode finite_shot_conditional` branch writes only to a `*_diagnostic_*.csv` file and never touches confirmatory outputs |
-| Adopted coefficients record | `results/snr_model_coefficients.csv`, `results/confirmatory_hypotheses.csv`, `results/holm_adjustment.csv` | Regenerated through the guarded `cmd_fit` path per `verification/confirmatory_numbers_adopted.md` |
+| Adopted coefficients record | `results/production_confirmatory/snr_model_coefficients.csv`, `results/production_confirmatory/confirmatory_hypotheses.csv`, `results/production_confirmatory/holm_adjustment.csv` | Regenerated through the guarded `cmd_fit` path per `verification/confirmatory_numbers_adopted.md` |
 | Adoption writeup | `verification/confirmatory_numbers_adopted.md` | End-to-end-only adoption, Holm recomputation, disposition of superseded pooled files |
 | Mode-pooling bug fix | `verification/mode_pooling_guard.md` | Code-level guard added to `build_h2h4_dataset`/`fit_h2h4_model`/`cli.py` call sites |
 
@@ -60,7 +60,7 @@ Ran, fresh, in this session (not copied from any prior derivation):
 import pandas as pd
 from qnn_snr.stats.models import fit_h2h4_model
 
-df = pd.read_parquet("results/pointwise_gradient_statistics.parquet")
+df = pd.read_parquet("results/production_confirmatory/pointwise_gradient_statistics.parquet")
 eo = df[df["analysis_mode"] == "finite_shot_end_to_end"].copy()
 res = fit_h2h4_model(eo)  # raises if mixed-mode; eo is single-mode here
 ```

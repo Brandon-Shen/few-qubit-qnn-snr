@@ -4,7 +4,7 @@ visualizing the narrowing from 9/20 (pooled) to 4/20 (end-to-end-only),
 and specifically that the end-to-end-only wins collapse to the
 block-count-3 cluster.
 
-Data: results/exploratory_results.csv (pooled, the historical record) and
+Data: results/production_confirmatory/exploratory_results.csv (pooled, the historical record) and
 verification/_q1_endtoend_recompute.csv (end-to-end-only, computed earlier
 in this verification pass directly from
 qnn_snr.stats.exploratory.exploratory_configuration_8_comparisons) -- both
@@ -26,7 +26,7 @@ from plot_style import COLOR_SERIES_A, COLOR_SERIES_B, TEXT_WIDTH_IN, apply_styl
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_PATH = Path(__file__).resolve().parents[1] / "figures" / "fig5_q1_comparison.pdf"
 
-pooled = pd.read_csv(REPO_ROOT / "results" / "exploratory_results.csv")
+pooled = pd.read_csv(REPO_ROOT / "results" / "production_confirmatory" / "exploratory_results.csv")
 e2e = pd.read_csv(REPO_ROOT / "verification" / "_q1_endtoend_recompute.csv")
 
 DEPTHS = [1, 2, 3, 4, 6]

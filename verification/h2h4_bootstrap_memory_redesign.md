@@ -20,7 +20,7 @@ up here.
 ## 1. Profiling: where the ~16GB actually goes
 
 Two separate profiling efforts were run against the real combined dataset
-(`results/raw/finite_shot_conditional.parquet` + `finite_shot_end_to_end.parquet`,
+(`results/production_confirmatory/raw/finite_shot_conditional.parquet` + `finite_shot_end_to_end.parquet`,
 6,144,000 rows, 50 unique `initialization_id`, 204,800 distinct
 `(analysis_mode, configuration_id, depth, budget, initialization_id, parameter_id)` cells
 at R=30 replicates/cell):
@@ -202,7 +202,7 @@ satisfied; extending further is a easy follow-up if a larger n is wanted later.
   their existing Wald-based null results, same as at n=8 — "not contradicted," the
   weakest form of corroboration, unchanged by more iterations. No surprises here.
 - None of this changes any confirmatory conclusion — the Wald-based
-  `results/confirmatory_hypotheses.csv` results remain the primary confirmatory analysis
+  `results/production_confirmatory/confirmatory_hypotheses.csv` results remain the primary confirmatory analysis
   throughout, per the same framing `reduced_bootstrap_results.md` used for n=8.
 
 ## 6. RSS reconciliation (Task H, follow-up pass)

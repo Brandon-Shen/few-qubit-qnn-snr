@@ -35,7 +35,7 @@ from plot_style import (  # noqa: E402
 
 
 def main():
-    pw = pd.read_parquet(REPO_ROOT / "results" / "pointwise_gradient_statistics.parquet")
+    pw = pd.read_parquet(REPO_ROOT / "results" / "production_confirmatory" / "pointwise_gradient_statistics.parquet")
     eo_full = pw[pw["analysis_mode"] == "finite_shot_end_to_end"].copy()
 
     # ----- A. Convergence and singularity (adopted full-sweep fit) -----
@@ -100,7 +100,7 @@ def main():
         "abs_diff": vc_var_bfgs - a_diag["nested_param_var"],
     })
     opt_df = pd.DataFrame(optimizer_rows)
-    opt_path = REPO_ROOT / "results" / "model_optimizer_comparison.csv"
+    opt_path = REPO_ROOT / "results" / "sensitivity_analyses" / "model_optimizer_comparison.csv"
     opt_df.to_csv(opt_path, index=False)
     print(f"\n=== B. Optimizer comparison (lbfgs [adopted] vs. bfgs [independent check]) ===")
     print(opt_df.to_string())

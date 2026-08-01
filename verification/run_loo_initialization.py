@@ -45,7 +45,7 @@ def save_checkpoint(rows):
 
 
 def main():
-    pw = pd.read_parquet(REPO_ROOT / "results" / "pointwise_gradient_statistics.parquet")
+    pw = pd.read_parquet(REPO_ROOT / "results" / "production_confirmatory" / "pointwise_gradient_statistics.parquet")
     eo_full = pw[pw["analysis_mode"] == "finite_shot_end_to_end"].copy()
     init_ids = sorted(eo_full["initialization_id"].unique())
     assert len(init_ids) == 50, f"expected 50 initializations, found {len(init_ids)}"
@@ -83,7 +83,7 @@ def main():
         save_checkpoint(rows)
 
     out_df = pd.DataFrame(rows).sort_values("excluded_initialization_id")
-    out_path = REPO_ROOT / "results" / "leave_one_initialization_out_coefficients.csv"
+    out_path = REPO_ROOT / "results" / "sensitivity_analyses" / "leave_one_initialization_out_coefficients.csv"
     out_df.to_csv(out_path, index=False)
     print(f"\nwrote {out_path} ({len(out_df)} rows)")
 

@@ -54,6 +54,6 @@ reproducibly from frozen machine-readable data -- see
 `verification/fig0_el_primary_regeneration.md`. `paper/scripts/structural_check.py`
 no longer reports it as missing, and no numeric value from the old
 (nonexistent) file was used; `I_EL`/`J_EL` were recomputed independently
-two ways from `results/pointwise_gradient_statistics.parquet`
-(end-to-end-mode only) and `results/raw/exact.parquet` and cross-checked
+two ways from `results/production_confirmatory/pointwise_gradient_statistics.parquet`
+(end-to-end-mode only) and `results/production_confirmatory/raw/exact.parquet` and cross-checked
 to `atol=1e-9`.

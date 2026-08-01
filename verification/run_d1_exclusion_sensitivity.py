@@ -50,7 +50,7 @@ def summarize(res, label: str) -> dict:
 
 
 def main():
-    pw = pd.read_parquet(REPO_ROOT / "results" / "pointwise_gradient_statistics.parquet")
+    pw = pd.read_parquet(REPO_ROOT / "results" / "production_confirmatory" / "pointwise_gradient_statistics.parquet")
     eo_full = pw[pw["analysis_mode"] == "finite_shot_end_to_end"].copy()
     eo_d1excl = eo_full[eo_full["depth"] != 1].copy()
 
@@ -115,7 +115,7 @@ def main():
         print(f"  sign agree   : {sign_agree}   CI overlap: {ci_overlap}")
 
     out_df = pd.DataFrame(rows)
-    out_path = REPO_ROOT / "results" / "d1_exclusion_sensitivity_coefficients.csv"
+    out_path = REPO_ROOT / "results" / "sensitivity_analyses" / "d1_exclusion_sensitivity_coefficients.csv"
     out_df.to_csv(out_path, index=False)
     print(f"\nwrote {out_path}")
 

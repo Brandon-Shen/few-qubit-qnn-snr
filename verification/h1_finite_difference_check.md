@@ -2,7 +2,7 @@
 
 Scope: independently verify `total_gradients_exact` (`qnn_snr/gradients.py`), the
 reverse-mode chain-rule assembly that produces `exact_gradient` for every row of
-`results/raw/exact.parquet` and therefore feeds the H1 model (`eta_EL = +0.004346`,
+`results/production_confirmatory/raw/exact.parquet` and therefore feeds the H1 model (`eta_EL = +0.004346`,
 p_holm=0.0135) in `results_and_discussion.md`. This check is standalone and does not
 modify or re-run any pipeline command; it re-derives matched initial-parameter points
 directly from the confirmatory config's own seeding scheme (`qnn_snr/seeds.py`,
@@ -115,7 +115,7 @@ this an artifact of a 2-init subsample?** The confirmatory `H1_FORMULA` has no
 `E:L:depth_z` term (it's absorbed into the constant `E:L`), and the codebase's
 existing `SENSITIVITY_FORMULA`/`fit_sensitivity_model` only extends the *H2–H4*
 (finite-shot SNR) formula, not H1 — there is no ready-made exact-signal sensitivity
-model in `qnn_snr/stats/models.py` to reuse. Since `results/raw/exact.parquet`
+model in `qnn_snr/stats/models.py` to reuse. Since `results/production_confirmatory/raw/exact.parquet`
 already contains the full 50-init × 5-depth exact-signal dataset (25,600 rows, no new
 simulation needed), an ad hoc extension of `H1_FORMULA` with `+ E:L:depth_z` was fit
 directly (`fit_mixed_model`, same machinery the pipeline uses, on the real data —

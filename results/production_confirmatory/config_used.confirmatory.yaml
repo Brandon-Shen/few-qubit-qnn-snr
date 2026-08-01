@@ -1,0 +1,41 @@
+# FROZEN SNAPSHOT: this is a byte-for-byte copy of configs/confirmatory.yaml as
+# it stood when it produced the data in this directory (config_hash
+# bb1fe393a979c8d2, verified against results/production_confirmatory/run_manifest.json).
+# It is archived here so the exact production configuration remains recoverable
+# even if configs/confirmatory.yaml is later edited for a future run (e.g. after
+# a pilot-count update, per the note below). Regenerate the hash yourself with:
+#   python -c "from qnn_snr.config import load_config, config_hash; \
+#              print(config_hash(load_config('results/production_confirmatory/config_used.confirmatory.yaml')))"
+#
+# Publication-scale confirmatory configuration. Replicate and initialization
+# counts here are the pilot-utility *minimums* (Section 17); run
+# `python -m qnn_snr pilot-replicates` / `pilot-initializations` before a real
+# publication run and update `design.replicates` / `design.n_initializations`
+# to the selected values, then re-hash this file (config_hash is recorded in
+# every output so a stale pilot selection is always traceable).
+name: confirmatory
+seed_root: 20260726
+
+task:
+  n_qubits: 4
+  J: 1.0
+  h: 0.5
+
+circuit:
+  depths: [1, 2, 3, 4, 6]
+
+budget:
+  values: [250, 500, 1000, 2000]
+
+design:
+  n_initializations: 50
+  replicates: 30
+  configurations: [1, 2, 3, 4, 5, 6, 7, 8]
+
+gradient:
+  modes: [statevector_exact, finite_shot_conditional, finite_shot_end_to_end]
+
+stats:
+  bootstrap:
+    iterations: 2000
+    min_success_fraction: 0.9

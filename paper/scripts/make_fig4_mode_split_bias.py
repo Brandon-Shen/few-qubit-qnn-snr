@@ -3,7 +3,7 @@ by configuration (1-8), conditional vs. end-to-end mode -- visualizing the
 "conditional beats end-to-end in 8/8 configurations, no exceptions" finding.
 
 Data: verification/_fig4_mode_split_by_config.csv, freshly recomputed in
-this session directly from results/pointwise_gradient_statistics.parquet
+this session directly from results/production_confirmatory/pointwise_gradient_statistics.parquet
 (groupby configuration_id x analysis_mode), not retyped from prose.
 """
 from __future__ import annotations

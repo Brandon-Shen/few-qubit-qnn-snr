@@ -62,7 +62,7 @@ historical runs' conditions did), not a mechanism verified further.
 
 ## Final checkpoint summary
 
-From `results/bootstrap_end_to_end_h2_h4_checkpoints.csv`, using the fixed
+From `results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_checkpoints.csv`, using the fixed
 deterministic pooling order (`regression_a` first, then shards by ascending
 shard-id, iterations ascending within each) needed to define "the first `n`
 draws" when multiple shards ran concurrently. **This order is a documented
@@ -174,10 +174,10 @@ None triggered by this task:
 
 - `verification/summarize_bootstrap_checkpoints.py`,
   `verification/build_bootstrap_seed_manifest.py` (infrastructure)
-- `results/bootstrap_end_to_end_h2_h4_iterations.parquet` (443 rows, lossless)
-- `results/bootstrap_end_to_end_h2_h4_summary.csv`
-- `results/bootstrap_end_to_end_h2_h4_checkpoints.csv` (n=40/100/200/400/443)
-- `results/bootstrap_end_to_end_h2_h4_seed_manifest.csv` (451 rows, includes the excluded duplicate-check stream, clearly labeled)
+- `results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_iterations.parquet` (443 rows, lossless)
+- `results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_summary.csv`
+- `results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_checkpoints.csv` (n=40/100/200/400/443)
+- `results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_seed_manifest.csv` (451 rows, includes the excluded duplicate-check stream, clearly labeled)
 - `verification/_bootstrap_stream_report.json`
 - `paper/scripts/make_fig10_bootstrap_endpoint_stability.py`, `paper/figures/fig10_bootstrap_endpoint_stability.pdf` (final)
 - `paper/scripts/make_fig1_forest.py` (updated to read the pooled end-to-end-only file), `paper/figures/fig1_confirmatory_forest.pdf` (regenerated, n=443 for H2-H4, n=400 for H1 unchanged)

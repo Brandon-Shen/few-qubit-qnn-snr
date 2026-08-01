@@ -156,8 +156,8 @@ def test_zero_denominator_raises_not_epsilon():
 # covered by test_compute_indices_manual_agrees_with_production_function above; repeated here
 # against the REAL repository data, matching the script's own dual-computation cross-check.
 
-REAL_POINTWISE = REPO_ROOT / "results" / "pointwise_gradient_statistics.parquet"
-REAL_EXACT = REPO_ROOT / "results" / "raw" / "exact.parquet"
+REAL_POINTWISE = REPO_ROOT / "results" / "production_confirmatory" / "pointwise_gradient_statistics.parquet"
+REAL_EXACT = REPO_ROOT / "results" / "production_confirmatory" / "raw" / "exact.parquet"
 
 
 @pytest.mark.skipif(not (REAL_POINTWISE.exists() and REAL_EXACT.exists()),

@@ -31,7 +31,7 @@ rather than open-endedly chasing the target number.
 `_precompute_cell_index()` takes whatever `raw_shot_df` it's given and has
 no mode-specific logic, so "rebuilding the precomputed structure for the
 filtered dataset" meant only ever calling it on
-`results/raw/finite_shot_end_to_end.parquet` alone, never on the pooled
+`results/production_confirmatory/raw/finite_shot_end_to_end.parquet` alone, never on the pooled
 concatenation the original pooled-data scripts used. Two new scripts do
 this (both new files, no existing script edited):
 
@@ -171,7 +171,7 @@ Pooled across all 3 seed streams (266001 regression-test draws, 366001,
 ## 5. What this does and doesn't change
 
 No confirmatory conclusion changes. The Wald-based
-`results/confirmatory_hypotheses.csv` (end-to-end-only, adopted in
+`results/production_confirmatory/confirmatory_hypotheses.csv` (end-to-end-only, adopted in
 `verification/confirmatory_numbers_adopted.md`) remains the primary
 confirmatory analysis. This bootstrap rerun's honest bottom line: at the
 achieved n=40, the percentile bootstrap for H2 still does not corroborate

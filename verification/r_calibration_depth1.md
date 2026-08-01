@@ -1,11 +1,11 @@
 # Task D — R-calibration re-check for depth=1, `max_R=500`
 
-Scope: `results/pilot_replicate_selection.json` (the confirmatory run's own pilot
+Scope: `results/production_confirmatory/pilot_replicate_selection.json` (the confirmatory run's own pilot
 output) showed 4 of 8 representative cells — all four at nominal depth=1 — failing to
 converge at the confirmatory config's `max_R=200` ceiling. This re-runs
 `select_replicate_count` (`qnn_snr/pilot.py`, the same function
 `pilot-replicates` calls) restricted to those 4 depth=1 cells, with `max_R` raised to
-500. Does not touch `results/pilot_replicate_selection.json` or any confirmatory
+500. Does not touch `results/production_confirmatory/pilot_replicate_selection.json` or any confirmatory
 output.
 
 Script: `verification/r_calibration_depth1_check.py`. Full output:
@@ -24,7 +24,7 @@ about the *statistic*, not about compute cost.
 | 8 | 1 | 2000 | not converged | not converged | 0.8010 | ~5,130 |
 
 Compare: the 4 depth=6 representative cells (already in
-`results/pilot_replicate_selection.json`, not re-run here) converged at R=40–70 —
+`results/production_confirmatory/pilot_replicate_selection.json`, not re-run here) converged at R=40–70 —
 1.3–2.3× the committed R=30. The one depth=1 cell that converges here needs 9× the
 committed R (270 vs 30); the extrapolated requirement for the worst depth=1 cell
 (config 8, budget 2000) is ~170× the committed R.

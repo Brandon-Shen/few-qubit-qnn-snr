@@ -1,7 +1,7 @@
 # QMI/QIP robustness package -- Task 2: zero-variance exclusion audit
 
 Uses the production `zero_variance_flag` column in
-`results/pointwise_gradient_statistics.parquet` directly (exactly-zero
+`results/production_confirmatory/pointwise_gradient_statistics.parquet` directly (exactly-zero
 across-replicate sample variance, `ddof=1`, `ZERO_VARIANCE_TOL=0.0`,
 `qnn_snr/stats/pointwise.py`) -- not re-derived from any rounded output.
 Confirmed this is the *only* exclusion mechanism the confirmatory model
@@ -64,7 +64,7 @@ question:
 | 7 | 0 | 1 | 1 | 0/200 (0.0%) | 0/200 (0.0%) | 0/200 (0.0%) | 0/200 (0.0%) | 0/800 (0.0%) |
 | 8 | 1 | 1 | 1 | 0/200 (0.0%) | 0/200 (0.0%) | 0/200 (0.0%) | 0/200 (0.0%) | 0/800 (0.0%) |
 
-Full precision in `results/zero_variance_exclusions_d1_config_budget.csv`.
+Full precision in `results/sensitivity_analyses/zero_variance_exclusions_d1_config_budget.csv`.
 Figure `figures/fig7_zero_variance_exclusion_rates.pdf` renders this table as
 an annotated heatmap.
 
@@ -89,7 +89,7 @@ matters in an absolute (not just relative) sense.
 ## Secondary 1 -- end-to-end exclusion rates by configuration, block count, budget (all D)
 
 Full table (320 rows: 8 configs x 5 depths x 4 budgets x 2 modes) in
-`results/zero_variance_exclusions_all_cells.csv`. Depth marginal, end-to-end
+`results/sensitivity_analyses/zero_variance_exclusions_all_cells.csv`. Depth marginal, end-to-end
 mode only (all configs/budgets pooled per depth):
 
 | Depth | Excluded | Total | Pct |
@@ -109,7 +109,7 @@ these depth-marginal exclusions remain exclusively `L=0` (verified: 0
 
 ## Secondary 2 -- conditional-mode exclusion rates, same breakdown (diagnostic only)
 
-Same `results/zero_variance_exclusions_all_cells.csv` file
+Same `results/sensitivity_analyses/zero_variance_exclusions_all_cells.csv` file
 (`analysis_mode` column distinguishes the two). Conditional-mode total:
 1,324 excluded of 102,400 (1.293%), noticeably higher than end-to-end's
 509/102,400 (0.497%) -- consistent with conditional mode's generally
@@ -121,7 +121,7 @@ pattern is identical: 0 of 51,200 `L=1` conditional-mode cells flagged,
 
 ## Secondary 3 -- direct end-to-end vs. conditional comparison at matched cells
 
-`results/zero_variance_exclusions_by_mode.csv` (160 matched
+`results/sensitivity_analyses/zero_variance_exclusions_by_mode.csv` (160 matched
 configuration x depth x budget cells, both modes' total/excluded/pct plus
 `pct_diff_endtoend_minus_conditional`). Conditional mode's rate exceeds
 end-to-end's at most matched cells (median difference across all 160 cells
@@ -166,9 +166,9 @@ with the marginal tables above; `R` is not distinguishable from zero
 ## Files produced
 
 - `verification/run_zero_variance_audit.py`
-- `results/zero_variance_exclusions_d1_config_budget.csv`
-- `results/zero_variance_exclusions_all_cells.csv`
-- `results/zero_variance_exclusions_by_mode.csv`
+- `results/sensitivity_analyses/zero_variance_exclusions_d1_config_budget.csv`
+- `results/sensitivity_analyses/zero_variance_exclusions_all_cells.csv`
+- `results/sensitivity_analyses/zero_variance_exclusions_by_mode.csv`
 - `verification/_zero_variance_d1_marginals.json`
 - `verification/_zero_variance_other_exclusion_reasons.csv` (0 rows, confirms no other exclusion reason)
 - `paper/scripts/make_fig7_zero_variance_heatmap.py`, `paper/figures/fig7_zero_variance_exclusion_rates.pdf`

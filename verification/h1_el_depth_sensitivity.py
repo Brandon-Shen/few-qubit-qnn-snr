@@ -6,7 +6,7 @@ codebase's existing SENSITIVITY_FORMULA only extends the H2-H4 (finite-shot SNR)
 not H1 -- there is no ready-made exact-signal sensitivity model to reuse. This script
 fits an ad hoc extension of H1_FORMULA with "+ E:L:depth_z" directly, using the same
 fit_mixed_model machinery the pipeline uses, on the full confirmatory exact dataset
-(results/raw/exact.parquet, all 50 inits x 5 depths -- no new simulation, fit-only).
+(results/production_confirmatory/raw/exact.parquet, all 50 inits x 5 depths -- no new simulation, fit-only).
 
 Not part of the pipeline; run standalone from the repo root:
     python verification/h1_el_depth_sensitivity.py
@@ -22,7 +22,7 @@ from qnn_snr.schema import read_tidy_dataset
 from qnn_snr.stats.models import H1_FORMULA, build_h1_dataset, fit_mixed_model
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-EXACT_PARQUET = REPO_ROOT / "results" / "raw" / "exact.parquet"
+EXACT_PARQUET = REPO_ROOT / "results" / "production_confirmatory" / "raw" / "exact.parquet"
 FORMULA = H1_FORMULA + " + E:L:depth_z"
 
 

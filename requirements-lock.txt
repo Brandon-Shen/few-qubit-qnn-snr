@@ -1,0 +1,32 @@
+# Exact package versions used to produce the production data in
+# results/production_confirmatory/ (config_hash bb1fe393a979c8d2,
+# see results/production_confirmatory/run_manifest.json) and every
+# figure/table in the manuscript. Pinned exactly, unlike the loose ranges
+# in pyproject.toml, so a reviewer can reproduce the same dependency
+# resolution rather than whatever the ranges resolve to on install day.
+#
+# Python: 3.12.10 (CPython, Windows-11-10.0.26200-SP0; the pipeline has no
+# OS-specific code path, but this is the platform the archived run and
+# pytest suite were validated on)
+#
+# Install with:
+#   python -m venv .venv && <activate> && pip install -r requirements-lock.txt
+#   pip install -e . --no-deps   # installs the qnn_snr package itself, no re-resolution
+#
+# These are the direct dependencies only (matches the manuscript's Software
+# availability and reproducibility information statement); pip will resolve
+# a compatible transitive closure. For full-tree pinning, generate your own
+# `pip freeze` after the above install and diff it against this file.
+
+pennylane==0.45.1
+numpy==2.5.1
+pandas==3.0.3
+scipy==1.18.0
+statsmodels==0.14.6
+pyarrow==25.0.0
+matplotlib==3.11.0
+PyYAML==6.0.3
+
+# dev/test extras (matches pyproject.toml's [project.optional-dependencies].dev)
+pytest==9.1.1
+pytest-cov==7.1.0

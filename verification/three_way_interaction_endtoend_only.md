@@ -10,7 +10,7 @@ implies a confirmatory rejection.
 
 ## Task: pure extraction, no new fit needed
 
-`results/snr_model_coefficients.csv` was already regenerated end-to-end-only
+`results/production_confirmatory/snr_model_coefficients.csv` was already regenerated end-to-end-only
 in the course of adopting the new confirmatory numbers
 (`verification/confirmatory_numbers_adopted.md`, via a real rerun of the
 guarded `cmd_fit` path). `E:L:R` was sitting in that file already — the
@@ -71,6 +71,6 @@ E:L:R,-0.021315055158096483,0.010287355020239497
 
 ```python
 import pandas as pd
-coefs = pd.read_csv("results/snr_model_coefficients.csv")
+coefs = pd.read_csv("results/production_confirmatory/snr_model_coefficients.csv")
 coefs[coefs["coefficient"] == "E:L:R"]
 ```

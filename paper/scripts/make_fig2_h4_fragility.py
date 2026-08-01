@@ -6,7 +6,7 @@ glance. This is the single most important figure in the paper (Section
 All four values are read from real fit-output files -- none retyped from
 the paper's prose:
   - adopted full-sweep confirmatory (end-to-end-only) and "end-to-end-only"
-    (the same fit, by definition): results/snr_model_coefficients.csv
+    (the same fit, by definition): results/production_confirmatory/snr_model_coefficients.csv
   - D>=3 sensitivity, end-to-end-only: verification/_fig2_dge3_endtoend_coefficients.csv
     (freshly refit in this session, reproduces the verification doc's
     numbers bit-for-bit)
@@ -32,7 +32,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 VER_DIR = REPO_ROOT / "verification"
 OUT_PATH = Path(__file__).resolve().parents[1] / "figures" / "fig2_h4_fragility.pdf"
 
-adopted = pd.read_csv(REPO_ROOT / "results" / "snr_model_coefficients.csv")
+adopted = pd.read_csv(REPO_ROOT / "results" / "production_confirmatory" / "snr_model_coefficients.csv")
 adopted_row = adopted[adopted["coefficient"] == "L:R:depth_z"].iloc[0]
 adopted_est, adopted_se = float(adopted_row["estimate"]), float(adopted_row["se"])
 

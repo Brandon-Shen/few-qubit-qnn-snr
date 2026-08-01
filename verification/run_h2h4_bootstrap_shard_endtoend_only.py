@@ -46,7 +46,7 @@ def main():
     seed = BASE_SEED + args.shard_id * SEED_STRIDE
 
     t_load = time.time()
-    shot_df = read_tidy_dataset(REPO_ROOT / "results" / "raw" / f"{CONFIRMATORY_MODE}.parquet")
+    shot_df = read_tidy_dataset(REPO_ROOT / "results" / "production_confirmatory" / "raw" / f"{CONFIRMATORY_MODE}.parquet")
     print(f"[shard {args.shard_id}] loaded {len(shot_df)} rows in {time.time()-t_load:.1f}s", flush=True)
 
     t_pre = time.time()

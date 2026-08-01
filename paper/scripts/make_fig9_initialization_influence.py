@@ -1,7 +1,7 @@
 """Figure 9 (fig:initialization-influence): all 50 leave-one-initialization-out
 estimates for beta_EL, beta_ER, beta_LRD, against the full-data reference
 value. Read directly from
-results/leave_one_initialization_out_coefficients.csv
+results/sensitivity_analyses/leave_one_initialization_out_coefficients.csv
 (verification/run_loo_initialization.py) -- nothing retyped by hand.
 """
 from __future__ import annotations
@@ -19,7 +19,7 @@ from plot_style import COLOR_SERIES_A, COLOR_NEUTRAL, TEXT_WIDTH_IN, ANNOTATION_
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_PATH = Path(__file__).resolve().parents[1] / "figures" / "fig9_initialization_influence.pdf"
 
-df = pd.read_csv(REPO_ROOT / "results" / "leave_one_initialization_out_coefficients.csv")
+df = pd.read_csv(REPO_ROOT / "results" / "sensitivity_analyses" / "leave_one_initialization_out_coefficients.csv")
 
 FULL = {"E:L": 0.024995843985971582, "E:R": -0.0009575787575784316, "L:R:depth_z": -0.010178757716721849}
 LABELS = {"E:L": r"$\beta_{EL}$ (H2)", "E:R": r"$\beta_{ER}$ (H3)", "L:R:depth_z": r"$\beta_{LRD}$ (H4)"}

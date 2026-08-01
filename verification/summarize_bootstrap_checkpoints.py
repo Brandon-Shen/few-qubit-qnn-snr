@@ -95,7 +95,7 @@ def main():
         print(f"  {s['stream']} (seed {s['seed']}): {s['n_success']} success, {s['n_failed']} failed")
 
     # write iteration-level parquet (lossless)
-    iter_path = REPO_ROOT / "results" / "bootstrap_end_to_end_h2_h4_iterations.parquet"
+    iter_path = REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_iterations.parquet"
     if not pooled.empty:
         pooled.to_parquet(iter_path, index=False)
         print(f"wrote {iter_path} ({n_pooled} rows)")
@@ -131,7 +131,7 @@ def main():
             prev[coef] = (lo, hi)
 
     ckpt_df = pd.DataFrame(checkpoint_rows)
-    ckpt_path = REPO_ROOT / "results" / "bootstrap_end_to_end_h2_h4_checkpoints.csv"
+    ckpt_path = REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_checkpoints.csv"
     ckpt_df.to_csv(ckpt_path, index=False)
     print(f"\nwrote {ckpt_path}")
     print(ckpt_df.to_string())
@@ -149,7 +149,7 @@ def main():
             "includes_zero": bool(lo <= 0 <= hi) if np.isfinite(lo) and np.isfinite(hi) else None,
         })
     summary_df = pd.DataFrame(summary_rows)
-    summary_path = REPO_ROOT / "results" / "bootstrap_end_to_end_h2_h4_summary.csv"
+    summary_path = REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_summary.csv"
     summary_df.to_csv(summary_path, index=False)
     print(f"\nwrote {summary_path}")
     print(summary_df.to_string())

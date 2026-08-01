@@ -64,7 +64,7 @@ log-likelihood and random-effect variances** -- this is not merely
 "the same qualitative conclusion," it is numerically the same optimum to
 float-precision-adjacent tolerance. This rules out optimizer-choice
 sensitivity as a concern for the adopted fit. (Full table:
-`results/model_optimizer_comparison.csv`.)
+`results/sensitivity_analyses/model_optimizer_comparison.csv`.)
 
 ## C. Residual diagnostics
 
@@ -181,9 +181,9 @@ as a newly triggered stop condition.
 
 - `verification/run_model_diagnostics.py` (parts A-C)
 - `verification/run_loo_initialization.py` (part D)
-- `results/model_optimizer_comparison.csv`
+- `results/sensitivity_analyses/model_optimizer_comparison.csv`
 - `verification/_residual_diagnostics.json`
 - `verification/_extreme_residuals.csv`
-- `results/leave_one_initialization_out_coefficients.csv`
+- `results/sensitivity_analyses/leave_one_initialization_out_coefficients.csv`
 - `paper/figures/fig8_model_residual_diagnostics.pdf`
 - `paper/scripts/make_fig9_initialization_influence.py`, `paper/figures/fig9_initialization_influence.pdf`

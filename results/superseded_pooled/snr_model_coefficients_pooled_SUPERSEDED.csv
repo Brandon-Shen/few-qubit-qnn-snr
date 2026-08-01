@@ -1,0 +1,18 @@
+# SUPERSEDED snr_model_coefficients.csv: this is the ORIGINAL pooled-mode fit (finite_shot_conditional + finite_shot_end_to_end rows combined into one model with no analysis_mode term -- a bug, not a valid design; see verification/mode_pooling_guard.md and verification/conditional_vs_endtoend_comparison.md). Superseded 2026-07-29 by the end-to-end-only fit now at results/snr_model_coefficients.csv (see verification/confirmatory_numbers_adopted.md). Kept here for reference since the mode-sensitivity finding itself is a reportable result. Re-parse with pandas.read_csv(..., comment="#") to skip this header line.
+coefficient,estimate,se
+Intercept,-0.8814635236561281,0.012400624071508035
+E,0.06803323384463977,0.004172207797532557
+L,0.24635820447132142,0.00431233156058541
+E:L,0.023732497772941185,0.005650149806340926
+R,0.010394641948695686,0.00434267285889508
+E:R,0.0035278500355965282,0.00567454968852962
+L:R,-0.0025664084710346913,0.006093963948710816
+E:L:R,-0.011128089607101935,0.007988124964610509
+depth_z,-0.21729656561307217,0.00636387804790418
+log2_budget,0.15890946116194762,0.0008933464165436074
+E:depth_z,-0.0033612323781451476,0.002082443241018637
+L:depth_z,-0.08595217778738809,0.0029438655209043972
+R:depth_z,0.006007531443787116,0.0029614730151369447
+L:R:depth_z,0.0005109327891797535,0.004162305902218957
+Group Var,0.007364555481926151,0.003167193627132892
+param Var,0.5113968299619153,0.013394437454426306

@@ -2,17 +2,17 @@
 
 Independent cross-check of every specific numeric claim in `paper/main.tex`
 (Abstract, Results §4, Discussion §5, Appendix A) against
-`results/confirmatory_hypotheses.csv`, `results/holm_adjustment.csv`,
-`results/snr_model_coefficients.csv`, `results/pilot_*.json`, the
+`results/production_confirmatory/confirmatory_hypotheses.csv`, `results/production_confirmatory/holm_adjustment.csv`,
+`results/production_confirmatory/snr_model_coefficients.csv`, `results/pilot_*.json`, the
 `verification/*.md` documents, and (where a number wasn't already sitting in
-a summary file) direct recomputation from `results/pointwise_gradient_statistics.parquet`,
+a summary file) direct recomputation from `results/production_confirmatory/pointwise_gradient_statistics.parquet`,
 `results/raw/*.parquet`, and `qnn_snr/` library calls. Every check below was
 run against real files/code in this session, not recalled from memory.
 
 ## Result: 2 real discrepancies found and fixed; everything else confirmed
 
 Both discrepancies traced to the same root cause: two auxiliary output files
-(`results/pilot_initialization_selection.json` and the zero-variance-cell
+(`results/production_confirmatory/pilot_initialization_selection.json` and the zero-variance-cell
 rate computation feeding Section 4.1) were never regenerated after the
 mode-pooling fix (`verification/mode_pooling_guard.md`), even though the
 H2–H4 confirmatory fit itself was. Both are small numeric corrections that
@@ -22,7 +22,7 @@ directly rather than escalated.
 
 ### Fix 1 — Section 4.1, N_init pilot half-widths (stale, pooled-mode assumptions)
 
-`results/pilot_initialization_selection.json`'s `true_coefs_from_pilot`
+`results/production_confirmatory/pilot_initialization_selection.json`'s `true_coefs_from_pilot`
 still held the old pooled-mode point estimates
 (`E:L=0.023732, E:R=0.003528, L:R:depth_z=0.000511`) used to simulate
 candidate-N half-widths, even though `cmd_pilot_initializations` itself was
@@ -50,7 +50,7 @@ clear the 0.20 target with room to spare.
 The stated rates ("$4.3\%$ at block count 1/budget 250 down to $1.3\%$...,
 versus $0.4$–$1.5\%$ at every deeper block count") were checked by computing
 `zero_variance_flag` rates directly from
-`results/pointwise_gradient_statistics.parquet`, filtered three ways:
+`results/production_confirmatory/pointwise_gradient_statistics.parquet`, filtered three ways:
 
 | | depth 1/budget 250 | depth 1/budget 2000 | deeper-depth range |
 |---|---|---|---|
@@ -80,7 +80,7 @@ checked; listing the categories with their verification source):
 
 | Claim category | Source checked | Status |
 |---|---|---|
-| H1–H4 point estimates, SEs, z, raw p, Holm p (§4.2–4.4, Table 2) | `results/confirmatory_hypotheses.csv`, `results/holm_adjustment.csv` (bit-for-bit) | Confirmed |
+| H1–H4 point estimates, SEs, z, raw p, Holm p (§4.2–4.4, Table 2) | `results/production_confirmatory/confirmatory_hypotheses.csv`, `results/production_confirmatory/holm_adjustment.csv` (bit-for-bit) | Confirmed |
 | Bootstrap CIs and achieved $n$ for H1–H4 (Table 2, §4.2–4.4) | `verification/h2h4_bootstrap_memory_redesign.md`, `verification/h2h4_bootstrap_endtoend_only.md` | Confirmed |
 | H1 finite-difference validation (worst rel. error 1.27e-5/9.77e-7, 224 comparisons, 16 points) | `verification/h1_finite_difference_check.md` | Confirmed |
 | H1 ad hoc $E{:}L{:}\widetilde D$ refit ($+0.003805$, $+0.001005$, SE $0.001125$) | `verification/h1_el_depth_sensitivity_results.json` / `.md` | Confirmed (see note below) |
@@ -123,7 +123,7 @@ python -m qnn_snr pilot-initializations --config configs/confirmatory.yaml
 ```
 ```python
 import pandas as pd, numpy as np
-pw = pd.read_parquet("results/pointwise_gradient_statistics.parquet")
+pw = pd.read_parquet("results/production_confirmatory/pointwise_gradient_statistics.parquet")
 for mode in (None, "finite_shot_end_to_end", "finite_shot_conditional"):
     sub = pw if mode is None else pw[pw["analysis_mode"] == mode]
     print(mode, sub.groupby(["depth","budget"])["zero_variance_flag"].mean())

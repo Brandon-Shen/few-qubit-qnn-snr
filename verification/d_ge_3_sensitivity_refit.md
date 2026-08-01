@@ -22,7 +22,7 @@ kept: the mode-sensitivity finding is itself informative.
 
 ### Method (unchanged except for the mode filter)
 
-Same source (`results/pointwise_gradient_statistics.parquet`), same
+Same source (`results/production_confirmatory/pointwise_gradient_statistics.parquet`), same
 `H2_H4_FORMULA` via `fit_h2h4_model()`, same non-recentered `depth_z`
 convention as the original version below — the only change is an added
 `analysis_mode == "finite_shot_end_to_end"` filter alongside
@@ -94,7 +94,7 @@ though it did not prevent convergence and `singular_fit` is still `False`.
 import pandas as pd
 from qnn_snr.stats.models import fit_h2h4_model
 
-pw = pd.read_parquet("results/pointwise_gradient_statistics.parquet")
+pw = pd.read_parquet("results/production_confirmatory/pointwise_gradient_statistics.parquet")
 sub = pw[(pw["analysis_mode"] == "finite_shot_end_to_end") & (pw["depth"].isin([3, 4, 6]))]
 res = fit_h2h4_model(sub)
 ```
@@ -117,11 +117,11 @@ CSVs in `results/`.
 
 ## Method
 
-1. Source data: `results/pointwise_gradient_statistics.parquet`, the pointwise
+1. Source data: `results/production_confirmatory/pointwise_gradient_statistics.parquet`, the pointwise
    `(analysis_mode, configuration, matched parameter, depth, budget,
    initialization)` cell table already computed from
-   `results/raw/finite_shot_end_to_end.parquet` and
-   `results/raw/finite_shot_conditional.parquet` (Section 9 pipeline). This is
+   `results/production_confirmatory/raw/finite_shot_end_to_end.parquet` and
+   `results/production_confirmatory/raw/finite_shot_conditional.parquet` (Section 9 pipeline). This is
    a precomputed superset of the full-sweep confirmatory input — no new
    simulation was run, consistent with the instruction that this is a subset
    of already-generated data.
@@ -215,7 +215,7 @@ D≥3 subsetting introduced.
 import pandas as pd
 from qnn_snr.stats.models import fit_h2h4_model
 
-pw = pd.read_parquet("results/pointwise_gradient_statistics.parquet")
+pw = pd.read_parquet("results/production_confirmatory/pointwise_gradient_statistics.parquet")
 sub = pw[pw["depth"].isin([3, 4, 6])]
 res = fit_h2h4_model(sub)
 # res.params["E:R"], res.bse["E:R"], res.params["L:R:depth_z"], res.bse["L:R:depth_z"]

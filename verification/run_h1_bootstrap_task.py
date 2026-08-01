@@ -28,7 +28,7 @@ def main():
     ap.add_argument("--iterations", type=int, default=2000)
     args = ap.parse_args()
 
-    exact_df = read_tidy_dataset(REPO_ROOT / "results" / "raw" / "exact.parquet")
+    exact_df = read_tidy_dataset(REPO_ROOT / "results" / "production_confirmatory" / "raw" / "exact.parquet")
     exact_df = exact_df[exact_df["analysis_mode"] == "statevector_exact"]
     print(f"[{time.strftime('%H:%M:%S')}] loaded {len(exact_df)} exact-signal rows; "
           f"target {args.iterations} iterations, checkpointing to {CHECKPOINT_PATH}", flush=True)

@@ -1,7 +1,7 @@
 """Figure 10 (fig:bootstrap-endpoint-stability): lower endpoint, median, and
 upper endpoint of the percentile bootstrap CI for beta_EL, beta_ER,
 beta_LRD, plotted against completed iteration count, from
-results/bootstrap_end_to_end_h2_h4_checkpoints.csv
+results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_checkpoints.csv
 (verification/summarize_bootstrap_checkpoints.py) -- makes the endpoint
 *trajectory* visible (per the QMI/QIP prompt: "do not claim endpoint
 stability merely because the median is stable; discuss the endpoint
@@ -21,7 +21,7 @@ from plot_style import COLOR_SERIES_A, COLOR_SERIES_B, COLOR_NEUTRAL, TEXT_WIDTH
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_PATH = Path(__file__).resolve().parents[1] / "figures" / "fig10_bootstrap_endpoint_stability.pdf"
 
-df = pd.read_csv(REPO_ROOT / "results" / "bootstrap_end_to_end_h2_h4_checkpoints.csv")
+df = pd.read_csv(REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_checkpoints.csv")
 LABELS = {"E:L": r"$\beta_{EL}$ (H2)", "E:R": r"$\beta_{ER}$ (H3)", "L:R:depth_z": r"$\beta_{LRD}$ (H4)"}
 
 apply_style()

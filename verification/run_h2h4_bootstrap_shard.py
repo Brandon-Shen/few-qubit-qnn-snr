@@ -45,7 +45,7 @@ def main():
     seed = BASE_SEED + args.shard_id * SEED_STRIDE
 
     t_load = time.time()
-    parts = [read_tidy_dataset(REPO_ROOT / "results" / "raw" / f"{m}.parquet") for m in SHOT_MODES]
+    parts = [read_tidy_dataset(REPO_ROOT / "results" / "production_confirmatory" / "raw" / f"{m}.parquet") for m in SHOT_MODES]
     shot_df = pd.concat(parts, ignore_index=True)
     print(f"[shard {args.shard_id}] loaded {len(shot_df)} rows in {time.time()-t_load:.1f}s; "
           f"seed={seed}, target={args.iterations} iterations, checkpoint={checkpoint_path}", flush=True)

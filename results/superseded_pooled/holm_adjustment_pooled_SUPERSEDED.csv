@@ -1,0 +1,6 @@
+# SUPERSEDED holm_adjustment.csv: this is the ORIGINAL pooled-mode fit (finite_shot_conditional + finite_shot_end_to_end rows combined into one model with no analysis_mode term -- a bug, not a valid design; see verification/mode_pooling_guard.md and verification/conditional_vs_endtoend_comparison.md). Superseded 2026-07-29 by the end-to-end-only fit now at results/holm_adjustment.csv (see verification/confirmatory_numbers_adopted.md). Kept here for reference since the mode-sensitivity finding itself is a reportable result. Re-parse with pandas.read_csv(..., comment="#") to skip this header line.
+hypothesis,coefficient_label,p_unadjusted,p_holm,reject_after_holm,family_wise_alpha
+H1,eta_EL,0.004482168916526863,0.013446506749580589,True,0.05
+H2,beta_EL,2.6652538445137708e-05,0.00010661015378055083,True,0.05
+H3,beta_ER,0.5341411805331999,1.0,False,0.05
+H4,beta_LRd,0.9023032159273534,1.0,False,0.05

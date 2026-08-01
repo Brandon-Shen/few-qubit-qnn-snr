@@ -96,7 +96,7 @@ concurrent load from the H2–H4 run, vs. ~4.8s/iteration measured in isolation 
 smaller and more explicable effect than the H2–H4 wall-clock oddity above). 0 failed
 iterations.
 
-| coefficient | Wald point estimate | **Wald 95% CI** (`results/confirmatory_hypotheses.csv`) | **Bootstrap percentile 95% CI (n=400)** |
+| coefficient | Wald point estimate | **Wald 95% CI** (`results/production_confirmatory/confirmatory_hypotheses.csv`) | **Bootstrap percentile 95% CI (n=400)** |
 |---|---|---|---|
 | `eta_EL` (H1) | 0.004346 | [0.001349, 0.007343] | **[0.000810, 0.008027]** |
 

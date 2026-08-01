@@ -1,5 +1,14 @@
 # Results and Discussion — QNN-SNR Confirmatory Run
 
+> **SUPERSEDED — historical draft, narrates pre-fix pooled-mode numbers.**
+> This document predates the mode-pooling bug fix (`verification/mode_pooling_guard.md`)
+> and the manuscript itself. Its H2-H4 coefficients and discussion reflect the
+> pooled-mode fit now archived under `results/superseded_pooled/`, not the
+> adopted end-to-end-only record in `results/production_confirmatory/`. For
+> the current, citable results and discussion, see `paper/main.tex` (the
+> manuscript) and `verification/confirmatory_numbers_adopted.md`. Kept here
+> unedited for its process/provenance narrative, not for its numbers.
+
 Run: `configs/confirmatory.yaml`, `config_hash=bb1fe393a979c8d2`, git commit `cbbeafa8`.
 Generated from `results/` (this run); the prior `results/` contents — a `configs/smoke.yaml`
 run explicitly marked "not statistically meaningful — do not use for any reported result" —

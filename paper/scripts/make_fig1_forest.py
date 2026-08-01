@@ -4,9 +4,9 @@ and bootstrap percentile CIs at the achieved n, plus Holm-adjusted p labels.
 
 All numbers are read directly from real result files -- nothing here is
 retyped from the paper's prose:
-  - Wald estimate/SE/p_holm: results/confirmatory_hypotheses.csv
+  - Wald estimate/SE/p_holm: results/production_confirmatory/confirmatory_hypotheses.csv
   - H1 bootstrap draws (n=400): verification/_bootstrap_checkpoints/h1_boot.parquet
-  - H2-H4 bootstrap draws: results/bootstrap_end_to_end_h2_h4_iterations.parquet
+  - H2-H4 bootstrap draws: results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_iterations.parquet
     (verification/summarize_bootstrap_checkpoints.py's pooled, end-to-end-only-
     only extended-bootstrap output -- QMI/QIP robustness package Task 4.
     Deliberately excludes the old pooled-mode shard checkpoints
@@ -32,10 +32,10 @@ from plot_style import (
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_PATH = Path(__file__).resolve().parents[1] / "figures" / "fig1_confirmatory_forest.pdf"
 
-conf = pd.read_csv(REPO_ROOT / "results" / "confirmatory_hypotheses.csv")
+conf = pd.read_csv(REPO_ROOT / "results" / "production_confirmatory" / "confirmatory_hypotheses.csv")
 
 h1_draws = pd.read_parquet(REPO_ROOT / "verification" / "_bootstrap_checkpoints" / "h1_boot.parquet")
-h2h4_draws = pd.read_parquet(REPO_ROOT / "results" / "bootstrap_end_to_end_h2_h4_iterations.parquet")
+h2h4_draws = pd.read_parquet(REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_iterations.parquet")
 
 ROWS = [
     # (row label, hypothesis, coefficient name, bootstrap draw source, draw column)

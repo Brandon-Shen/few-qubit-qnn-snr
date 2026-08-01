@@ -136,6 +136,19 @@ outputs of the default configs. Enabling it requires explicitly setting
 
 ## A15b. Blocks do not share a continued statevector (self-contained nodes)
 
+**RESOLVED.** This reading is confirmed correct -- see `paper/main.tex`
+Appendix A.2 ("Block-semantics resolution") and
+`verification/depth_semantics_resolution.md` for the full verification
+record (finite-difference agreement under the self-contained reading,
+disagreement under the continued-statevector alternative). The "if this
+reading turns out not to match the review paper's intent" hedge at the end
+of this item is now historical: it did not, the alternative was tested and
+rejected, and downstream depth-dependent conclusions in the paper are not
+contingent on this being revisited further. One narrower wording tension
+(the companion review's prose about the E=1 restricted schedule) remains
+noted as an underspecification in that source paper, not an open question
+about this implementation -- see `depth_semantics_resolution.md` Section 7.
+
 This is the single most consequential implementation choice in the codebase,
 so it is documented in detail.
 

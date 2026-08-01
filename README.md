@@ -12,10 +12,22 @@ every implementation detail (how the residual architecture's classical
 input enters the circuit, how depth maps onto hybrid blocks, the p-value
 engine, etc.); every such choice is documented there with a rationale, is
 exposed as a config field with a documented default, and is echoed into
-every run's `run_manifest.json`. One item in particular (`A15b`, whether
-blocks share a continued statevector or are self-contained circuits) is
-flagged as worth double-checking against the paper's actual intent before
-treating depth-dependent conclusions as final.
+every run's `run_manifest.json`.
+
+**Block semantics are resolved, not open.** An earlier draft of this
+README flagged whether blocks share a continued statevector or are
+self-contained circuits (`ASSUMPTIONS.md` item `A15b`) as needing
+double-checking before trusting depth-dependent conclusions. That question
+has since been settled: the implementation uses self-contained blocks
+connected only by classical features, confirmed against black-box finite
+differences (a continued-state alternative tested during development did
+not agree with them). See `paper/main.tex` Appendix A.2
+("Block-semantics resolution") for the full argument, and
+`verification/depth_semantics_resolution.md` for the underlying
+verification record (which also flags one remaining wording tension in the
+companion review's prose about the E=1 restricted schedule -- an
+underspecification in that source paper, not an open implementation
+question here).
 
 ## Install
 
@@ -26,6 +38,26 @@ pip install -e ".[dev]"
 Requires Python 3.11+. Uses PennyLane (`default.qubit`) for statevector
 simulation, `statsmodels` `MixedLM` for the confirmatory mixed models, and
 `pyarrow`/pandas for the tidy Parquet dataset.
+
+**For an exact reproduction of the manuscript's environment**, use the
+pinned lockfile instead of the loose ranges above:
+
+```
+python -m venv .venv
+.venv\Scripts\activate        # or `source .venv/bin/activate` on Linux/macOS
+pip install -r requirements-lock.txt
+pip install -e . --no-deps
+```
+
+`requirements-lock.txt` pins the exact versions recorded in
+`results/production_confirmatory/run_manifest.json` and the paper's
+Software Availability statement (Python 3.12.10; pennylane 0.45.1; numpy
+2.5.1; pandas 3.0.3; scipy 1.18.0; statsmodels 0.14.6; pyarrow 25.0.0;
+matplotlib 3.11.0; PyYAML 6.0.3). This exact combination has been verified
+in a clean venv to install without conflicts and pass the full test suite
+(`pytest tests/ -q`, 156/156). `pyproject.toml`'s ranges are looser and will
+resolve to whatever the newest compatible releases are on install day,
+which may drift by a patch version or two.
 
 ## Pipeline
 
@@ -55,21 +87,36 @@ from the pilot utilities before a real run; see Section 17 / `qnn_snr/pilot.py`)
 
 `generate-exact` and `generate-shots` skip regeneration if their output
 already exists (pass `--overwrite` to force); `bootstrap` checkpoints to
-`results/_checkpoints/` and resumes automatically. Every command prints an
-estimated workload before running the expensive steps.
+`results/_checkpoints/` (gitignored scratch space, not archived output) and
+resumes automatically. Every command prints an estimated workload before
+running the expensive steps.
 
-## Outputs (`results/`)
+**Running the full confirmatory-scale pipeline is a large job**: 8
+configurations x 50 initializations x 30 replicates x 5 depths x 4 budgets
+x 3 gradient modes, plus a 2000-iteration nested bootstrap. Budget
+substantial wall-clock time and memory headroom; the pipeline checkpoints
+so an interrupted `bootstrap` step resumes rather than restarts. A fresh
+`run-all`/step-by-step invocation writes flatly to `<output.results_dir>`
+(default `results/`) -- that is a *new* run's raw working output, separate
+from the archived, categorized production data described next.
 
-Tidy replicate-level data (`raw/*.parquet`, schema in `qnn_snr/schema.py`),
-`data_validation_report.json`, `pointwise_gradient_statistics.parquet`,
-per-model coefficient tables, `confirmatory_hypotheses.csv` (one row each
-for H1-H4, Holm-adjusted), `bootstrap_coefficients.parquet` +
-`bootstrap_diagnostics.json`, `configuration_summaries.csv`,
-`interaction_indices.csv`, `resource_accounting.csv`,
-`exploratory_results.csv`, `assumptions_snapshot.md`,
-`statistical_methods.md`, `results_summary.md`, and `figures/` (12 PNGs).
-See Section 18 of the task spec (or `qnn_snr/report.py`) for what each file
-contains.
+## Outputs and reproducing the manuscript's data
+
+The data behind every reported number, table, and figure is archived under
+`results/`, split into five clearly labeled directories -- see
+**[`results/README.md`](results/README.md)** for the full breakdown
+(`production_confirmatory/`, `production_corrected_end_to_end/`,
+`superseded_pooled/`, `sensitivity_analyses/`, `smoke_test/`), SHA-256
+checksums for every file, the exact frozen production config, and the
+**exact command to regenerate every main figure and table** from that
+archived data (no multi-hour rerun required for that -- see below for
+regenerating the raw data itself).
+
+The manuscript commit these files correspond to is recorded in
+[`MANUSCRIPT_COMMIT.txt`](MANUSCRIPT_COMMIT.txt) at the repository root.
+
+For what each output file *means* statistically, see `qnn_snr/report.py`
+and `results/production_confirmatory/statistical_methods.md`.
 
 ## Package layout
 
@@ -88,7 +135,7 @@ qnn_snr/
   pilot.py        replicate-count / initialization-count pilot utilities
   manifest.py     run manifest (config, versions, seeds, git commit, formulas)
   report.py       publication tables + results_summary.md generation
-  figures.py      the 12 required figures
+  figures.py      the report figures (11 PNGs, see results/README.md)
   cli.py          command-line entry points
   stats/
     pointwise.py    per-cell SNR/bias/sign-agreement statistics (Section 9)
@@ -106,3 +153,32 @@ tests/            unit + synthetic-data-recovery + CLI integration tests
 ```
 pytest tests/ -q
 ```
+
+156 tests as of this checkout; see `verification/` for the additional
+audit-trail scripts and records (bootstrap sensitivity, mode-pooling
+correction, sensitivity analyses, regression tests) that back the paper's
+Appendix A and reproducibility index.
+
+## Paper
+
+`paper/main.tex` is the manuscript (`paper/scripts/` regenerates every
+figure from the archived data in `results/`, and
+`paper/scripts/structural_check.py` is a LaTeX-structure sanity check --
+label/ref/includegraphics/environment consistency -- used in place of a
+full `pdflatex` compile, since no LaTeX toolchain is available in this
+checkout). `paper/references.bib` is the bibliography.
+
+## Data and Code availability
+
+This repository *is* the data/code deposit named in the manuscript's
+Data/Code availability statements:
+
+- **Data**: `results/README.md` (five labeled directories, SHA-256 hashes,
+  the exact frozen production config, and per-figure/table reproduction
+  commands).
+- **Code**: `qnn_snr/` (pipeline), `paper/scripts/` (figure generation),
+  `verification/` (audit trail and regression scripts), `tests/`
+  (156-test regression suite).
+- **Exact snapshot**: [`MANUSCRIPT_COMMIT.txt`](MANUSCRIPT_COMMIT.txt)
+  records the commit these numbers were finalized against; check that
+  commit out for a byte-for-byte match to what the manuscript cites.

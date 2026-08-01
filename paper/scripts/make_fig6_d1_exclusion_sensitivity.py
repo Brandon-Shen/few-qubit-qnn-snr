@@ -4,7 +4,7 @@ sensitivity estimates for all three H2-H4 coefficients, 95% Wald CIs.
 Distinct from fig2 (which compares mode and D>=3 for beta_LRD alone) -- this
 figure shows all three coefficients (beta_EL, beta_ER, beta_LRD) under only
 two models (full sweep vs. D!=1), read directly from
-results/d1_exclusion_sensitivity_coefficients.csv (verification/run_d1_exclusion_sensitivity.py).
+results/sensitivity_analyses/d1_exclusion_sensitivity_coefficients.csv (verification/run_d1_exclusion_sensitivity.py).
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ from plot_style import (
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_PATH = Path(__file__).resolve().parents[1] / "figures" / "fig6_d1_exclusion_sensitivity.pdf"
 
-df = pd.read_csv(REPO_ROOT / "results" / "d1_exclusion_sensitivity_coefficients.csv")
+df = pd.read_csv(REPO_ROOT / "results" / "sensitivity_analyses" / "d1_exclusion_sensitivity_coefficients.csv")
 
 COEF_ORDER = [
     ("E:L", r"H2: $\beta_{EL}$"),

@@ -1,7 +1,7 @@
 """QMI/QIP robustness package, Task 2: zero-variance exclusion audit.
 
 Uses the production `zero_variance_flag` column in
-results/pointwise_gradient_statistics.parquet directly (qnn_snr/stats/pointwise.py:
+results/production_confirmatory/pointwise_gradient_statistics.parquet directly (qnn_snr/stats/pointwise.py:
 exactly-zero across-replicate sample variance, ddof=1, ZERO_VARIANCE_TOL=0.0)
 -- not re-derived from any rounded output column.
 
@@ -64,7 +64,7 @@ def by_config_depth_budget(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
-    pw = pd.read_parquet(REPO_ROOT / "results" / "pointwise_gradient_statistics.parquet")
+    pw = pd.read_parquet(REPO_ROOT / "results" / "production_confirmatory" / "pointwise_gradient_statistics.parquet")
     for cfg, (e, l, r) in CONFIG_ELR.items():
         pw.loc[pw["configuration_id"] == cfg, "_E_chk"] = e
     eo = pw[pw["analysis_mode"] == CONFIRMATORY_MODE].copy()
@@ -80,7 +80,7 @@ def main():
 
     # --- Primary table: end-to-end, D=1, config x budget ---
     primary = config_budget_table(eo, depth=1)
-    primary_path = REPO_ROOT / "results" / "zero_variance_exclusions_d1_config_budget.csv"
+    primary_path = REPO_ROOT / "results" / "sensitivity_analyses" / "zero_variance_exclusions_d1_config_budget.csv"
     primary.to_csv(primary_path, index=False)
     print(f"\nwrote {primary_path}")
     print(primary[["configuration_id", "total_all_budgets", "excluded_all_budgets", "pct_all_budgets"]])
@@ -108,7 +108,7 @@ def main():
 
     # --- Secondary 1: end-to-end exclusion rates by config, block count, budget (all D) ---
     eo_all_cells = by_config_depth_budget(eo)
-    eo_all_path = REPO_ROOT / "results" / "zero_variance_exclusions_all_cells.csv"
+    eo_all_path = REPO_ROOT / "results" / "sensitivity_analyses" / "zero_variance_exclusions_all_cells.csv"
     eo_all_cells.insert(0, "analysis_mode", CONFIRMATORY_MODE)
 
     # --- Secondary 2: conditional-mode rates, same breakdown, diagnostic only ---
@@ -124,7 +124,7 @@ def main():
     cond_keyed = cond_all_cells.set_index(["configuration_id", "depth", "budget"])[["total", "excluded", "pct"]]
     matched = eo_keyed.join(cond_keyed, lsuffix="_endtoend", rsuffix="_conditional", how="outer").reset_index()
     matched["pct_diff_endtoend_minus_conditional"] = matched["pct_endtoend"] - matched["pct_conditional"]
-    by_mode_path = REPO_ROOT / "results" / "zero_variance_exclusions_by_mode.csv"
+    by_mode_path = REPO_ROOT / "results" / "sensitivity_analyses" / "zero_variance_exclusions_by_mode.csv"
     matched.to_csv(by_mode_path, index=False)
     print(f"wrote {by_mode_path}")
 

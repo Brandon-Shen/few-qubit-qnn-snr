@@ -31,7 +31,7 @@ L_R), using the exact configuration mapping (`PAIR_SPECS`:
 `("E_L", 1, 2, 3, 5)`) and formula (`combined * baseline / (single_A *
 single_B)`, RMS aggregates) specified for this task.
 
-`results/interaction_indices.csv` exists but is **pooled** (both estimator
+`results/production_confirmatory/interaction_indices.csv` exists but is **pooled** (both estimator
 modes) and was **not used** as a source for `I_EL`.
 `verification/mode_split_descriptive_stats.md` documents the actual
 end-to-end-only derivation the manuscript caption's numbers come from
@@ -44,8 +44,8 @@ only. This gap is what `paper/figure_data/fig0_el_primary_source.csv`
 
 | File | Filter | SHA-256 |
 |---|---|---|
-| `results/pointwise_gradient_statistics.parquet` | `analysis_mode == "finite_shot_end_to_end"` | `99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342` (whole file, unchanged by this task) |
-| `results/raw/exact.parquet` | `analysis_mode == "statevector_exact"` | `77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542` (whole file, unchanged by this task) |
+| `results/production_confirmatory/pointwise_gradient_statistics.parquet` | `analysis_mode == "finite_shot_end_to_end"` | `99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342` (whole file, unchanged by this task) |
+| `results/production_confirmatory/raw/exact.parquet` | `analysis_mode == "statevector_exact"` | `77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542` (whole file, unchanged by this task) |
 
 Per-run hashes of the two files are also recorded directly inside
 `paper/figure_data/fig0_el_primary_source.csv`'s `source_file_sha256`
@@ -53,7 +53,7 @@ column, computed fresh on every script run rather than pasted once.
 
 ## Verified structural properties of the inputs (not assumed)
 
-- `results/raw/exact.parquet`: `budget` is uniformly `0` for
+- `results/production_confirmatory/raw/exact.parquet`: `budget` is uniformly `0` for
   `statevector_exact` rows (no real budget dependence), and there is
   **exactly one row per `(configuration_id, depth, parameter_id,
   initialization_id)` cell** (min and max group size both 1, checked

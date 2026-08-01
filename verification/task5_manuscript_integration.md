@@ -60,11 +60,11 @@ All six files were confirmed to exist on disk before insertion
 ## Numerical values updated
 
 Every number came from a machine-readable file, not memory:
-`results/d1_exclusion_sensitivity_coefficients.csv` (Task 1),
-`results/zero_variance_exclusions_d1_config_budget.csv` and the pointwise
-`zero_variance_flag` column (Task 2), `results/model_optimizer_comparison.csv`
-and `results/leave_one_initialization_out_coefficients.csv` (Task 3),
-`results/bootstrap_end_to_end_h2_h4_summary.csv` and
+`results/sensitivity_analyses/d1_exclusion_sensitivity_coefficients.csv` (Task 1),
+`results/sensitivity_analyses/zero_variance_exclusions_d1_config_budget.csv` and the pointwise
+`zero_variance_flag` column (Task 2), `results/sensitivity_analyses/model_optimizer_comparison.csv`
+and `results/sensitivity_analyses/leave_one_initialization_out_coefficients.csv` (Task 3),
+`results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_summary.csv` and
 `..._checkpoints.csv` (Task 4). Full stale-reference-by-stale-reference
 resolution table: `verification/task5_stale_reference_audit.md`.
 
@@ -151,8 +151,8 @@ in a follow-up task
 (`verification/fig0_el_primary_regeneration.md`): the same production
 interaction-index code (`qnn_snr.stats.interactions.compute_interaction_indices`)
 was independently cross-checked against a from-scratch numpy
-recomputation on `results/pointwise_gradient_statistics.parquet`
-(end-to-end-mode only) and `results/raw/exact.parquet`, both agreeing to
+recomputation on `results/production_confirmatory/pointwise_gradient_statistics.parquet`
+(end-to-end-mode only) and `results/production_confirmatory/raw/exact.parquet`, both agreeing to
 `atol=1e-9` and rounding to the caption's existing values
 ($I_{EL}\to1.034$, $J_{EL}\to1.242$) without those values ever being used
 as inputs. `paper/scripts/structural_check.py` no longer reports this

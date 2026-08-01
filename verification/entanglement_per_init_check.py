@@ -6,7 +6,7 @@ init-to-init sampling noise).
 
 `qnn_snr.stats.descriptive.physics_summary_rows(cfg)` recomputes the exact
 same deterministic (theta_seed, classical_seed)-driven physics diagnostics
-that were averaged into results/configuration_summaries.csv -- calling it
+that were averaged into results/production_confirmatory/configuration_summaries.csv -- calling it
 directly gives the underlying 50-per-(config,depth) values instead of just
 their mean. This is a cheap, deterministic recomputation (no shot sampling,
 no re-simulation of the confirmatory run's stored results), not new science.

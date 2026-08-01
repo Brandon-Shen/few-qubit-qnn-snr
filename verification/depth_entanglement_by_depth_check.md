@@ -10,7 +10,7 @@ literally (trending upward with depth within a given `E`).
 ## 0. Data source
 
 **Update (Task G, follow-up pass): §2's original "sd" column below was not a real error
-bar.** `results/configuration_summaries.csv` only stores the *mean* entropy/purity per
+bar.** `results/production_confirmatory/configuration_summaries.csv` only stores the *mean* entropy/purity per
 `(configuration_id, depth)` cell, already averaged over the 50 matched initializations
 (not 8 as originally stated in this section — corrected below). The original §2 computed
 "sd" as the standard deviation *across the 4 configs sharing a given `E`*, which is a
@@ -20,7 +20,7 @@ all 4 configs are bit-identical) and only reflected `R`'s small systematic depth
 afterward. It said nothing about how noisy any single point estimate actually is. This is
 fixed below using the real per-initialization values.
 
-`results/configuration_summaries.csv`, columns `mean_entanglement_entropy` and
+`results/production_confirmatory/configuration_summaries.csv`, columns `mean_entanglement_entropy` and
 `mean_purity` — computed once per `(configuration_id, depth)` cell by
 `qnn_snr.stats.descriptive.physics_summary_rows` on the confirmatory run's final
 statevector (`entanglement_diagnostics`, `qnn_snr/circuits.py`), averaged over the 50

@@ -113,7 +113,7 @@ docstring. Consequently `config8_final_energy`, `baseline_final_energy`,
 `config8_energy_improves_on_baseline`, `config8_global_fidelity`,
 `baseline_global_fidelity`, and `config8_fidelity_improves_on_baseline`
 were directly compared, cell-by-cell, between the old pooled
-`results/exploratory_results.csv` and this task's end-to-end-only
+`results/production_confirmatory/exploratory_results.csv` and this task's end-to-end-only
 recomputation: **bit-for-bit identical across all 20 cells**
 (`pandas.DataFrame.compare()` on the two column sets returns an empty diff).
 **Q2 required no rerun, and this is now verified rather than assumed.**
@@ -128,12 +128,12 @@ from qnn_snr.stats.descriptive import configuration_summaries, physics_summary_r
 from qnn_snr.stats.exploratory import exploratory_configuration_8_comparisons
 
 cfg = load_config("configs/confirmatory.yaml")
-pw = pd.read_parquet("results/pointwise_gradient_statistics.parquet")
+pw = pd.read_parquet("results/production_confirmatory/pointwise_gradient_statistics.parquet")
 pw_e2e = pw[pw["analysis_mode"] == "finite_shot_end_to_end"]
 
-exact_df = read_tidy_dataset("results/raw/exact.parquet")
+exact_df = read_tidy_dataset("results/production_confirmatory/raw/exact.parquet")
 exact_df = exact_df[exact_df["analysis_mode"] == "statevector_exact"]
-shot_e2e = read_tidy_dataset("results/raw/finite_shot_end_to_end.parquet")
+shot_e2e = read_tidy_dataset("results/production_confirmatory/raw/finite_shot_end_to_end.parquet")
 resource_df = resource_accounting_table(shot_e2e)
 physics_df = pd.DataFrame(physics_summary_rows(cfg))
 

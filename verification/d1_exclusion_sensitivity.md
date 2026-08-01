@@ -16,7 +16,7 @@ written or edited based on this result.**
 
 ## Method
 
-- Source: `results/pointwise_gradient_statistics.parquet`, filtered to
+- Source: `results/production_confirmatory/pointwise_gradient_statistics.parquet`, filtered to
   `analysis_mode == "finite_shot_end_to_end"` (the adopted confirmatory
   mode) for both fits compared here.
 - Full-sweep (adopted): all five depth levels, `D in {1,2,3,4,6}`, 102,400
@@ -40,7 +40,7 @@ written or edited based on this result.**
   formula edits.
 - No Holm correction applied to this sensitivity comparison (per the
   prompt's instruction); the official Holm-adjusted decision remains the
-  full-sweep one in `results/holm_adjustment.csv`.
+  full-sweep one in `results/production_confirmatory/holm_adjustment.csv`.
 
 ## Results
 
@@ -166,7 +166,7 @@ what the stop condition is designed to prevent being written quietly.
 python verification/run_d1_exclusion_sensitivity.py
 ```
 
-Writes `results/d1_exclusion_sensitivity_coefficients.csv` (per-coefficient
+Writes `results/sensitivity_analyses/d1_exclusion_sensitivity_coefficients.csv` (per-coefficient
 full-sweep and `D≠1` estimate/SE/z/p/CI rows, plus a `comparison` row per
 coefficient carrying `abs_change`/`se_units_change`/`sign_agree`/
 `ci_overlap`) and `verification/_d1_exclusion_sensitivity_diagnostics.json`
@@ -175,7 +175,7 @@ coefficient carrying `abs_change`/`se_units_change`/`sign_agree`/
 ## Files produced
 
 - `verification/run_d1_exclusion_sensitivity.py` -- the fitting script.
-- `results/d1_exclusion_sensitivity_coefficients.csv`
+- `results/sensitivity_analyses/d1_exclusion_sensitivity_coefficients.csv`
 - `verification/_d1_exclusion_sensitivity_diagnostics.json`
 - `paper/scripts/make_fig6_d1_exclusion_sensitivity.py`,
   `paper/figures/fig6_d1_exclusion_sensitivity.pdf`

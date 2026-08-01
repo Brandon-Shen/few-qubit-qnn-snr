@@ -12,9 +12,10 @@ caption text, or manuscript prose.
 
 Source-of-truth rules (see verification/fig0_el_primary_regeneration.md):
   - I_EL uses ONLY analysis_mode == "finite_shot_end_to_end" rows from
-    results/pointwise_gradient_statistics.parquet (SNR_est column). The
-    conditional-mode rows in that same file are never touched here.
-  - J_EL uses results/raw/exact.parquet, analysis_mode == "statevector_exact"
+    results/production_confirmatory/pointwise_gradient_statistics.parquet
+    (SNR_est column). The conditional-mode rows in that same file are never
+    touched here.
+  - J_EL uses results/production_confirmatory/raw/exact.parquet, analysis_mode == "statevector_exact"
     (exact_gradient column, absolute value). This mode has no budget/estimator
     dependence at all (budget is uniformly 0, exactly one row per
     (configuration, depth, parameter_id, initialization_id) cell -- verified
@@ -54,8 +55,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 from qnn_snr.stats.interactions import compute_interaction_indices  # noqa: E402
 
-POINTWISE_PATH = REPO_ROOT / "results" / "pointwise_gradient_statistics.parquet"
-EXACT_PATH = REPO_ROOT / "results" / "raw" / "exact.parquet"
+POINTWISE_PATH = REPO_ROOT / "results" / "production_confirmatory" / "pointwise_gradient_statistics.parquet"
+EXACT_PATH = REPO_ROOT / "results" / "production_confirmatory" / "raw" / "exact.parquet"
 CONFIRMATORY_MODE = "finite_shot_end_to_end"
 EXACT_MODE = "statevector_exact"
 

@@ -82,7 +82,7 @@ def main():
     record("00_start")
 
     t0 = time.time()
-    parts = [read_tidy_dataset(REPO_ROOT / "results" / "raw" / f"{m}.parquet") for m in SHOT_MODES]
+    parts = [read_tidy_dataset(REPO_ROOT / "results" / "production_confirmatory" / "raw" / f"{m}.parquet") for m in SHOT_MODES]
     raw_shot_df = pd.concat(parts, ignore_index=True)
     del parts
     t_load = time.time() - t0

@@ -4,4 +4,8 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
-results/
+
+# Working scratch space for an in-progress pipeline run (bootstrap resume
+# checkpoints). Archived/production results live under results/<category>/
+# and ARE tracked -- see results/README.md.
+results/_checkpoints/

@@ -1,0 +1,15 @@
+# Manuscript commit identifier
+#
+# The git commit hash below is the exact repository state (data, config,
+# code, and paper/main.tex) that the submitted manuscript's numbers,
+# figures, and tables were finalized against. `git checkout <hash>` to see
+# a byte-for-byte match to what is cited in the paper.
+#
+# This file is necessarily written in a commit *after* the one it names
+# (a commit cannot contain its own hash), so it points to its immediate
+# parent commit -- see `git log --oneline -2` from this file's commit to
+# confirm.
+
+PENDING: to be filled in by the commit immediately following the one that
+introduces this reproducibility reorganization. See git log for the parent
+commit hash if you are reading this before that follow-up commit lands.
