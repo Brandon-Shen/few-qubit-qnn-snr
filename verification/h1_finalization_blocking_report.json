@@ -1,0 +1,16 @@
+{
+  "status": "blocked_before_analysis_plans",
+  "blocking_condition": "factor_coding_conflict",
+  "baseline_commit": "e69ce1c6ab0f9b93b43c6744391540830ed7ae0b",
+  "freeze_commit": "295f7968a4c3f15b176c1d22a4a5401c3b4dabb4",
+  "branch": "submission-prep-h1-finalization-20260802",
+  "pre_analysis_tag": "pre-h1-finalization-20260802",
+  "manuscript_coding": [-0.5, 0.5],
+  "implementation_coding": [0, 1],
+  "target_affected_by_three_way_interaction": true,
+  "new_analysis_outputs_generated": false,
+  "analysis_plan_commit": null,
+  "final_analysis_commit": null,
+  "final_tag": null,
+  "resolution_required": "Choose historical direct 0/1 estimand, centered effect-coded estimand, or an explicitly labeled primary-plus-sensitivity treatment before plans are frozen."
+}
