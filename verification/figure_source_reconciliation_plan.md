@@ -1,0 +1,7 @@
+# Figure-source and manuscript-reference reconciliation plan
+
+**Status:** reproducibility reconciliation only after remaining scientific outputs freeze; no headline claim edits.
+
+Protect `paper/figure_data/fig0_el_primary_source.csv` at SHA-256 `f89ccd263f2ea2e3fb92aed4677d0e32292851eda316244d014ccd49342a9a11` until this phase. Then inspect its diff/history/tracked blob, generator, PDF, `main.tex`, fig0 tests/records, and corrected/superseded/independent/depth sources. Before any byte change, archive current bytes under `verification/figure_source_archive/` with checksum, starting commit `3a998cd`, and diff. Classify each row as historical J/I, centered, independent, depth, or incomplete regeneration. Regenerate only from frozen authoritative inputs into staging with headless plotting; compare numbers and metadata separately.
+
+Permitted evidence-based outcomes: preserve/incorporate; archive then regenerate corrected; archive/move obsolete; or archive then restore proven accidental. Resolve the path test by adding the actual non-headline figure reference, correcting a demonstrably stale expected path, or formally retiring a superseded figure/generator. Do not weaken checks. No resampling, inference, or multiplicity. Output archive/checksums, reconciled source/PDF if needed, tests, and `verification/figure_source_reconciliation_results.{md,json}`. Stop for unexplained bytes, archive failure, unresolvable identity, or required headline/scientific edit.

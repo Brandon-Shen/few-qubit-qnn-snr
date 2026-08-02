@@ -1,17 +1,9 @@
 # Prepared-state task-metrics plan
 
-**Status:** post-primary descriptive analysis, frozen before new task-metric aggregation.
+**Status:** post-primary descriptive initialization-state analysis; no optimization or final-performance claim.
 
-## Question and inputs
+No authoritative state file exists. Deterministically regenerate through `physics_summary_rows`/`forward_pass_exact` using the two frozen configs, seed roots, `derive_seed` for theta/classical parameters, authoritative circuit/residual code, and `diagonalize_tfim(4,1,.5)`. Before aggregation, reproduce frozen exact gradients for initializations `{0,49}`, configurations `{1,8}`, depths `{1,6}`, all parameters to absolute `1e-10`; stop on mismatch. The target Hamiltonian/ground state must be identical and nondegenerate across objectives/datasets.
 
-Describe prepared-state energy and target overlap at initialization, without implying optimization. Use frozen original and independent-seed exact-generation inputs/outputs and the authoritative circuit, cost, Hamiltonian, and seed code. Prefer deterministically regenerating terminal-block exact states from recorded configuration/depth/initialization seeds only if metrics are not already stored; validate regeneration against existing exact gradients/cost metadata before aggregation.
+Create exactly one row per `(dataset,initialization,configuration,depth)` for 2*50*8*5=4,000 terminal-block prepared states; reject duplicates rather than budget/parameter collapse. Compute raw TFIM energy, normalized energy `(E-E0)/(Emax-E0)`, fidelity `|<psi0|psi>|^2`, and infidelity `1-fidelity`. Assert energy/spectral and normalized/fidelity bounds plus complementarity to `1e-10`. Each state is equally weighted; never parameter/budget weight.
 
-Require all 8 configurations, depths `{1,2,3,4,6}`, matched initialization identity, 50 clusters per dataset, and one state metric per `(dataset,initialization,configuration,depth)`. Remove only exact budget/parameter duplicates after proving metric identity; never weight a state by parameter count or budget. Confirm both L objectives share the same ground state from `qnn_snr.hamiltonian`.
-
-## Metrics and summaries
-
-Calculate terminal-block prepared-state TFIM energy, normalized energy `(E-E0)/(Emax-E0)`, fidelity `|<psi0|psi>|^2`, and infidelity `1-fidelity`, regardless of active L. Assert fidelity/infidelity in `[0,1]` and normalized energy within spectral bounds up to `1e-10`; reject duplicate overcounting.
-
-Summarize separately by dataset/configuration/depth with count, mean, median, SD, Q1, Q3, and IQR. Initialization-cluster percentile intervals for means use 2,000 deterministic resamples (original seed `355001`, independent `355002`), resampling complete initialization profiles and checkpointing every 100. This is descriptive; no p-values or factorial hypothesis tests.
-
-Outputs: `results/task_metrics/prepared_state/` tidy Parquet/CSV, summaries, bootstrap draws/intervals, bounds validation, table/figure source data, supplement-ready table and figure, and a note assessing only whether an obvious descriptive task-metric pattern accompanies gradient interactions. Stop if state regeneration is not uniquely determined, target states differ, bounds fail beyond tolerance, or duplication cannot be resolved authoritatively.
+Separately summarize dataset/configuration/depth count, mean, median, SD, Q1/Q3/IQR, min/max. Bootstrap mean metrics by complete initialization profiles with iteration-keyed seeds 355001/355002, exactly 2,000 completed draws, checkpoint every 100, percentile 95% CI, stop above 1% failure. No tests/p-values/multiplicity. Produce tidy CSV/Parquet, summaries, draws/checkpoints/failures, supplement table, vector figure/PNG/source, bounds and gradient validation, checksums/manifest, and `verification/task_metrics_results.{md,json}` under `results/task_metrics/prepared_state/`. Gradient comparison is side-by-side descriptive only. Stop for nonunique regeneration, target mismatch, bounds/gradient failure, duplicate key, or mixing.

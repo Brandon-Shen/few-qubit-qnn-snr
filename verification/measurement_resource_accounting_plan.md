@@ -1,17 +1,11 @@
 # Measurement and resource-accounting plan
 
-**Status:** implementation audit and descriptive accounting, frozen before generating new resource tables.
+**Status:** implementation audit/descriptive deterministic accounting.
 
-## Scope and sources
+Audit `budget.py`, `gradients.py`, `costs.py`, `circuits.py`, `hamiltonian.py`, `replicate.py`, production config/manifest/raw/pointwise files. Generate one row for every `(configuration,E,L,R,D,B,mode)` across 8 configurations, D `{1,2,3,4,6}`, B `{250,500,1000,2000}`, and conditional/end-to-end modes. No initialization/replicate weighting or stochastic seed.
 
-Inspect `qnn_snr/costs.py`, `gradients.py`, `budget.py`, `circuits.py`, `hamiltonian.py`, configuration/run manifests, raw finite-shot schemas, and existing resource records. Document implemented simulator behavior, not an idealized hardware protocol.
+Freeze implemented definitions: global cost directly samples a Bernoulli with exact overlap probability under abstract job basis `overlap`; no inverse target circuit or target gates are built/counted, so describe one observable setting only within the simulator abstraction. Local energy uses one Z multinomial shared by three open-boundary ZZ terms and one X multinomial shared by four X terms; within-basis term covariance is implicit, cross-basis covariance unused. Conditional mode keeps forward features exact and samples shifted node/terminal jobs; end-to-end also samples forward-Z jobs and nonlinearly re-encodes them. Modes are never pooled.
 
-For global infidelity determine projector/basis/inverse-preparation behavior, estimator conversion, settings/jobs, represented target gates, included and omitted costs, and whether “one basis” is technically accurate. For TFIM energy record Hamiltonian terms, commuting/basis grouping, settings, per-basis allocation, remainder handling, and estimator. Separately document conditional and end-to-end shifted-node, forward-feature, and objective-observable jobs; exact versus resampled quantities; nonlinear re-encoding; and complete-gradient budget distribution.
+Enumerate every job and allocate integer `floor(B/n_jobs)` plus one remainder shot to first sorted `(block,parameter,shift,basis)` jobs. Save total requested/realized shots, total/shifted/forward/node/terminal jobs, objective settings, shot min/mean/median/max, zero-shot jobs, remainder count/order, and objective/mode/depth ratios. Require conservation, nonnegative deterministic allocations, no production zero-shot job, complete table, agreement with raw total_shots, and complete many-to-one join of zero-variance cells on `(mode,configuration,depth,budget)`. Audit the manuscript's D=6 approximately-27% claim using exact job-count numerator/denominator or label unreproduced. No intervals/p-values/multiplicity/resampling.
 
-## Table and invariants
-
-Generate one row per `(configuration,E,L,R,D,B,estimator_mode)` for original implemented design. Include total allocated shots/jobs, shifted jobs, forward-feature jobs, observable settings, min/median/mean/max shots per job, remainder allocation, zero-shot jobs, and gate/cost omissions. Deterministic allocation has no stochastic seed.
-
-Tests require total allocated shots exactly equal B, nonnegative integer allocations, no dropped jobs, reproducible allocation, correct job-count differences including the manuscript's approximate D=6 27% statement, and joinability of every zero-variance pointwise cell to its allocation record. Join zero-variance cells descriptively without causal claims.
-
-Outputs: `verification/measurement_resource_accounting.md`, `results/resource_accounting/resource_table.{csv,parquet}`, `measurement_protocol.json`, `zero_variance_resource_join.csv`, tests, and source manifest. State prominently that total shot budget—not shots per circuit, jobs, physical gates, noise, calibration, or wall-clock cost—is matched. Stop if code paths cannot determine estimator behavior, allocations disagree with raw records, or invariants fail.
+Outputs: `results/resource_accounting/resource_table.{csv,parquet}`, `measurement_protocol.json`, `zero_variance_resource_join.csv`, job details, checksums/manifest, and `verification/measurement_resource_accounting.{md,json}`. Interpretation must distinguish matched total implemented shot budget from circuits/jobs/gates/calibration/noise/readout/wall-clock. Stop for indeterminate protocol, raw/allocation disagreement, nonconservation, incomplete join, or unexplained omission.
