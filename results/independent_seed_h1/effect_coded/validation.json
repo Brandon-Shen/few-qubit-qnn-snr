@@ -1,0 +1,32 @@
+{
+  "rows": 25600,
+  "clusters": 50,
+  "configurations": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "depths": [
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "duplicate_keys": 0,
+  "parameter_counts_by_depth": {
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "6": 24
+  },
+  "seed_root_original": 20260726,
+  "seed_root_independent": 3872531887,
+  "initialization_seed_overlap": []
+}

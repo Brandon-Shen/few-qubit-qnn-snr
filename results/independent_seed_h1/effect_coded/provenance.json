@@ -1,0 +1,18 @@
+{
+  "plan_commit": "7cdb9a2b9a820799fe1b05491f9498b838f5a15c",
+  "analysis_commit": null,
+  "code_head_at_finalization": "cbfb588a077f91e40970d9c406e67b09e8cae3d9",
+  "generated_at_utc": "2026-08-02T17:44:36.575915+00:00",
+  "commands": [
+    "python scripts/run_independent_seed_h1.py",
+    "python scripts/resume_independent_seed_h1_bootstrap.py",
+    "python scripts/finalize_independent_seed_h1.py"
+  ],
+  "input_sha256": {
+    "results/h2_replication_v1/_pipeline_output_stage1/raw/exact.parquet": "70c562c2724f5310330c2ea4bf10efa4b0fd76327dde8becba9ffe1f7d602715",
+    "results/production_confirmatory/raw/exact.parquet": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+    "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv": "f3e8b1c9a2088aba4a6c55acec0dcb6ba394e08fceef73f4db69bdee3f6b92bd",
+    "configs/confirmatory.yaml": "d531ed722df1c5be2b19da6e366f398471f0d72ac3573fc6acecafe4c1e40a3a",
+    "configs/h2_replication_v1_stage1.yaml": "89521e5a483bf8714fa4524d302a83568dedb552b35a26d91d7b4f328072b8e8"
+  }
+}

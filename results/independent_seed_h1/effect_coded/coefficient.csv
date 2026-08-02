@@ -1,0 +1,2 @@
+coefficient,estimate,standard_error,wald_ci_lo,wald_ci_hi,p_unadjusted,bootstrap_ci_lo,bootstrap_median,bootstrap_ci_hi,bootstrap_completed,classification
+E_c:L_c,0.00772562533718829,0.0010888318741472493,0.005591554078640492,0.009859696595736088,1.2903987003390785e-12,0.0034020524731531968,0.007733240384771764,0.011922657345969182,2000,direction retained but magnitude uncertain

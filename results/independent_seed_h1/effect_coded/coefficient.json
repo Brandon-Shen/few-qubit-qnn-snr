@@ -1,0 +1,13 @@
+{
+  "coefficient": "E_c:L_c",
+  "estimate": 0.00772562533718829,
+  "standard_error": 0.0010888318741472493,
+  "wald_ci_lo": 0.005591554078640492,
+  "wald_ci_hi": 0.009859696595736088,
+  "p_unadjusted": 1.2903987003390785e-12,
+  "bootstrap_ci_lo": 0.0034020524731531968,
+  "bootstrap_median": 0.007733240384771764,
+  "bootstrap_ci_hi": 0.011922657345969182,
+  "bootstrap_completed": 2000,
+  "classification": "direction retained but magnitude uncertain"
+}
