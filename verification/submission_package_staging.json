@@ -1,0 +1,11 @@
+{
+  "status":"incomplete_not_zipped",
+  "path":"submission_package/",
+  "missing_dependencies":["sn-jnl.cls","sn-basic.bst"],
+  "all_referenced_figures_present":true,
+  "pdfs_byte_identical_to_supplied":true,
+  "pdfs_outdated_relative_to_current_source":true,
+  "new_overleaf_compile_required":true,
+  "zip_created":false,
+  "local_tex_used":false
+}

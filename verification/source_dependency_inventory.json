@@ -1,0 +1,10 @@
+{
+  "status":"incomplete_overleaf_export",
+  "document_class":{"name":"sn-jnl","options":["pdflatex","sn-basic","Numbered"],"present":false},
+  "missing_required_official_files":["sn-jnl.cls","sn-basic.bst"],
+  "main_packages":["graphicx","amsmath","amssymb","amsfonts","booktabs","braket","array","tabularx","enumitem","seqsplit","appendix"],
+  "supplement_packages":["graphicx","amsmath","amssymb","booktabs","array","tabularx","seqsplit"],
+  "bibliography":{"database":"references.bib","present":true,"style":"sn-basic","style_present":false},
+  "figures":["fig0_el_primary.pdf","fig1_confirmatory_forest.pdf","fig12_j_conditional.pdf","fig13_h1_depth.pdf","fig14_h1_weighting.pdf","fig15_prepared_state_metrics.pdf"],
+  "missing_figures":[],"custom_inputs":[],"source_complete":false
+}
