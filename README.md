@@ -55,7 +55,7 @@ Software Availability statement (Python 3.12.10; pennylane 0.45.1; numpy
 2.5.1; pandas 3.0.3; scipy 1.18.0; statsmodels 0.14.6; pyarrow 25.0.0;
 matplotlib 3.11.0; PyYAML 6.0.3). This exact combination has been verified
 in a clean venv to install without conflicts and pass the full test suite
-(`pytest tests/ -q`, 156/156). `pyproject.toml`'s ranges are looser and will
+(`pytest tests/ -q`, 233/233). `pyproject.toml`'s ranges are looser and will
 resolve to whatever the newest compatible releases are on install day,
 which may drift by a patch version or two.
 
@@ -154,7 +154,7 @@ tests/            unit + synthetic-data-recovery + CLI integration tests
 pytest tests/ -q
 ```
 
-156 tests as of this checkout; see `verification/` for the additional
+233 tests as of this checkout; see `verification/` for the additional
 audit-trail scripts and records (bootstrap sensitivity, mode-pooling
 correction, sensitivity analyses, regression tests) that back the paper's
 Appendix A and reproducibility index.
@@ -178,7 +178,7 @@ Data/Code availability statements:
   commands).
 - **Code**: `qnn_snr/` (pipeline), `paper/scripts/` (figure generation),
   `verification/` (audit trail and regression scripts), `tests/`
-  (156-test regression suite).
+  (233-test regression suite).
 - **Exact snapshot**: [`MANUSCRIPT_COMMIT.txt`](MANUSCRIPT_COMMIT.txt)
   records the commit these numbers were finalized against; check that
   commit out for a byte-for-byte match to what the manuscript cites.
