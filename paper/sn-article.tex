@@ -329,121 +329,74 @@ Anthropic's Claude was used during 2026 for literature-search planning, clarific
 
 \section{Results}
 
-\subsection{Calibration and estimator eligibility}\label{sec:results-calibration}\label{sec:zero-variance-sensitivity}
+\subsection{Calibration and finite-shot eligibility}\label{sec:results-calibration}\label{sec:zero-variance-sensitivity}
 
-The initialization-count criterion was met at $N_{\mathrm{init}}=50$. The replicate-count criterion did not converge uniformly at the committed $R_{\mathrm{rep}}=30$, with the greatest instability at $D=1$. Raising the pilot ceiling to 500 replicates resolved only one of the four worst-affected shallow cells. The shallow-depth estimates should therefore be interpreted as less precisely calibrated than estimates at larger block counts.
+The initialization count was 50 independent top-level clusters. Replicate-count calibration remained weakest at shallow block counts. Exactly zero estimated replicate variance occurred only for $L=0$: 509 of 102,400 end-to-end cells and 1,324 of 102,400 conditional cells, versus none for $L=1$. H2--H4 therefore condition on positive estimated variance; this objective-linked eligibility is retained as a limitation rather than treated as random missingness.
 
-The more consequential issue was factor-dependent eligibility. Exactly zero estimated replicate variance occurred only under the global-cost condition ($L=0$): 509 of 102,400 end-to-end cells and 1,324 of 102,400 conditional cells were excluded, whereas no $L=1$ cell was excluded in either mode (Table~\ref{tab:zero-variance-factor}). The finite-shot model is therefore a conditional analysis rather than an unconditional factorial average. Because eligibility is determined by whether estimated replicate variance is exactly zero, and that outcome is perfectly associated with the objective factor $L$, exclusion functions as selection on a factor level rather than an incidental data-quality filter: cells are not missing at random with respect to $L$. Consequently $\beta_{EL}$ should be read as a contrast restricted to the subpopulation of cells in which $L=0$ happens to produce resolvable variance, not as an estimate of the unconditional factorial interaction; this is a structural property of the plug-in SNR estimand, not an artifact that a larger sample would remove. Excluding $D=1$ leaves the signs of all three finite-shot target coefficients unchanged; $\beta_{EL}$ moves from $0.0250$ to $0.0324$, approximately one original standard error, while $\beta_{ER}$ and $\beta_{LRD}$ change negligibly.
+\subsection{Centered exact-gradient interaction (H1)}\label{sec:h1-result}
 
-\begin{table*}[t]
-\centering
-\small
-\begin{tabularx}{0.82\textwidth}{@{}l>{\centering\arraybackslash}X>{\centering\arraybackslash}X@{}}
-\toprule
-Estimator mode & $L=0$: excluded/total (\%) & $L=1$: excluded/total (\%) \\
-\midrule
-End-to-end & $509/102{,}400$ ($0.497$) & $0/102{,}400$ ($0.000$) \\
-Conditional & $1{,}324/102{,}400$ ($1.293$) & $0/102{,}400$ ($0.000$) \\
-\bottomrule
-\end{tabularx}
-\caption{Exactly-zero replicate-variance exclusions by estimator mode and objective factor. The table describes eligibility for plug-in SNR analysis, not gradient quality or task performance}
-\label{tab:zero-variance-factor}
-\end{table*}
+The corrected centered $E\times L$ exact-gradient interaction was $0.004043$ (SE $0.001081$, Wald 95\% CI $[0.001924,0.006162]$, raw $p=0.000185$, Holm $p=0.000739$). The 2,000-completed-fit initialization-cluster bootstrap had zero failures and a percentile 95\% interval $[0.000473,0.007535]$. H1 is therefore the strongest cross-procedure result.
 
-\subsection{Supported exact-gradient interaction}\label{sec:h1-result}
+The independent-seed estimate was $0.007726$ (Wald 95\% CI $[0.005592,0.009860]$); its 2,000-fit, zero-failure bootstrap interval was $[0.003402,0.011923]$. The positive direction was retained, but the larger point estimate and depth differences leave magnitude stability uncertain.
 
-In the original dataset, the $E\times L$ interaction in exact-gradient magnitude is positive: $\eta_{EL}=0.004346$ (SE $0.001529$), $p=0.00448$, $p_{\mathrm{Holm}}=0.0134$. A matched bootstrap that resamples complete initializations, with 400 completed iterations, gives a percentile interval $[0.000810,0.008027]$, excluding zero in the same direction. Black-box finite differences agree with the assembled hybrid gradient to a worst relative error of $1.27\times10^{-5}$ overall and $9.77\times10^{-7}$ among non-floor-dominated components.
-
-The interaction is super-additive on the transformed exact-gradient scale, contradicting the protocol article's directional expectation of sub-additivity. A post-run depth-moderation term is small and not distinguishable from zero, so the exact-gradient direction is not explained by pooling over block counts with opposing effects. On the secondary multiplicative scale, $J_{EL}=1.242$, corresponding to a 24.2\% super-additive shift in RMS exact-gradient magnitude. This is a descriptive point summary without a separate interval and does not establish a training-time or shot-budget saving. The exact-gradient interaction is the study's primary empirical finding in the original dataset.
+Post-primary depth contrasts were, for $D=1,2,3,4,6$, respectively, $-0.005251$, $-0.003579$, $0.012588$, $0.004664$, and $0.003446$ in the original data, and $0.001862$, $0.003120$, $0.006250$, $0.007885$, and $0.010870$ in the independent-seed data. The original equal-depth average was $0.002374$ (CI $[-0.000164,0.004911]$), whereas its observation-weighted average was $0.004043$ (CI $[0.001929,0.006157]$). The corresponding independent-seed summaries were $0.005997$ (CI $[0.003443,0.008552]$) and $0.007726$ (CI $[0.005597,0.009854]$). Thus the original equal-depth interval includes zero but the observation-weighted interval does not; both independent-seed intervals exclude zero. Observation and parameter weights are identical. Original depth moderation was detected by the mixed model ($\chi^2(4)=22.844$, $p=0.000136$) but not by initialization-clustered inference ($\chi^2(4)=6.008$, $p=0.1985$). Neither independent-seed test rejected (mixed $p=0.1090$; clustered $p=0.7706$). The depth profile is consequently covariance-sensitive, and the cross-seed magnitude difference has no clear depth localization under the frozen rule.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.64\textwidth]{figures/fig0_el_primary.pdf}
-\caption{Secondary multiplicative $E\times L$ indices conditional on $R=0$, shown for exact-gradient magnitude and end-to-end estimator SNR. The reference line at one denotes multiplicative independence. These descriptive indices are not equivalent to the centered mixed-model interactions.}
+\caption{Descriptive multiplicative $E\times L$ indices conditional on $R=0$. $I_{EL\mid R=0}$ summarizes end-to-end estimator SNR and $J_{EL\mid R=0}$ exact-gradient magnitude; neither is a centered mixed-model coefficient. The line at one is the multiplicative no-interaction reference.}
 \label{fig:el-primary}
 \end{figure}
 
+\subsection{Finite-shot interaction (H2)}\label{sec:h2-result}
 
-\subsection{Qualified finite-shot interaction}\label{sec:h2-result}
+Among positive-variance-eligible end-to-end cells, the corrected centered $E\times L$ coefficient was $0.014338$ (SE $0.005145$, Wald 95\% CI $[0.004255,0.024422]$, raw $p=0.005321$, Holm $p=0.015963$). The model-based Wald/Holm rule rejects H2. Its 443-completed-fit nested-bootstrap interval, $[-0.016638,0.043563]$, includes zero. H2 is therefore procedure-sensitive and is not independently corroborated by the nested bootstrap.
 
-Among positive-variance-eligible cells, the protocol-derived mixed model gives $\beta_{EL}=0.024996$ (SE $0.007279$), $p=0.000595$, $p_{\mathrm{Holm}}=0.00238$. The pooled direction matches the exact-gradient interaction, and separate conditional- and end-to-end-mode fits have similar positive point estimates among eligible cells.
+\subsection{Residual-related interactions (H3 and H4)}\label{sec:residual-results}
 
-This model-based rejection is not supported by the alternative inference procedures. The end-to-end nested bootstrap gives $[-0.018024,0.065688]$ after 443 completed iterations; the independently implemented initialization-level resampling interval is $[-0.003038,0.066606]$; and the initialization-clustered robust interval is $[-0.021739,0.068839]$. All include zero. Three of the four distinct analyses applied to this coefficient therefore fail to exclude zero, and only the protocol-derived Wald test does. We treat the coefficient as not robust across inferential methods, rather than describing the three alternative procedures as failed confirmations. Assigning the 509 excluded end-to-end cells zero SNR preserves the positive sign and protocol-derived Wald/Holm decision but shifts the estimate by about one original standard error.
+The corrected centered end-to-end $E\times R$ coefficient averaged across $L$ was $-0.011615$ (SE $0.005144$, Wald 95\% CI $[-0.021697,-0.001534]$, raw $p=0.023937$, Holm $p=0.047875$). The model-based rule rejects H3, but its 443-fit percentile interval $[-0.030943,0.010259]$ includes zero.
 
-Depth dependence is also unresolved. In the original dataset, mixed-model depth-specific contrasts are negative at $D=1,2$ and positive at $D=3,4,6$, but the omnibus depth-moderation result does not survive cluster-robust inference. An independent-seed rerun retains the positive pooled direction at approximately twice the original magnitude, yet is positive at all five block counts. The original and rerun datasets therefore agree at $D=3,4,6$ and disagree at the two shallowest depths, where replicate-count calibration was weakest.
+Post-primary end-to-end contrasts explain the averaging: at $L=0$ the estimate was $-0.000958$ (CI $[-0.015251,0.013336]$, $p=0.896$), whereas at $L=1$ it was $-0.022273$ (CI $[-0.036493,-0.008052]$, $p=0.00214$). All corresponding 443-fit bootstrap intervals include zero. At active depths $D\in\{3,4,6\}$, the L-averaged estimate was $-0.014788$ (CI $[-0.024480,-0.005095]$); $L=0$ remained near zero and $L=1$ was $-0.027449$. Depth-specific averages were $0.006642$, $0.000696$, $-0.026492$, $-0.011553$, and $-0.011255$ at $D=1,2,3,4,6$. Neither model-based ($p=0.545$) nor cluster-robust ($p=0.721$) moderation rejected. Conditional mode reversed direction ($0.006978$, CI $[-0.004745,0.018701]$). Thus H3 is a model-dependent directional signal, objective-specific under end-to-end mode, not a robust or confirmed residual interaction.
 
-
-The original pooled direction is also sensitive to how block counts are weighted. The equal-depth average is $-0.0101$ with a 95\% Wald interval $[-0.0222,0.0020]$, whereas the observation-count-weighted average is $0.0143$ with interval $[0.0042,0.0243]$; the adopted fully pooled mixed-model estimate is $0.0250$ with interval $[0.0107,0.0393]$. Deeper block counts contribute more matched parameters and therefore more rows, not more independent evidence. The independent-seed rerun is positive under both weighting schemes. These weighting differences reinforce that the original finite-shot pooled direction is not a stable, depth-neutral factorial summary.
-
-Taken together, the finite-shot analyses support a positive pooled direction in the protocol-derived primary model but do not establish a stable, depth-independent interaction. Because eligibility is factor dependent and all three alternative intervals include zero, H2 should be interpreted as a model-dependent directional signal rather than as independent confirmation of the exact-gradient result.
+The corrected centered $L\times R\times$depth coefficient was $-0.010179$ (SE $0.005362$, Wald 95\% CI $[-0.020688,0.000331]$, raw and Holm $p=0.057658$). Its 443-fit percentile interval was $[-0.026975,0.006403]$. H4 is not rejected and remains unresolved; this is not evidence of absence.
 
 \begin{table*}[t]
-\centering
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\textwidth}{@{}llrrrr>{\raggedright\arraybackslash}Xcc@{}}
+\centering\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{llrrrrrlll}
 \toprule
-Hyp. & Coef. & Est. & SE & $p$ & $p_{\mathrm{Holm}}$ & Bootstrap 95\% interval ($n$) & \shortstack{Primary Wald/Holm\\decision} & \shortstack{Bootstrap\\agreement} \\
+Hyp. & Estimand & Estimate & SE & Wald 95\% CI & Raw $p$ & Holm $p$ & Decision & Fits & Bootstrap 95\% CI \\
 \midrule
-H1 & $\eta_{EL}$ & $0.00435$ & $0.00153$ & $0.0045$ & $0.0134$ & $[0.00081,0.00803]$ (400) & Reject & Yes \\
-H2 & $\beta_{EL}$ & $0.02500$ & $0.00728$ & $0.0006$ & $0.0024$ & $[-0.01802,0.06569]$ (443) & Reject (model only) & No \\
-H3 & $\beta_{ER}$ & $-0.00096$ & $0.00729$ & $0.896$ & $0.896$ & $[-0.03030,0.02448]$ (443) & Not rejected & N/A$^\dagger$ \\
-H4 & $\beta_{LRD}$ & $-0.01018$ & $0.00536$ & $0.0577$ & $0.115$ & $[-0.02698,0.00640]$ (443) & Not rejected & N/A$^\dagger$ \\
+H1 & $E_cL_c$, exact & 0.004043 & 0.001081 & [0.001924, 0.006162] & 0.000185 & 0.000739 & Reject & 2,000 & [0.000473, 0.007535] \\
+H2 & $E_cL_c$, end-to-end & 0.014338 & 0.005145 & [0.004255, 0.024422] & 0.005321 & 0.015963 & Reject & 443 & [-0.016638, 0.043563] \\
+H3 & $E_cR_c$, end-to-end & -0.011615 & 0.005144 & [-0.021697, -0.001534] & 0.023937 & 0.047875 & Reject & 443 & [-0.030943, 0.010259] \\
+H4 & $L_cR_c\times$depth & -0.010179 & 0.005362 & [-0.020688, 0.000331] & 0.057658 & 0.057658 & Do not reject & 443 & [-0.026975, 0.006403] \\
 \bottomrule
-\end{tabularx}
-\caption{Summary of the protocol-derived hypothesis family, conditional on the reset-per-block implementation. H2--H4 are conditional on positive estimated replicate variance. The primary column reports the protocol-derived model-based Wald/Holm rule; the bootstrap column reports agreement rather than a replacement decision. For H2, three of the four applied inference procedures (nested bootstrap, initialization-level resampling, cluster-robust) include zero; only the protocol-derived Wald test excludes it. We report the model-based decision because it is the prespecified primary rule, not because it is corroborated. $^\dagger$H3 and H4 have no rejection to corroborate; intervals containing zero are consistent with non-rejection but do not establish equivalence}
+\end{tabular}
+\caption{Corrected centered H1--H4 family. Decisions follow the primary model-based Wald/Holm rule. Percentile bootstrap intervals corroborate H1; H2 and H3 intervals include zero despite model-based rejection; H4 is unresolved. Fits are completed bootstrap fits, distinct from the 50 independent initialization clusters.}
 \label{tab:confirmatory-summary}
 \end{table*}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/fig1_confirmatory_forest.pdf}
-\caption{Model-based Wald intervals and matched-bootstrap percentile intervals for H1--H4. H1 is supported by both analyses. H2's protocol-derived Wald interval excludes zero, whereas its bootstrap interval includes zero; the discrepancy is reported directly rather than resolved by selecting the more favorable method}
+\caption{Corrected primary Wald 95\% intervals and initialization-cluster percentile bootstrap intervals for H1--H4, with a zero reference. H1 used 2,000 completed bootstrap fits; H2--H4 used 443. Marker shape and line style distinguish interval types without reliance on color.}
 \label{fig:confirmatory-forest}
 \end{figure}
 
-\subsection{Residual-shortcut and combined-strategy results}\label{sec:residual-results}
+\subsection{Conditional multiplicative indices}
 
-The protocol-derived primary analysis provides no evidence of an $E\times R$ interaction: $\beta_{ER}=-0.000958$, $p_{\mathrm{Holm}}=0.896$. Restricting the analysis to $D\ge3$, where the shortcut is structurally active, gives a similarly near-zero estimate ($-0.002128$, $p=0.761$). This is a non-rejection, not an equivalence result.
+For the original data, $J_{EL\mid R=0}=1.241760$ (bootstrap median $1.238674$, 95\% percentile CI $[1.082210,1.414864]$), 24.2\% above the no-interaction reference of one. At $R=1$, $J_{EL\mid R=1}=1.126633$ (median $1.124329$, CI $[0.991331,1.285152]$), 12.7\% above one; this interval includes one. Independent-seed values were $1.163219$ at $R=0$ (median $1.160949$, CI $[1.007100,1.352596]$) and $1.242137$ at $R=1$ (median $1.238157$, CI $[1.049874,1.449258]$). Each bootstrap completed 2,000 iterations with zero failures. These weighting-dependent ratios are descriptive and conditional on $R$.
 
-The block-count-moderated $L\times R$ coefficient is also not rejected: $\beta_{LRD}=-0.010179$, $p_{\mathrm{Holm}}=0.115$. Its near-boundary raw $p$-value is fragile: the magnitude falls by more than half in the $D\ge3$ subset, conditional and end-to-end fits have opposite signs, and the bootstrap interval includes zero. The data therefore do not support treating H4 as an effect awaiting only more resampling.
+\subsection{Prepared-state metrics and implemented resources}
 
-At the configuration level, the local TFIM-energy objective alone is the best single intervention in all 20 tested depth--budget cells. The fully combined configuration exceeds it in only 4 of 20 cells under the adopted end-to-end estimator. A positive pairwise interaction therefore does not imply that combining every available intervention produces the best system (Figure~\ref{fig:q1-comparison}).
+All bounds, uniqueness, and fidelity--infidelity complementarity checks passed for 4,000 unique terminal-block prepared states at initialization. Cell mean fidelity ranged approximately $0.0338$--$0.0817$ in the original data and $0.0322$--$0.0962$ in the independent-seed data; normalized prepared-state energy means ranged $0.4631$--$0.5529$ and $0.4561$--$0.5537$, respectively. The ranges overlap strongly and show no conspicuous seed-unstable separation descriptively. They do not demonstrate training success or a causal relationship between gradient magnitude and task quality.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.7\textwidth]{figures/fig5_q1_comparison.pdf}
-\caption{Depth--budget grid showing where the fully combined configuration exceeds the best single-intervention configuration on RMS $\snrest$. The left panel shows the superseded pooled-mode result retained for audit transparency; the right panel shows the adopted end-to-end analysis, in which the win count narrows from 9/20 to 4/20}
-\label{fig:q1-comparison}
-\end{figure*}
+All 320 resource-design rows conserve nominal implemented $B$, with no negative allocations or zero-shot production jobs. All 1,833 zero-variance cells joined to complete resource records. At $D=6$, the extremes are 48 jobs for conditional/global and 61 for end-to-end/local, a 27.08\% increase. This is a simulator job-count comparison, not a matched physical-resource or wall-clock claim.
 
-\subsection{Estimator fidelity and measurement cost}
+\subsection{Implementation checks}\label{sec:results-robustness}
 
-The restricted schedule produces lower entanglement entropy and higher reduced-state purity than the baseline schedule at every block count, validating the intended architectural contrast (Figure~\ref{fig:entanglement-diagnostic}). Neither series shows a distinguishable trend with block count, consistent with independently reset quantum blocks rather than a single state accumulating entanglement across layers.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig3_entanglement.pdf}
-\caption{Mean entanglement entropy and purity by block count for the baseline and restricted CNOT schedules, marginalized over the residual factor. Error bars are per-initialization standard errors ($n=50$)}
-\label{fig:entanglement-diagnostic}
-\end{figure*}
-
-Conditional-mode estimates have higher sign agreement and lower absolute bias than end-to-end estimates in all eight configurations. Pooled sign agreement is 0.842, compared with 0.869 in conditional mode and 0.814 in end-to-end mode; median absolute bias is 0.00265 and 0.00416, respectively. Re-estimating and re-encoding intermediate features therefore changes the quality of the update signal supplied to an optimizer, not merely the precision of isolated node-level derivatives (Figure~\ref{fig:mode-split-bias}).
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig4_mode_split_bias.pdf}
-\caption{Sign agreement and median absolute bias by configuration for conditional and end-to-end estimator modes. Conditional mode has higher sign agreement and lower absolute bias in all eight configurations}
-\label{fig:mode-split-bias}
-\end{figure*}
-
-Total shots are matched exactly at each nominal budget, but shots per circuit are not. The energy objective requires two observable bases rather than one, and end-to-end estimation adds forward-feature jobs. These differences reduce per-circuit shots and widen with block count, reaching approximately a 27\% circuit-count difference between the two extremes at $D=6$. The resource claim is therefore limited to matched total shot count.
-\subsection{Robustness and implementation checks}\label{sec:results-robustness}
-
-Black-box finite differences validate the gradient assembly, and an independent BFGS refit reproduces the target mixed-model coefficients to 8--9 significant figures. The adopted fit is non-singular but shows heteroscedasticity by block count and shot budget and moderately heavy-tailed residuals, motivating the cluster-robust sensitivity analysis reported above. Leave-one-initialization-out fits preserve the sign of $\beta_{EL}$ in all 50 deletions, although the largest deletion shifts its magnitude by 1.13 original standard errors; this supports directional stability while reinforcing uncertainty in the precise finite-shot effect size.
-
-A post-run audit also discovered that an early analysis had pooled conditional and end-to-end rows despite their distinct roles. Explicit mode guards were added, the affected analyses were rerun from frozen raw outputs, and regression tests reproduce both the bug and the corrected behavior. The family-level reject/non-reject pattern is unchanged, but H4's estimate and all finite-shot bootstrap results changed materially. This correction is retained as part of the scientific record rather than hidden in a silently revised output. Detailed diagnostics, checkpoint histories, superseded fits, and the complete audit log are provided in the Supplementary Information.
+Black-box finite differences validated gradient assembly, centered and direct models were verified as exact reparameterizations, estimator modes were guarded against pooling, and frozen outputs passed deterministic regeneration and manifest-integrity tests. Detailed optimizer warnings, bootstrap failures, sensitivity results, and historical corrections are reported in Online Resource 1.
 
 \section{Discussion}
 
