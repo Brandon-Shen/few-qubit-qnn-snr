@@ -1,0 +1,27 @@
+{
+  "status": "prospective_editorial_plan",
+  "branch": "submission-manuscript-revision-20260802",
+  "starting_tag": "submission-numerical-results-freeze-v1",
+  "starting_commit": "6ec255cab39a516bfc1cd188c71e0225713605c4",
+  "numerical_freeze_commit": "f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05",
+  "authoritative_manifest": "results/final_submission_v1/manifest.json",
+  "primary_source": "paper/sn-article.tex",
+  "replaces": "paper/main.tex",
+  "supplement_source": "paper/supplemental.tex",
+  "bibliography": "paper/references.bib",
+  "analysis_policy": "read and format frozen results only; no new scientific analysis",
+  "frozen_outputs_mutable": false,
+  "baseline_tests": {"passed": 262, "failed": 2, "skipped": 1, "failure_cause": "authorized main.tex to sn-article.tex transition"},
+  "planned_outputs": [
+    "verification/manuscript_revision_results.md",
+    "verification/manuscript_revision_results.json",
+    "verification/manuscript_claim_audit_results.md",
+    "verification/manuscript_claim_audit_results.json",
+    "verification/manuscript_value_check.json",
+    "paper/sn-article.pdf",
+    "paper/ESM_1.pdf",
+    "submission_package/"
+  ],
+  "validation": ["frozen manifest hashes", "manuscript values", "obsolete values and phrases", "figure sources", "LaTeX references and citations", "clean main build", "clean supplement build", "PDF fonts and page inspection", "self-contained package build", "full pytest"],
+  "stop_conditions": ["missing frozen value", "conflicting frozen sources", "new analysis required", "frozen checksum change", "missing required source", "untraceable supplement result", "compilation failure", "ambiguous author or disclosure fact"]
+}
