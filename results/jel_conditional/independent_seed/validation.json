@@ -1,0 +1,25 @@
+{
+  "dataset": "independent_seed",
+  "rows": 25600,
+  "clusters": 50,
+  "duplicate_keys": 0,
+  "configurations": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "depths": [
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "errors": [],
+  "input_sha256": "70c562c2724f5310330c2ea4bf10efa4b0fd76327dde8becba9ffe1f7d602715"
+}

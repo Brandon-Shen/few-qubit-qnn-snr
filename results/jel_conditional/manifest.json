@@ -1,0 +1,22 @@
+{
+  "plan_commit": "645521db6511ca049d89e64f810e65a3407a7b52",
+  "analysis_commit": "773acc35f24a4941410f2243cd091f149299854c",
+  "inputs": {
+    "original": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+    "independent_seed": "70c562c2724f5310330c2ea4bf10efa4b0fd76327dde8becba9ffe1f7d602715"
+  },
+  "seeds": {
+    "original": 255001,
+    "independent_seed": 255002
+  },
+  "commands": [
+    "python scripts/run_jel_conditional.py"
+  ],
+  "environment": {
+    "python": "3.12.10",
+    "numpy": "2.5.1",
+    "pandas": "3.0.3",
+    "scipy": "1.18.0"
+  },
+  "dataset_pooling": false
+}
