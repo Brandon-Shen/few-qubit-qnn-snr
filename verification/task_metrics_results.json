@@ -1,0 +1,13 @@
+{
+  "status": "post_primary_descriptive",
+  "plan_commit": "645521db6511ca049d89e64f810e65a3407a7b52",
+  "analysis_commit": "9327aca680713423c5820db76b22ed1fb471a3d2",
+  "rows": 4000,
+  "max_cross_seed_mean_fidelity_difference": 0.042386670047084,
+  "max_cross_seed_mean_normalized_energy_difference": 0.07305837128370357,
+  "paths": {
+    "summary": "results/task_metrics/prepared_state/configuration_depth_summary.csv",
+    "gradient_comparison": "results/task_metrics/prepared_state/gradient_metric_comparison.csv",
+    "objective": "results/task_metrics/prepared_state/objective_summary.csv"
+  }
+}
