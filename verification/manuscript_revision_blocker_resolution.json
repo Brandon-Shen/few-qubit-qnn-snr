@@ -1,0 +1,10 @@
+{
+  "prior_blocker_commit":"fb429133ac282c49ee4dd6a47fb5009d818510f8",
+  "local_compilation_blocker":"superseded_by_user_overleaf_artifacts",
+  "local_tex_installed":false,"local_tex_compilation":false,"template_downloaded":false,
+  "verification_methods":["artifact hashes","source/PDF structural comparison","PDF text extraction","frozen-value checker","27-page visual inspection","PDF technical preflight","dependency inventory"],
+  "current_status":"overleaf_recompile_required",
+  "current_blockers":["main page 14 clipped table","ESM page 2 clipped tables","current source newer than supplied PDFs","missing exported sn-jnl.cls","missing exported sn-basic.bst"],
+  "action_list":"verification/overleaf_recompile_actions.md",
+  "final_tag_created":false
+}
