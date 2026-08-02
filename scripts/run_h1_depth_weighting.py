@@ -30,7 +30,7 @@ INPUTS = {
 
 
 def dump(path: Path, value) -> None:
-    path.write_text(json.dumps(value, indent=2, default=float) + "\n")
+    path.write_text(json.dumps(value, indent=2, default=float) + "\n", encoding="utf-8", newline="\n")
 
 
 def model_meta(bundle, raw) -> dict:

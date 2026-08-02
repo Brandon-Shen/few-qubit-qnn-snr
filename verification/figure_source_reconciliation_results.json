@@ -7,7 +7,7 @@
   "archive_sha256":"f89ccd263f2ea2e3fb92aed4677d0e32292851eda316244d014ccd49342a9a11",
   "classification":"valid numeric regeneration; metadata-only difference from tracked source",
   "outcome":"archive then deterministic regeneration and formal manuscript incorporation",
-  "reconciled_csv_sha256":"beae88aa2da0d01686952a5f70704c9853849b18d89fbf3aa92a6bca31b59903",
+  "reconciled_csv_sha256":"d0db4812d881108a7d5d03705ccb2ee8a9fab5bab71f1fc05546a968dba0797d",
   "reconciled_pdf_sha256":"7a6e13a3106388355346dd3ea72f38a2d3b67da94b7ba14b6b51c28aab234149",
   "metric_names":["I_EL_given_R0","J_EL_given_R0"],
   "tests":{"fig0":16,"reconciliation":2,"failed":0}

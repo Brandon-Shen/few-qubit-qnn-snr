@@ -24,3 +24,6 @@
 *.npz     -text
 *.pkl     -text
 *.pickle  -text
+
+# Immutable pre-reconciliation audit archive: preserve its protected bytes.
+verification/figure_source_archive/*.csv -text -diff

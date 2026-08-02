@@ -277,7 +277,7 @@ def main():
         },
     ]
     CSV_OUT.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(rows).to_csv(CSV_OUT, index=False)
+    pd.DataFrame(rows).to_csv(CSV_OUT, index=False, lineterminator="\n")
     print(f"\nwrote {CSV_OUT}")
     print(f"source CSV sha256: {sha256_of(CSV_OUT)}")
 
