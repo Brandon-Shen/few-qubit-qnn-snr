@@ -1,0 +1,30 @@
+{
+  "status": "blocked",
+  "phase": "clean compilation and PDF inspection",
+  "branch": "submission-manuscript-revision-20260802",
+  "starting_tag": "submission-numerical-results-freeze-v1",
+  "starting_commit": "6ec255cab39a516bfc1cd188c71e0225713605c4",
+  "plan_commit": "ea091a8661e64d16821af0e8dc16e01af8439dc4",
+  "blockers": [
+    "no pdflatex, latexmk, bibtex, xelatex, lualatex, or tectonic executable found",
+    "no sn-jnl.cls found",
+    "no sn-basic.bst found"
+  ],
+  "blocked_outputs": [
+    "paper/sn-article.pdf",
+    "paper/ESM_1.pdf",
+    "submission_package/",
+    "verification/manuscript_claim_audit_results.md",
+    "verification/manuscript_revision_results.md",
+    "submission-manuscript-revision-v1 tag"
+  ],
+  "completed_checks": {
+    "manifest_integrity": "pass",
+    "manuscript_value_check": "pass",
+    "abstract_word_count": 186,
+    "focused_tests": {"passed": 6, "failed": 0}
+  },
+  "required_resolution": "provide or authorize a TeX distribution and official Springer Nature sn-jnl.cls/sn-basic.bst template files",
+  "frozen_numerical_files_changed": false,
+  "remote_push_performed": false
+}
