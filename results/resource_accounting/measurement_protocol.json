@@ -1,0 +1,38 @@
+{
+  "global_target_infidelity": {
+    "implementation": "direct Bernoulli sampling from exact overlap_probability(state,psi_0)",
+    "outcomes": "success count k of n; estimator 1-k/n",
+    "objective_settings": 1,
+    "job_basis_label": "overlap",
+    "inverse_state_preparation_circuit": false,
+    "target_gates_represented_or_counted": false,
+    "hardware_equivalence": false
+  },
+  "tfim_energy": {
+    "H": "-J sum Z_i Z_(i+1) - h sum X_i, open boundary",
+    "terms": {
+      "ZZ": 3,
+      "X": 4
+    },
+    "settings": 2,
+    "groups": [
+      "z",
+      "x"
+    ],
+    "allocation": "each shifted terminal state receives separate Z and X jobs; shared multinomial within basis",
+    "covariance": "within-basis joint sampling implicit; cross-basis covariance absent"
+  },
+  "modes": {
+    "finite_shot_end_to_end": "sample forward Z features, shifted node Jacobians, shifted terminal objective; noisy features nonlinearly re-encoded",
+    "finite_shot_conditional": "forward features exact/fixed; shifted node Jacobians and terminal objective sampled; forward-feature variance excluded"
+  },
+  "budget": "B covers the complete gradient-vector job list; floor allocation plus deterministic sorted remainder",
+  "omitted": [
+    "physical gate count",
+    "target inverse-preparation gates",
+    "calibration",
+    "readout overhead",
+    "hardware noise",
+    "wall-clock scheduling"
+  ]
+}
