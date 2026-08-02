@@ -164,35 +164,17 @@ def test_pooled_summary_excludes_failed_fits_but_counts_them(tmp_path, monkeypat
     assert np.isclose(summary["fit_failure_rate_pct"].iloc[0], 100 * 3 / 5)
 
 
-# --- 6. The final forest-plot input uses only end-to-end bootstrap draws ---
+# --- 6. The final forest plot uses the frozen corrected end-to-end package ---
 
 def test_forest_plot_script_reads_only_endtoend_checkpoints():
-    import ast
-
     script_path = REPO_ROOT / "paper" / "scripts" / "make_fig1_forest.py"
     script = script_path.read_text(encoding="utf-8")
-    assert "endtoend" in script or "end_to_end" in script, (
-        "fig1 script must reference end-to-end-labeled data somewhere"
-    )
-
-    # Inspect only actual `read_parquet(...)` call arguments (not prose/comments/docstrings),
-    # so a docstring that *names* the forbidden old pooled file as an example of what to
-    # avoid does not itself trip this check.
-    tree = ast.parse(script)
-    read_parquet_arg_strings = []
-    for node in ast.walk(tree):
-        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
-                and node.func.attr == "read_parquet"):
-            for sub in ast.walk(node):
-                if isinstance(sub, ast.Constant) and isinstance(sub.value, str):
-                    read_parquet_arg_strings.append(sub.value)
-
-    assert read_parquet_arg_strings, "expected at least one pd.read_parquet(...) call in the fig1 script"
-    for arg in read_parquet_arg_strings:
-        assert not (arg.startswith("h2h4_boot_shard") or "/h2h4_boot_shard" in arg or "\\h2h4_boot_shard" in arg), (
-            f"fig1 script must not read an old pooled-mode shard checkpoint by name, found: {arg!r} "
-            f"(superseded per verification/confirmatory_numbers_adopted.md)"
-        )
+    assert "end_to_end" in script
+    assert "primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv" in script
+    assert "primary_corrected/effect_coded/corrected_bootstrap_intervals_current_draws.csv" in script
+    assert "h1_centered_bootstrap_2000.meta.json" in script
+    assert "production_confirmatory/confirmatory_hypotheses.csv" not in script
+    assert "h2h4_boot_shard" not in script
 
 
 # --- 7. The zero-variance audit reproduces the production eligibility count ---

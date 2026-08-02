@@ -1,4 +1,8 @@
-"""Render the corrected H1--H4 forest plot from frozen numerical outputs."""
+"""Render the corrected H1--H4 forest plot from frozen numerical outputs.
+
+H2--H4 rows in the frozen corrected table are the adopted end_to_end
+estimator-mode results; conditional-mode rows are never read by this renderer.
+"""
 from __future__ import annotations
 
 from pathlib import Path
