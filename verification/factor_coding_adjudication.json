@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_corrected_results",
+  "decision_rule_branch": 3,
+  "protocol_coding_status": "unspecified_in_accessible_evidence",
+  "protocol_article": {
+    "title": "Gradient usability in few-qubit quantum neural networks: A signal-to-noise ratio framework for evaluating mitigation strategies",
+    "doi": "10.64336/001c.166201",
+    "local_full_text_present": false,
+    "online_full_text_retrieved_on_2026_08_02": false
+  },
+  "pre_result_implementation_commit": "cbbeafa853b0e87e153a783296fed1f9c750681a",
+  "historical_storage_and_model_coding": [0, 1],
+  "explicit_pre_result_conditional_R0_estimand_found": false,
+  "manuscript_coding": [-0.5, 0.5],
+  "manuscript_lower_order_interpretation": "averaged_across_other_factor_conditions",
+  "adjudicated_primary_coding": "centered_effect_coding",
+  "centered_column_definitions": {
+    "E_c": "E - 0.5",
+    "L_c": "L - 0.5",
+    "R_c": "R - 0.5"
+  },
+  "classification": "implementation_correction",
+  "historical_output_status": "superseded_audit_and_conditional_simple_interactions"
+}
