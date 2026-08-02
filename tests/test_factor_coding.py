@@ -3,6 +3,7 @@ import pandas as pd
 import pytest
 
 from qnn_snr.stats.factor_coding import add_centered_factors, transform_bootstrap_draws
+from qnn_snr.stats.bootstrap import _relabel_outer_resample
 
 
 def test_centered_factor_values_and_input_preservation():
@@ -35,3 +36,10 @@ def test_pairwise_draw_transform_and_simple_effect_average():
 def test_draw_transform_requires_three_way_coefficient():
     with pytest.raises(ValueError, match="required coefficients"):
         transform_bootstrap_draws(pd.DataFrame({"E:L": [1], "E:R": [2]}), "h1")
+
+
+def test_cluster_resample_relabels_duplicate_draws():
+    frame = pd.DataFrame({"initialization_id": [0, 0], "value": [1, 2]})
+    out = _relabel_outer_resample(frame, np.random.default_rng(3))
+    assert out["initialization_id"].nunique() == 1
+    assert len(out) == len(frame)
