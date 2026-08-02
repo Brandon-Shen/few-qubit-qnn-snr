@@ -127,14 +127,7 @@ Both objectives have the same nondegenerate target ground state, preventing targ
 \subsection{Hybrid block architecture and entangling schedules}
 \label{sec:ansatz}
 
-To avoid conflict with the objective factor $L$, the number of hybrid blocks is denoted by $D\in\{1,2,3,4,6\}$. Each block applies one independently parameterized $R_y$ rotation to each qubit, followed by exactly four logical CNOT gates. $D$ is a \emph{hybrid block count}, not the depth of one continuously evolving quantum state: each block is reset, evaluated, and measured independently, and later blocks receive only classically re-encoded features. The results therefore apply specifically to the measure--re-encode--reset architecture defined below. Figure~\ref{fig:architecture} summarizes the dataflow and makes explicit that no quantum state crosses a block boundary.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.94\textwidth]{figures/fig_architecture_reset_blocks.pdf}
-\caption{Measure--re-encode--reset architecture. Each quantum block begins from a fresh $\lvert 0000\rangle$ state, encodes a classical feature vector, applies parameterized rotations and one of the two four-CNOT schedules, and returns measured features $z^{(\ell)}$. Only classical features cross block boundaries. The residual path from $z^{(\ell-1)}$ first changes a realized block input at $D\geq3$}
-\label{fig:architecture}
-\end{figure*}
+To avoid conflict with the objective factor $L$, the number of hybrid blocks is denoted by $D\in\{1,2,3,4,6\}$. Each block applies one independently parameterized $R_y$ rotation to each qubit, followed by exactly four logical CNOT gates. $D$ is a \emph{hybrid block count}, not the depth of one continuously evolving quantum state: each block begins from $\lvert0000\rangle$, is evaluated and measured independently, and passes only classically re-encoded features to later blocks. The results therefore apply specifically to this measure--re-encode--reset architecture.
 
 Two logical CNOT schedules are used within each block:
 
@@ -325,7 +318,7 @@ Prepared-state task metrics comprise raw TFIM energy, normalized prepared-state 
 
 The implementation audit included black-box finite-difference validation of assembled hybrid gradients, inspection of reset semantics and residual activation, explicit estimator-mode guards, optimizer refits, deterministic seed checks, and regression testing of all principal analysis paths. Detailed audit history, superseded pooled-mode outputs, bootstrap checkpoints, and script-level provenance are reported in the Supplementary Information and repository rather than in the main narrative.
 
-Anthropic's Claude was used during 2026 for literature-search planning, clarification of technical concepts, implementation and verification scripting, and feedback on author-written prose. It was not treated as an author or evidentiary source. The author independently inspected the cited literature, executed and reviewed the code, verified the numerical outputs, and accepts responsibility for every claim and analysis decision.
+Anthropic Claude and OpenAI Codex were used during 2026 for literature-search planning, clarification of technical concepts, implementation and verification scripting, consistency checking, and feedback on author-written prose. These systems were not treated as authors or evidentiary sources. The author independently inspected the cited literature, executed and reviewed the code, verified the numerical outputs, and accepts responsibility for every claim and analysis decision.
 
 \section{Results}
 
@@ -471,7 +464,7 @@ The strongest cross-procedure evidence concerns H1. The positive centered $E\tim
 
 \bmhead{Materials availability} Not applicable.
 
-\bmhead{Software and reproducibility information} Analyses used Python 3.12.10, PennyLane 0.45.1, pandas 3.0.3, NumPy 2.5.1, statsmodels 0.14.6, SciPy 1.18.0, Matplotlib 3.11.0, PyArrow 25.0.0, and PyYAML 6.0.3. Random seeds are derived deterministically from a root seed, named stream, and cell identifiers via SHA-256. Every primary and sensitivity mixed model converged and none was singular; optimizer agreement, warnings, frozen inputs, and script-level provenance are documented in the Supplementary Information and repository.
+\bmhead{Software and reproducibility information} Analyses used Python 3.12.10, PennyLane 0.45.1, pandas 3.0.3, NumPy 2.5.1, statsmodels 0.14.6, SciPy 1.18.0, Matplotlib 3.11.0, PyArrow 25.0.0, and PyYAML 6.0.3. Random seeds are derived deterministically from a root seed, named stream, and cell identifiers via SHA-256. Model convergence, optimizer agreement, warnings, frozen inputs, and script-level provenance are documented in Online Resource 1 and the repository; no blanket convergence claim is inferred beyond those frozen records.
 
 \bmhead{Supplementary information} Online Resource 1 contains additional estimator-eligibility analyses, model and influence diagnostics, the documented estimator-mode correction, bootstrap and depth-sensitivity results, and a reproducibility index. The supplementary file is provided as \texttt{ESM\_1.pdf}.
 
