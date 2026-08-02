@@ -1,0 +1,6 @@
+--- tracked at 3a998cd
++++ protected working bytes
+@@ metadata columns only @@
+-generated_at=2026-08-01T07:33:44.481998+00:00; git_commit=b98c9f07c071b1b3cb98d8f2d2b7656bd5cac4ee
++generated_at=2026-08-02T17:49:55.206463+00:00; git_commit=cbfb588a077f91e40970d9c406e67b09e8cae3d9
+ Numeric aggregates, indices, input paths/checksums, row counts, and formulas were identical in both rows.

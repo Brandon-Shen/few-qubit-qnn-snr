@@ -1,6 +1,6 @@
 """Figure 0 (fig:el-primary): secondary multiplicative interaction indices
-I_EL (end-to-end estimator SNR) and J_EL (exact-gradient magnitude) for the
-E x L pair.
+I_EL_given_R0 (end-to-end estimator SNR) and J_EL_given_R0
+(exact-gradient magnitude) for the E x L pair conditional on R=0.
 
 This script replaces a prior `fig0_el_primary.pdf` that was found to be
 untrusted: no generation script for it existed anywhere in this repository
@@ -36,13 +36,14 @@ Source-of-truth rules (see verification/fig0_el_primary_regeneration.md):
 from __future__ import annotations
 
 import hashlib
-import subprocess
+import json
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -57,6 +58,7 @@ from qnn_snr.stats.interactions import compute_interaction_indices  # noqa: E402
 
 POINTWISE_PATH = REPO_ROOT / "results" / "production_confirmatory" / "pointwise_gradient_statistics.parquet"
 EXACT_PATH = REPO_ROOT / "results" / "production_confirmatory" / "raw" / "exact.parquet"
+RUN_MANIFEST_PATH = REPO_ROOT / "results" / "production_confirmatory" / "run_manifest.json"
 CONFIRMATORY_MODE = "finite_shot_end_to_end"
 EXACT_MODE = "statevector_exact"
 
@@ -248,27 +250,28 @@ def main():
     print(f"Component aggregates (RMS): G_0={G0!r} G_E={GE!r} G_L={GL!r} G_EL={GEL!r}")
 
     # ---- write figure-source CSV ----
-    git_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT).decode().strip()
-    generated_at = datetime.now(timezone.utc).isoformat()
+    source_manifest = json.loads(RUN_MANIFEST_PATH.read_text(encoding="utf-8"))
+    git_commit = source_manifest["git_commit"]
+    generated_at = source_manifest["end_time"]
     pw_hash = sha256_of(POINTWISE_PATH)
     exact_hash = sha256_of(EXACT_PATH)
 
     rows = [
         {
-            "metric": "I_EL", "analysis_mode": CONFIRMATORY_MODE,
+            "metric": "I_EL_given_R0", "analysis_mode": CONFIRMATORY_MODE,
             "baseline_aggregate": M0, "E_only_aggregate": ME, "L_only_aggregate": ML,
             "EL_aggregate": MEL, "interaction_index": I_EL,
             "formula": "combined * baseline / (single_E * single_L), aggregate = RMS(SNR_est)",
-            "source_file": str(POINTWISE_PATH.relative_to(REPO_ROOT)), "source_file_sha256": pw_hash,
+            "source_file": POINTWISE_PATH.relative_to(REPO_ROOT).as_posix(), "source_file_sha256": pw_hash,
             "row_count_before_filtering": pw_row_count_before, "row_count_after_filtering": pw_row_count_after,
             "matched_point_count": matched_point_count, "generated_at": generated_at, "git_commit": git_commit,
         },
         {
-            "metric": "J_EL", "analysis_mode": EXACT_MODE,
+            "metric": "J_EL_given_R0", "analysis_mode": EXACT_MODE,
             "baseline_aggregate": G0, "E_only_aggregate": GE, "L_only_aggregate": GL,
             "EL_aggregate": GEL, "interaction_index": J_EL,
             "formula": "combined * baseline / (single_E * single_L), aggregate = RMS(abs(exact_gradient))",
-            "source_file": str(EXACT_PATH.relative_to(REPO_ROOT)), "source_file_sha256": exact_hash,
+            "source_file": EXACT_PATH.relative_to(REPO_ROOT).as_posix(), "source_file_sha256": exact_hash,
             "row_count_before_filtering": exact_row_count_before, "row_count_after_filtering": exact_row_count_after,
             "matched_point_count": matched_point_count, "generated_at": generated_at, "git_commit": git_commit,
         },
@@ -283,8 +286,8 @@ def main():
     fig, ax = plt.subplots(figsize=(TEXT_WIDTH_IN * 0.64, 1.8))
 
     rows_plot = [
-        ("Exact-gradient magnitude, $J_{EL}$", J_EL, COLOR_SERIES_A, "o"),
-        ("End-to-end estimator SNR, $I_{EL}$", I_EL, COLOR_SERIES_B, "s"),
+        (r"Exact-gradient magnitude, $J_{EL\mid R=0}$", J_EL, COLOR_SERIES_A, "o"),
+        (r"End-to-end estimator SNR, $I_{EL\mid R=0}$", I_EL, COLOR_SERIES_B, "s"),
     ]
     y_positions = np.arange(len(rows_plot))[::-1]
     for i, (_label, val, color, marker) in enumerate(rows_plot):
@@ -310,7 +313,8 @@ def main():
 
     fig.tight_layout()
     PDF_OUT.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(PDF_OUT)
+    fig.savefig(PDF_OUT, metadata={"CreationDate": None, "ModDate": None,
+                                   "Creator": "few-qubit-qnn-snr deterministic figure generator"})
     fig.savefig(PNG_OUT, dpi=200)
     print(f"\nwrote {PDF_OUT}")
     print(f"PDF sha256: {sha256_of(PDF_OUT)}")

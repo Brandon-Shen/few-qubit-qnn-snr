@@ -196,7 +196,7 @@ def test_script_run_produces_pdf_and_source_csv():
                       "source_file", "source_file_sha256", "row_count_before_filtering",
                       "row_count_after_filtering", "matched_point_count", "generated_at", "git_commit"}
     assert required_cols <= set(csv.columns)
-    assert set(csv["metric"]) == {"I_EL", "J_EL"}
+    assert set(csv["metric"]) == {"I_EL_given_R0", "J_EL_given_R0"}
 
 
 # --- 13. the manuscript-referenced figure path exists ---

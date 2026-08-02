@@ -341,6 +341,13 @@ In the original dataset, the $E\times L$ interaction in exact-gradient magnitude
 
 The interaction is super-additive on the transformed exact-gradient scale, contradicting the protocol article's directional expectation of sub-additivity. A post-run depth-moderation term is small and not distinguishable from zero, so the exact-gradient direction is not explained by pooling over block counts with opposing effects. On the secondary multiplicative scale, $J_{EL}=1.242$, corresponding to a 24.2\% super-additive shift in RMS exact-gradient magnitude. This is a descriptive point summary without a separate interval and does not establish a training-time or shot-budget saving. The exact-gradient interaction is the study's primary empirical finding in the original dataset.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.64\textwidth]{figures/fig0_el_primary.pdf}
+\caption{Secondary multiplicative $E\times L$ indices conditional on $R=0$, shown for exact-gradient magnitude and end-to-end estimator SNR. The reference line at one denotes multiplicative independence. These descriptive indices are not equivalent to the centered mixed-model interactions.}
+\label{fig:el-primary}
+\end{figure}
+
 
 \subsection{Qualified finite-shot interaction}\label{sec:h2-result}
 
