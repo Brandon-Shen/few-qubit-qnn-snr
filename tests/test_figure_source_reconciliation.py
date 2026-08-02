@@ -11,5 +11,5 @@ def test_reconciled_source_is_conditional_and_referenced():
  d=pd.read_csv(ROOT/'paper/figure_data/fig0_el_primary_source.csv')
  assert set(d.metric)=={'I_EL_given_R0','J_EL_given_R0'}
  assert set(d.git_commit)=={'cbbeafa853b0e87e153a783296fed1f9c750681a'}
- main=(ROOT/'paper/main.tex').read_text(encoding='utf-8')
+ main=(ROOT/'paper/sn-article.tex').read_text(encoding='utf-8')
  assert 'figures/fig0_el_primary.pdf' in main

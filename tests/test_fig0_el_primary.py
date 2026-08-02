@@ -202,6 +202,6 @@ def test_script_run_produces_pdf_and_source_csv():
 # --- 13. the manuscript-referenced figure path exists ---
 
 def test_manuscript_referenced_figure_path_exists():
-    main_tex = (REPO_ROOT / "paper" / "main.tex").read_text(encoding="utf-8")
+    main_tex = (REPO_ROOT / "paper" / "sn-article.tex").read_text(encoding="utf-8")
     assert "figures/fig0_el_primary.pdf" in main_tex
     assert (REPO_ROOT / "paper" / "figures" / "fig0_el_primary.pdf").exists()
