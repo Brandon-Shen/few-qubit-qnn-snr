@@ -1,0 +1,7 @@
+{
+  "status":"exact_source_and_pdf_mapping",
+  "source_edits_required":false,
+  "main":{"current":"paper/sn-article.tex","archive":"verification/overleaf_import/main_overleaf.tex","sha256":"f1d40b33ad132c0923d974c715306130088d2592d9a65fcc4e08a892f0692e8d","diff":"empty"},
+  "supplement":{"current":"paper/supplemental.tex","archive":"verification/overleaf_import/ESM_1_overleaf.tex","sha256":"7680b9a0c486d856bcf199bc220390b2de6689603919f783da499ac7035cea42","diff":"empty"},
+  "rendered":{"main":"paper/output/main_manuscript.pdf","main_sha256":"9e99088a2225d8bb2e2e02ca4ae51d88caee7bdefb2a79e04dc63ec9d96e6248","supplement":"paper/output/ESM_1.pdf","supplement_sha256":"3c713f29fec9927f2369f28ebf4a6193a1d4a9b6022c6130d6991272c7d7b756"}
+}
