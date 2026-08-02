@@ -1,8 +1,8 @@
 {
-  "status": "frozen_and_validated",
+  "status": "validated",
   "plan_commit": "645521db6511ca049d89e64f810e65a3407a7b52",
   "freeze_commit": "f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05",
-  "provenance_commit": "self: commit carrying this report",
+  "provenance_commit": "6ec255cab39a516bfc1cd188c71e0225713605c4",
   "tag": "submission-numerical-results-freeze-v1",
   "row_count": 347,
   "output": "results/final_submission_v1",

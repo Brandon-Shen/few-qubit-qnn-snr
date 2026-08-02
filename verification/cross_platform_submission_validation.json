@@ -1,0 +1,20 @@
+{
+  "status": "pending_cross_platform_ci",
+  "base_commit": "b68eacbbeaff947657320a799b5df6f7d2bf4bb7",
+  "local_windows": {
+    "os": "Windows 11",
+    "python": "3.12.10",
+    "state": "working_tree",
+    "passed": 275,
+    "skipped": 1,
+    "failed": 0,
+    "duration_seconds": 327.24,
+    "manifest_check": "pass",
+    "abstract_word_count": 205,
+    "checksum_check": "pass"
+  },
+  "clean_linux": null,
+  "clean_windows": null,
+  "github_cli_available": false,
+  "cross_platform_claim": false
+}

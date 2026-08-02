@@ -1,2 +1,2 @@
 python scripts/build_final_submission_freeze.py
-python -m pytest -q
+python -m pytest tests/ -q

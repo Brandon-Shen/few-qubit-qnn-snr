@@ -36,11 +36,4 @@ Abstract; H1/H2/H3 Results; Discussion; Limitations; Conclusion; confirmatory ta
 
 Reset-per-block protocol interpretation; finite-replicate zero-variance selection tied to L; covariance-sensitive H3 moderation; no hardware noise or optimization trajectory; conditional multiplicative indices are weighting-dependent descriptive summaries.
 
-## Freeze provenance and validation
-
-- Numerical-results freeze commit: `f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05`
-- Provenance: the commit carrying this report and manifest
-- Annotated tag: `submission-numerical-results-freeze-v1`
-- Complete suite: 264 passed, 1 skipped, 0 failed; the skip is the pre-existing absent H2 depth table in `tests/test_h2_depth_heterogeneity.py`.
-- Focused final-freeze and reconciliation-integrity suite: 4 passed.
-- No remote push was performed.
+Final commit/tag and full test status are populated by the separate provenance update after validation.

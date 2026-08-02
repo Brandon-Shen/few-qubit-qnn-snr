@@ -1,6 +1,7 @@
 % Online Resource 1
 \documentclass[pdflatex,sn-basic,Numbered]{sn-jnl}
 \usepackage{graphicx,amsmath,amssymb,booktabs,array,tabularx,seqsplit}
+\usepackage[title]{appendix}
 \newcommand{\ttf}[1]{\texttt{\seqsplit{#1}}}
 \setlength{\emergencystretch}{2em}
 \raggedbottom
@@ -15,9 +16,13 @@
 \affil*[1]{\orgname{Independent Researcher}, \orgaddress{\city{Belmont}, \state{California}, \postcode{94002}, \country{United States}}}
 \maketitle
 
+\begin{center}
+\textbf{Supplementary Information for \textit{SN Computer Science}}
+\end{center}
+
 \section{Scope and frozen provenance}
 
-This supplement reports the corrected centered H1--H4 family and prospectively planned post-primary packages frozen before manuscript revision. The machine-readable source of truth is \ttf{results/final\_submission\_v1/manifest.json}. The numerical tag is \ttf{submission-numerical-results-freeze-v1}; the numerical-results commit is \ttf{f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05}, and freeze provenance is \ttf{6ec255cab39a516bfc1cd188c71e0225713605c4}. Historical files remain archived under \ttf{results/superseded/}; they are not current primary results.
+This supplement reports the corrected centered H1--H4 family and the post-primary analyses frozen before manuscript revision. The machine-readable source of truth is indexed by \ttf{results/final\_submission\_v1/manifest.json} in the public repository, under the tag \ttf{submission-numerical-results-freeze-v1}. Historical outputs remain archived under \ttf{results/superseded/} and are not current primary results.
 
 \section{Factor-coding correction and estimands}
 
@@ -25,28 +30,34 @@ The adopted factors are
 \[
 E_c=E-\tfrac12,\qquad L_c=L-\tfrac12,\qquad R_c=R-\tfrac12,
 \]
-with values $\{-1/2,+1/2\}$. Because $E_cL_cR_c$ remains in each applicable model, centered lower-order interactions average equally over the third binary factor. Direct-0/1 lower-order coefficients instead describe simple interactions at the third factor's reference level. The parameterizations yield identical fitted values, likelihood, residuals, and random effects; only the interpretation of lower-order coefficients changes. The correction was an implementation--interpretation correction rather than result-dependent model selection. H1 and H2 use $E_cL_c$, H3 uses $E_cR_c$ averaged over $L$, and H4 uses $L_cR_c$ moderated by centered/scaled depth.
+with values $\{-1/2,+1/2\}$. Depth is $D_z=(D-3.2)/1.7204650534085253$, where 3.2 and 1.7204650534085253 are respectively the mean and population standard deviation of $D\in\{1,2,3,4,6\}$. Because $E_cL_cR_c$ remains in each applicable model, centered lower-order interactions average equally over the third binary factor. Direct-0/1 lower-order coefficients instead describe simple interactions at the third factor's reference level. The parameterizations yield identical fitted values, likelihood, residuals, and random effects; only the interpretation of lower-order coefficients changes. The correction was an implementation--interpretation correction rather than result-dependent model selection. H1 and H2 use $E_cL_c$, H3 uses $E_cR_c$ averaged over $L$, and H4 uses $L_cR_cD_z$.
 
 \section{Corrected primary family and bootstrap}
 
 \begin{table*}[t]
-\centering\scriptsize
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrrrlll}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}l p{0.15\textwidth} r p{0.18\textwidth} r p{0.19\textwidth} X@{}}
 \toprule
-Hyp. & Estimand & Estimate & SE & Wald 95\% CI & Raw $p$ & Holm $p$ & Decision & Fits & Bootstrap 95\% CI \\
+Hyp. & Estimand & Estimate & Wald 95\% CI & Holm $p$ & Bootstrap 95\% CI & Cross-method interpretation \\
 \midrule
-H1 & $E_cL_c$, exact & 0.004043 & 0.001081 & [0.001924, 0.006162] & 0.000185 & 0.000739 & Reject & 2,000 & [0.000473, 0.007535] \\
-H2 & $E_cL_c$, end-to-end & 0.014338 & 0.005145 & [0.004255, 0.024422] & 0.005321 & 0.015963 & Reject & 443 & [-0.016638, 0.043563] \\
-H3 & $E_cR_c$, end-to-end & -0.011615 & 0.005144 & [-0.021697, -0.001534] & 0.023937 & 0.047875 & Reject & 443 & [-0.030943, 0.010259] \\
-H4 & $L_cR_c\times$depth & -0.010179 & 0.005362 & [-0.020688, 0.000331] & 0.057658 & 0.057658 & Do not reject & 443 & [-0.026975, 0.006403] \\
+H1 & $E_cL_c$, exact & 0.004043 & [0.001924, 0.006162] & 0.000739 & [0.000473, 0.007535] & Model-based and bootstrap intervals exclude zero \\
+H2 & $E_cL_c$, end-to-end & 0.014338 & [0.004255, 0.024422] & 0.015963 & [-0.016638, 0.043563] & Wald/Holm rejection; bootstrap includes zero \\
+H3 & $E_cR_c$, end-to-end & -0.011615 & [-0.021697, -0.001534] & 0.047875 & [-0.030943, 0.010259] & Wald/Holm rejection; bootstrap includes zero \\
+H4 & $L_cR_c\times$depth & -0.010179 & [-0.020688, 0.000331] & 0.057658 & [-0.026975, 0.006403] & Not rejected; remains unresolved \\
 \bottomrule
-\end{tabular}}
-\caption{Corrected primary family. Decisions follow model-based Wald tests with Holm adjustment. Intervals in the final column are initialization-cluster percentile bootstrap intervals. H1 used 2,000 completed fits with zero failures; H2--H4 used 443 completed nested-bootstrap fits. Iterations are distinct from the 50 independent initialization clusters. H2 and H3 are model-based rejections not corroborated by their bootstrap intervals; H4 remains unresolved.}
+\end{tabularx}
+\caption{Corrected primary family. Wald intervals and Holm-adjusted $p$-values follow the primary model-based decision rule; the final interval column gives initialization-cluster percentile bootstrap results. H1 used 2,000 completed fits with zero failures, whereas H2--H4 used 443 completed nested-bootstrap fits. Bootstrap iterations are distinct from the 50 independent initialization clusters.}
 \label{supp:tab:primary}
 \end{table*}
 
 For H2--H4, outer resampling selected complete initialization clusters and retained all configurations, depths, budgets, and matched parameters; within selected scientific cells, finite-shot replicates were resampled and SNR was recomputed before refitting. H1 resampled complete initialization clusters. Percentile intervals are reported without treating either Wald or bootstrap inference as universally preferable.
+
+The frozen finite-shot production dataset used 30 independent gradient replicates per scientific cell and 50 independent top-level initialization clusters. The replicate pilot began at 30, evaluated candidate larger counts on prespecified representative cells, and did not satisfy its signed-mean and plug-in-SNR precision/stability criterion uniformly; the problem was most evident at shallow block counts. The already collected production dataset therefore retained 30, with no production recollection, making the sample sizes pilot-informed rather than pilot-calibrated.
+
+The initialization-count pilot evaluated candidates in increments of 25 using the then-implemented H2--H4 mixed-model coefficients on the $\operatorname{asinh}(\mathrm{SNR}_{\mathrm{est}})$ response scale. At $N_{\mathrm{init}}=50$, the recorded 90th-percentile Wald 95\% CI half-widths were 0.1026212747780318 for $E{:}L$, 0.10253728880520716 for $E{:}R$, and 0.07250672321768473 for $L{:}R{:}\mathrm{depth}_z$, each below the configured 0.20 rule. That threshold was operational precision guidance on the transformed response scale, not a smallest effect of interest, equivalence margin, or scientific-importance claim. The pilot preceded the later centered-factor interpretation correction and did not evaluate H1.
+
+The 443 H2--H4 draws comprised 8 previously validated draws plus three independently seeded 145-draw shards. All 443 fits completed successfully with zero failures. The documented target was at least 400 successful fits, with 1,000 preferred; execution stopped at the documented 145-draw-per-shard target, yielding 443. Checkpoint summaries at $n=40,100,200,400,$ and 443 retained the same qualitative conclusion: the relevant intervals included zero. These are completed bootstrap fits, not a sample size or a count of independent initialization clusters.
 
 \section{Independent-seed H1 and depth weighting}
 
@@ -137,10 +148,20 @@ Independent seed & $J_{EL\mid R=1}$ & 1.242137 & 1.238157 & [1.049874, 1.449258]
 
 The frozen table contains 4,000 unique terminal-block states after exact-state duplication across shot budgets was removed. Fidelity and normalized-energy bounds, row uniqueness, energy spectral bounds, and fidelity--infidelity complementarity all passed. Original configuration--depth mean fidelity ranged approximately 0.0338--0.0817 and normalized energy 0.4631--0.5529; independent-seed ranges were 0.0322--0.0962 and 0.4561--0.5537. The ranges overlap strongly. Since $L$ changes evaluation rather than preparation, paired $L=0$/$L=1$ prepared-state summaries are identical. No significance test or causal gradient--task relationship is inferred.
 
-\begin{figure*}[t]\centering
-\includegraphics[width=.85\textwidth]{figures/fig15_prepared_state_metrics.pdf}
-\caption{Descriptive terminal-block prepared-state fidelity and normalized energy at initialization from frozen source data. No regression or optimization trajectory is implied.}
-\end{figure*}
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+Dataset & Cell-mean fidelity range & Cell-mean normalized-energy range \\
+\midrule
+Original & 0.0338--0.0817 & 0.4631--0.5529 \\
+Independent seed & 0.0322--0.0962 & 0.4561--0.5537 \\
+\bottomrule
+\end{tabular}
+\caption{Descriptive ranges across configuration--depth cell means for terminal-block prepared states at initialization. The overlapping ranges do not represent optimization trajectories or a test of gradient--task causality.}
+\label{supp:tab:prepared-state-ranges}
+\end{table}
 
 \section{Measurement implementation and resource accounting}
 
@@ -158,24 +179,30 @@ Historical direct-0/1 coefficient tables and older pooled estimator-mode outputs
 
 \section{Reproducibility index}
 
-\begin{table*}[t]\centering\small
-\begin{tabularx}{\textwidth}{p{.20\textwidth}X}
-\toprule
-Component & Frozen source \\
-\midrule
-Numerical source of truth & \ttf{results/final\_submission\_v1/manifest.json}; \ttf{final\_numerical\_results.json} \\
-Factor coding & \ttf{verification/factor\_coding\_correction\_results.md} \\
-Independent-seed H1 & \ttf{verification/h1\_independent\_seed\_results.md} \\
-H1 depth/weighting & \ttf{verification/h1\_depth\_weighting\_results.md}; \ttf{results/h1\_depth\_weighting/} \\
-H3 explanation & \ttf{verification/h3\_centered\_interaction\_robustness\_results.md} \\
-Conditional J & \ttf{verification/jel\_conditional\_bootstrap\_results.md}; \ttf{results/jel\_conditional/} \\
-Prepared states & \ttf{verification/task\_metrics\_results.md}; \ttf{results/task\_metrics/} \\
-Resources & \ttf{verification/measurement\_resource\_accounting.md}; \ttf{results/resource\_accounting/} \\
-Figure 0 archive & \ttf{verification/figure\_source\_reconciliation\_results.md} \\
-\bottomrule
-\end{tabularx}
-\caption{Frozen reproducibility index. Repository paths are typeset as breakable labels.}
-\end{table*}
+All frozen inputs, numerical outputs, figures, and verification reports are indexed by
+\ttf{results/final\_submission\_v1/manifest.json} in the public repository
+(\url{https://github.com/Brandon-Shen/few-qubit-qnn-snr}). The numerical state is tagged
+\ttf{submission-numerical-results-freeze-v1}; the finalized manuscript commit is recorded in
+\ttf{MANUSCRIPT\_COMMIT.txt}. The principal materials are grouped under:
+\begin{itemize}
+\item \ttf{results/primary\_corrected/} and \ttf{results/independent\_seed\_h1/} for corrected primary and independent-seed outputs;
+\item \ttf{results/h1\_depth\_weighting/}, \ttf{results/h3\_centered\_robustness/}, and \ttf{results/jel\_conditional/} for post-primary analyses;
+\item \ttf{results/task\_metrics/} and \ttf{results/resource\_accounting/} for descriptive task and measurement-resource outputs; and
+\item \ttf{verification/} for plans, checksums, audit records, and machine-readable result reports.
+\end{itemize}
+
+
+\begin{appendices}
+\section{Protocol and implementation interpretation}
+
+\subsection{Factor-coding provenance}
+
+The accessible protocol materials fixed the factorial interventions, hypotheses, transformations, model families, and Holm procedure but did not specify whether the binary predictors should be represented by direct 0/1 columns or centered $\{-1/2,+1/2\}$ columns. The original implementation fit the same full interaction model with direct 0/1 predictors and incorrectly interpreted lower-order pairwise coefficients as averages over the third factor. Re-expression with centered columns leaves fitted values, likelihood, residuals, and random effects unchanged while correcting the lower-order estimands. Historical direct-0/1 coefficients remain archived as reference-level simple interactions.
+
+\subsection{Reset-per-block versus register-persisting semantics}
+
+The protocol prose could be read in two ways. Under the adopted reset-per-block interpretation, every quantum block begins from $\lvert0000\rangle$, is measured independently, and passes only classical features to the next block. Under a register-persisting interpretation, the quantum state would continue across blocks. All code, gradients, shot accounting, and results in this study use the reset-per-block interpretation. Consequently, $D$ counts repeated quantum evaluations linked by classical re-encoding rather than layers of one continuously evolving quantum register. A register-persisting implementation would alter state preparation, entanglement propagation, derivative assembly, and measurement allocation and therefore constitutes a materially different experiment; the present results do not adjudicate that alternative.
+\end{appendices}
 
 \section{Remaining limitations}
 

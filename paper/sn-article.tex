@@ -11,7 +11,6 @@
 \usepackage{tabularx}
 \usepackage{enumitem}
 \usepackage{seqsplit}
-\usepackage[title]{appendix}
 
 % PDF metadata; hyperref is loaded by the Springer Nature class.
 \AtBeginDocument{\hypersetup{
@@ -45,9 +44,9 @@
 
 \abstract{\textbf{Purpose:} We evaluate whether circuit, objective, and hybrid-connectivity interventions combine non-additively in exact-gradient signal and finite-shot resolvability for a four-qubit quantum neural network.
 
-\textbf{Methods:} A complete $2^3$ factorial benchmark crossed a pair-restricted CNOT schedule, normalized transverse-field Ising energy objective, and fixed residual shortcut in a measure--re-encode--reset architecture. Centered binary coding made lower-order interactions equal averages over the third factor. Configurations were matched by initialization, block count, parameter identity, and total implemented simulator-shot budget.
+\textbf{Methods:} A complete $2^3$ factorial benchmark crossed a pair-restricted CNOT schedule, normalized transverse-field Ising energy objective, and fixed residual shortcut in a measure--re-encode--reset architecture. Centered binary coding made lower-order interactions equal averages over the third factor. The frozen study used 50 matched initialization clusters and 30 finite-shot replicates per scientific cell, with configurations matched by block count, parameter identity, and total implemented simulator-shot budget.
 
-\textbf{Results:} Model-based Holm inference rejected H1--H3 but not H4. The positive centered $E\times L$ exact-gradient interaction was the strongest cross-procedure result: its initialization-cluster bootstrap excluded zero, and an independent-seed rerun retained its direction while differing in magnitude and depth profile. The centered finite-shot $E\times L$ and $E\times R$ coefficients met the Wald/Holm rule, but their achieved nested-bootstrap intervals included zero. Post-primary analyses further showed weighting sensitivity for H1 and objective- and estimator-mode sensitivity for H3.
+\textbf{Results:} The exact-gradient $E\times L$ interaction was supported by both model-based inference and initialization-cluster bootstrap, and its positive direction was retained in an independent-seed rerun, although its magnitude and depth profile varied. Finite-shot $E\times L$ and $E\times R$ interactions met the model-based Wald/Holm decision rule but were not corroborated by their 443-fit nested-bootstrap intervals, while the $L\times R$-by-depth interaction remained unresolved. Post-primary analyses showed weighting sensitivity for the exact-gradient interaction and objective- and estimator-mode sensitivity for the residual-related finite-shot interaction.
 
 \textbf{Conclusion:} Factorial benchmarking separates exact signal from finite-shot measurement behavior and exposes inference-dependent composition effects. These initialization-gradient results do not establish optimization success, trainability improvement, hardware advantage, shot savings, or matched physical-resource cost.}
 
@@ -173,7 +172,7 @@ The terminal block's gradient is a direct parameter-shift derivative of the fina
 \]
 Node-level derivatives are evaluated by the two-term parameter-shift rule for Pauli-generated rotations \cite{mitarai2018quantum,schuld2019evaluating}; the downstream sensitivities are propagated exactly through the classical maps. Classical gradients with respect to $W_\ell$ and $b_\ell$ are analyzed separately and are not pooled into the matched quantum-gradient distribution.
 
-The finite-difference audit treats the complete hybrid cost as a black box and compares central finite differences against the assembled total derivative. The audit design is described here; numerical outcomes are summarized in Section~\ref{sec:results-robustness}, with full details in the Supplementary Information.
+The finite-difference audit treats the complete hybrid cost as a black box and compares central finite differences against the assembled total derivative. The audit design is described here; numerical outcomes are summarized in Section~\ref{sec:results-robustness}, with full details in Online Resource 1.
 
 \subsection{Complete factorial design}
 
@@ -189,9 +188,9 @@ All eight binary combinations of $E$, $L$, and $R$ are run (Table~\ref{tab:confi
 2 & 1 & 0 & 0 & Pair-restricted CNOT schedule only \\
 3 & 0 & 1 & 0 & TFIM-energy objective only \\
 4 & 0 & 0 & 1 & Residual only \\
-5 & 1 & 1 & 0 & $E+L$ (H1/H2 contrast) \\
-6 & 1 & 0 & 1 & $E+R$ (H3 contrast) \\
-7 & 0 & 1 & 1 & $L+R$ (H4 contrast) \\
+5 & 1 & 1 & 0 & $E+L$ combination \\
+6 & 1 & 0 & 1 & $E+R$ combination \\
+7 & 0 & 1 & 1 & $L+R$ combination \\
 8 & 1 & 1 & 1 & All three interventions \\
 \bottomrule
 \end{tabular}
@@ -212,7 +211,7 @@ Two finite-shot modes are collected and reported separately:
 
 The conditional mode is not a second primary test and cannot replace an unfavorable end-to-end result. Material disagreement between the modes is interpreted as sensitivity to forward-feature sampling rather than resolved by selecting the more favorable estimator.
 
-For every configuration, block count, initialization, matched quantum-gate parameter, and budget level $B\in\{250,500,1000,2000\}$, $R_{\mathrm{rep}}$ independent gradient replicates are generated. Their mean, sampling variance, $\snrest$, $\snrexact$, bias, and sign agreement are computed pointwise before aggregation.
+For every configuration, block count, initialization, matched quantum-gate parameter, and budget level $B\in\{250,500,1000,2000\}$, the frozen production dataset used 30 independent finite-shot gradient replicates per scientific cell. The analysis included 50 independent top-level initialization clusters; all other rows are repeated observations. Replicate means, sampling variances, $\snrest$, $\snrexact$, bias, and sign agreement were computed pointwise before aggregation.
 
 \subsection{Measurement-budget accounting}
 \label{sec:budget}
@@ -237,9 +236,9 @@ Exact-gradient landscape variance is calculated across matched initializations a
 \subsection{Pilot-informed replicate and initialization counts}
 \label{sec:calibration}
 
-The independent pilot begins from $R_{\mathrm{rep}}=30$ replicates per cell and $N_{\mathrm{init}}=50$ matched initializations. Replicate count is increased until bootstrap interval widths for both the signed mean and $\snrest$ meet the prespecified precision criterion and stabilize across the next increment. Bootstrap resampling follows standard nonparametric principles \cite{davison1997bootstrap}; the criterion is motivated operationally by adaptive-shot work \cite{tamiya2022stochastic}. Because $\snrest$ is a plug-in ratio involving an estimated standard deviation, its own Monte Carlo uncertainty can remain large after the signed mean is already well resolved.
+The independent pilot began from $R_{\mathrm{rep}}=30$ replicates per cell and $N_{\mathrm{init}}=50$ matched initializations. Candidate larger replicate counts were evaluated against a prespecified bootstrap-width and stability criterion for both the signed mean and $\snrest$ \cite{davison1997bootstrap,tamiya2022stochastic}. The criterion was not satisfied uniformly, particularly at shallow block counts, so the frozen production dataset retained $R_{\mathrm{rep}}=30$ and no production recollection was performed. Because $\snrest$ is a plug-in ratio involving an estimated standard deviation, its Monte Carlo uncertainty can remain large after the signed mean is already well resolved.
 
-Candidate initialization counts are evaluated in increments of 25. The selected count is the smallest candidate for which the 90th percentile of the simulated 95\% confidence-interval half-width is at most 0.20 for every primary interaction coefficient. Actual convergence, failures to meet a criterion, and any recollection are Results items rather than assumed successes; the manuscript therefore uses \emph{pilot-informed}, not \emph{pilot-calibrated}, sample sizes.
+Candidate initialization counts were evaluated in increments of 25 using the then-implemented H2--H4 mixed-model coefficients on the $\operatorname{asinh}(\snrest)$ response scale. The configured rule required the 90th percentile of simulated Wald 95\% confidence-interval half-widths to be at most 0.20 for each of those three finite-shot interaction coefficients; 50 met that rule. The value 0.20 was an operational precision threshold on the transformed model-response scale, not a smallest effect of interest, equivalence margin, or claim of scientific importance. This pilot preceded the later centered-factor interpretation correction and was not prospectively calculated for the corrected centered H1--H4 family. Together with the unsuccessful uniform replicate-count criterion, this is why the sample sizes are described as \emph{pilot-informed}, not \emph{pilot-calibrated}.
 
 
 \subsection{Analysis provenance and amendments}\label{sec:provenance}
@@ -267,25 +266,18 @@ Cluster-robust inference, initialization-level resampling, independent-seed reru
 
 \subsection{Mixed-effects models}
 
-Let $i$ index initialization, $c$ configuration, $p$ the matched quantum-gate parameter within a block count, $d$ block count, and $b$ shot budget. Binary factors are centered as $E_c=E-0.5$, $L_c=L-0.5$, and $R_c=R-0.5$, each in $\{-1/2,+1/2\}$; depth is centered and scaled where specified. With the three-way term retained, a lower-order pairwise coefficient averages equally over the third binary factor. Thus H1 and H2 use $E_cL_c$, H3 uses $E_cR_c$ averaged across $L$, and H4 uses $L_cR_c$ moderated by centered depth. Historical direct-0/1 lower-order coefficients instead described simple interactions at the third factor's reference level and are not the adopted primary estimands. The matched repeated-measures structure uses a random intercept $u_i$ for initialization and $v_{idp}$ for matched parameter nested within initialization and block count. The 50 initializations are the independent top-level clusters; all other rows are repeated observations.
+Let $i$ index initialization, $c$ configuration, $p$ the matched quantum-gate parameter within a block count, $d$ block count, and $b$ shot budget. Binary factors are centered as $E_c=E-1/2$, $L_c=L-1/2$, and $R_c=R-1/2$, each in $\{-1/2,+1/2\}$. Standardized depth is $D_z=(D-3.2)/1.7204650534085253$; 3.2 is the mean of the five tested block counts $D\in\{1,2,3,4,6\}$ and 1.7204650534085253 is their population standard deviation. With the three-way term retained, a lower-order pairwise coefficient averages equally over the third binary factor. Thus H1 and H2 use $E_cL_c$, H3 uses $E_cR_c$ averaged across $L$, and H4 uses $L_cR_cD_z$. Historical direct-0/1 lower-order coefficients instead described simple interactions at the third factor's reference level and are not the adopted primary estimands. The matched repeated-measures structure uses a random intercept $u_i$ for initialization and $v_{idp}$ for matched parameter nested within initialization and block count. The 50 initializations are the independent top-level clusters; all other rows are repeated observations.
 
 For H1, the response is $a_{icpd}=\operatorname{asinh}(|g^{\mathrm{exact}}_{icpd}|)$. The model contains all intervention main effects, all pairwise products, the three-way product, centered block count, the three intervention-by-block-count terms, and the two random intercepts. The adopted coefficient is the centered $E_c\times L_c$ interaction.
 
 For H2--H4, the response among positive-variance-eligible cells is $y_{icpdb}=\operatorname{asinh}(\mathrm{SNR}_{\mathrm{est},icpdb})$, and $s_b=\log_2(B_b)$. The protocol-derived model is
 \begin{align*}
 y_{icpdb}={}&\beta_0
-+\beta_E\widetilde E_c
-+\beta_L\widetilde L_c
-+\beta_R\widetilde R_c\\
-&+\beta_{EL}\widetilde E_c\widetilde L_c
-+\beta_{ER}\widetilde E_c\widetilde R_c
-+\beta_{LR}\widetilde L_c\widetilde R_c\\
-&+\beta_{ELR}\widetilde E_c\widetilde L_c\widetilde R_c
-+\beta_D\widetilde D_d+\beta_B s_b\\
-&+\beta_{ED}\widetilde E_c\widetilde D_d
-+\beta_{LD}\widetilde L_c\widetilde D_d
-+\beta_{RD}\widetilde R_c\widetilde D_d\\
-&+\beta_{LRD}\widetilde L_c\widetilde R_c\widetilde D_d
++\beta_E E_c+\beta_L L_c+\beta_R R_c\\
+&+\beta_{EL}E_cL_c+\beta_{ER}E_cR_c+\beta_{LR}L_cR_c\\
+&+\beta_{ELR}E_cL_cR_c+\beta_DD_{z,d}+\beta_B s_b\\
+&+\beta_{ED}E_cD_{z,d}+\beta_{LD}L_cD_{z,d}+\beta_{RD}R_cD_{z,d}\\
+&+\beta_{LRD}L_cR_cD_{z,d}
 +u_i+v_{idp}+\varepsilon_{icpdb}.
 \end{align*}
 H2 tests the centered $E_cL_c$ coefficient, H3 the centered $E_cR_c$ coefficient averaged equally over $L$, and H4 the centered $L_cR_c$--depth coefficient. The $E_cL_cR_c$ term is retained. The protocol-derived model uses the full $D$ sweep and is conditional on positive estimated replicate variance. A separate $D\ge3$ fit reports residual-related coefficients as a post-primary sensitivity analysis.
@@ -296,7 +288,7 @@ All mixed-effects models are fit in Python 3.12.10 with statsmodels 0.14.6, REML
 
 The protocol-derived primary decision rule uses model-based Wald standard errors and two-sided $p$-values. H1--H4 form one family, corrected by the sequential Holm procedure at family-wise $\alpha=0.05$ \cite{holm1979sequential}. Effect estimates, unadjusted confidence intervals, raw $p$-values, and Holm-adjusted $p$-values are all reported; a primary-model rejection requires the adjusted criterion. Failure to reject is not interpreted as equivalence without a prespecified smallest effect of interest and an equivalence test.
 
-A nested matched bootstrap propagates finite-$R_{\mathrm{rep}}$ uncertainty into coefficient intervals \cite{davison1997bootstrap}. Outer resampling is by complete initialization cluster, retaining all eight configurations, block counts, budgets, and parameter identities. For H2--H4, replicates are resampled within each selected initialization--configuration--parameter--block-count--budget cell, pointwise SNR is recomputed, and the model is refit. Percentile intervals use 443 completed nested-bootstrap fits. H1 uses 2,000 completed initialization-cluster bootstrap fits with zero failures. Bootstrap iterations are distinct from the 50 independent initialization clusters and are not denoted as sample size.
+A nested matched bootstrap propagates finite-$R_{\mathrm{rep}}$ uncertainty into coefficient intervals \cite{davison1997bootstrap}. Outer resampling is by complete initialization cluster, retaining all eight configurations, block counts, budgets, and parameter identities. For H2--H4, replicates are resampled within each selected initialization--configuration--parameter--block-count--budget cell, pointwise SNR is recomputed, and the model is refit. The achieved result was 443 completed nested-bootstrap fits with zero failures; the documented robustness target was at least 400 successful fits, with 1,000 preferred. H1 uses 2,000 completed initialization-cluster bootstrap fits with zero failures. Bootstrap iterations are distinct from the 50 independent initialization clusters and are not denoted as sample size.
 
 
 \subsection{Post-run robustness and independent-seed rerun}\label{sec:h2-depth-methods}
@@ -316,7 +308,7 @@ Prepared-state task metrics comprise raw TFIM energy, normalized prepared-state 
 
 \subsection{Implementation audit and use of large language models}
 
-The implementation audit included black-box finite-difference validation of assembled hybrid gradients, inspection of reset semantics and residual activation, explicit estimator-mode guards, optimizer refits, deterministic seed checks, and regression testing of all principal analysis paths. Detailed audit history, superseded pooled-mode outputs, bootstrap checkpoints, and script-level provenance are reported in the Supplementary Information and repository rather than in the main narrative.
+The implementation audit included black-box finite-difference validation of assembled hybrid gradients, inspection of reset semantics and residual activation, explicit estimator-mode guards, optimizer refits, deterministic seed checks, and regression testing of all principal analysis paths. Detailed audit history, superseded pooled-mode outputs, bootstrap checkpoints, and script-level provenance are reported in Online Resource 1 and the repository rather than in the main narrative.
 
 Anthropic Claude and OpenAI Codex were used during 2026 for literature-search planning, clarification of technical concepts, implementation and verification scripting, consistency checking, and feedback on author-written prose. These systems were not treated as authors or evidentiary sources. The author independently inspected the cited literature, executed and reviewed the code, verified the numerical outputs, and accepts responsibility for every claim and analysis decision.
 
@@ -324,7 +316,7 @@ Anthropic Claude and OpenAI Codex were used during 2026 for literature-search pl
 
 \subsection{Calibration and finite-shot eligibility}\label{sec:results-calibration}\label{sec:zero-variance-sensitivity}
 
-The initialization count was 50 independent top-level clusters. Replicate-count calibration remained weakest at shallow block counts. Exactly zero estimated replicate variance occurred only for $L=0$: 509 of 102,400 end-to-end cells and 1,324 of 102,400 conditional cells, versus none for $L=1$. H2--H4 therefore condition on positive estimated variance; this objective-linked eligibility is retained as a limitation rather than treated as random missingness.
+The frozen production dataset used $R_{\mathrm{rep}}=30$ independent gradient replicates per scientific cell and 50 independent top-level initialization clusters. The pilot precision criterion was not met uniformly at shallow block counts, and no production recollection was performed. Exactly zero estimated replicate variance occurred only for $L=0$: 509 of 102,400 end-to-end cells and 1,324 of 102,400 conditional cells, versus none for $L=1$. H2--H4 therefore condition on positive estimated variance; this objective-linked eligibility is retained as a limitation rather than treated as random missingness.
 
 \subsection{Centered exact-gradient interaction (H1)}\label{sec:h1-result}
 
@@ -368,20 +360,19 @@ Post-primary end-to-end contrasts explain the averaging: at $L=0$ the estimate w
 The corrected centered $L\times R\times$depth coefficient was $-0.010179$ (SE $0.005362$, Wald 95\% CI $[-0.020688,0.000331]$, raw and Holm $p=0.057658$). Its 443-fit percentile interval was $[-0.026975,0.006403]$. H4 is not rejected and remains unresolved; this is not evidence of absence.
 
 \begin{table*}[t]
-\centering\scriptsize
-\setlength{\tabcolsep}{2.5pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llrrrrrlll}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}l p{0.15\textwidth} r p{0.18\textwidth} r p{0.19\textwidth} X@{}}
 \toprule
-Hyp. & Estimand & Estimate & SE & Wald 95\% CI & Raw $p$ & Holm $p$ & Decision & Fits & Bootstrap 95\% CI \\
+Hyp. & Estimand & Estimate & Wald 95\% CI & Holm $p$ & Bootstrap 95\% CI & Cross-method interpretation \\
 \midrule
-H1 & $E_cL_c$, exact & 0.004043 & 0.001081 & [0.001924, 0.006162] & 0.000185 & 0.000739 & Reject & 2,000 & [0.000473, 0.007535] \\
-H2 & $E_cL_c$, end-to-end & 0.014338 & 0.005145 & [0.004255, 0.024422] & 0.005321 & 0.015963 & Reject & 443 & [-0.016638, 0.043563] \\
-H3 & $E_cR_c$, end-to-end & -0.011615 & 0.005144 & [-0.021697, -0.001534] & 0.023937 & 0.047875 & Reject & 443 & [-0.030943, 0.010259] \\
-H4 & $L_cR_c\times$depth & -0.010179 & 0.005362 & [-0.020688, 0.000331] & 0.057658 & 0.057658 & Do not reject & 443 & [-0.026975, 0.006403] \\
+H1 & $E_cL_c$, exact & 0.004043 & [0.001924, 0.006162] & 0.000739 & [0.000473, 0.007535] & Model-based and bootstrap intervals exclude zero \\
+H2 & $E_cL_c$, end-to-end & 0.014338 & [0.004255, 0.024422] & 0.015963 & [-0.016638, 0.043563] & Wald/Holm rejection; bootstrap includes zero \\
+H3 & $E_cR_c$, end-to-end & -0.011615 & [-0.021697, -0.001534] & 0.047875 & [-0.030943, 0.010259] & Wald/Holm rejection; bootstrap includes zero \\
+H4 & $L_cR_c\times$depth & -0.010179 & [-0.020688, 0.000331] & 0.057658 & [-0.026975, 0.006403] & Not rejected; remains unresolved \\
 \bottomrule
-\end{tabular}}
-\caption{Corrected centered H1--H4 family. Decisions follow the primary model-based Wald/Holm rule. Percentile bootstrap intervals corroborate H1; H2 and H3 intervals include zero despite model-based rejection; H4 is unresolved. Fits are completed bootstrap fits, distinct from the 50 independent initialization clusters.}
+\end{tabularx}
+\caption{Corrected centered H1--H4 family. Wald intervals and Holm-adjusted $p$-values follow the primary model-based decision rule; the final interval column gives initialization-cluster percentile bootstrap results. H1 used 2,000 completed bootstrap fits with zero failures, whereas H2--H4 used 443 completed nested-bootstrap fits. Bootstrap iterations are distinct from the 50 independent initialization clusters.}
 \label{tab:confirmatory-summary}
 \end{table*}
 

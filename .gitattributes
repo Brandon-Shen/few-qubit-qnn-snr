@@ -1,0 +1,26 @@
+* text=auto eol=lf
+
+*.py    text eol=lf
+*.tex   text eol=lf
+*.bib   text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+*.json  text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.csv   text eol=lf
+*.tsv   text eol=lf
+*.toml  text eol=lf
+*.sha256 text eol=lf
+
+*.pdf     -text
+*.png     -text
+*.jpg     -text
+*.jpeg    -text
+*.gif     -text
+*.zip     -text
+*.parquet -text
+*.npy     -text
+*.npz     -text
+*.pkl     -text
+*.pickle  -text
