@@ -1,0 +1,13 @@
+{
+  "plan_commit": "d528566acb2488380b5efd42d91b9e81fc739aaf",
+  "analysis_commit": null,
+  "input_sha256": {
+    "original": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+    "independent_seed": "70c562c2724f5310330c2ea4bf10efa4b0fd76327dde8becba9ffe1f7d602715"
+  },
+  "dataset_pooling": false,
+  "initialization_seed_overlap": [],
+  "command": "python scripts/run_h1_depth_weighting.py",
+  "protected_fig0_sha256_expected": "f89ccd263f2ea2e3fb92aed4677d0e32292851eda316244d014ccd49342a9a11",
+  "code_head": "d9a5ce0e499ebc74bb352c969dc50a61246ade6c"
+}

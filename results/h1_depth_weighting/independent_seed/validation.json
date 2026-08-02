@@ -1,0 +1,68 @@
+{
+  "dataset": "independent_seed",
+  "rows": 25600,
+  "duplicate_scientific_keys": 0,
+  "analysis_modes": [
+    "statevector_exact"
+  ],
+  "budget_values": [
+    0
+  ],
+  "configurations": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "depths": [
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "initialization_clusters": 50,
+  "rows_by_depth": {
+    "1": 1600,
+    "2": 3200,
+    "3": 4800,
+    "4": 6400,
+    "6": 9600
+  },
+  "parameter_counts_by_depth": {
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "6": 24
+  },
+  "configuration_rows_per_matched_parameter": [
+    8
+  ],
+  "factor_combinations_per_matched_parameter": [
+    8
+  ],
+  "centered_support": {
+    "E_c": [
+      -0.5,
+      0.5
+    ],
+    "L_c": [
+      -0.5,
+      0.5
+    ],
+    "R_c": [
+      -0.5,
+      0.5
+    ]
+  },
+  "finite_response": true,
+  "errors": [],
+  "passed": true,
+  "input_path": "results/h2_replication_v1/_pipeline_output_stage1/raw/exact.parquet",
+  "input_sha256": "70c562c2724f5310330c2ea4bf10efa4b0fd76327dde8becba9ffe1f7d602715"
+}

@@ -1,0 +1,14 @@
+{
+  "commands": [
+    "python scripts/run_h1_depth_weighting.py"
+  ],
+  "formats": [
+    "PDF",
+    "PNG"
+  ],
+  "source_csvs": [
+    "figure_a_depth_source.csv",
+    "figure_b_weighting_source.csv"
+  ],
+  "relies_on_color_alone": false
+}

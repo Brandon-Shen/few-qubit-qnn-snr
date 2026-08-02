@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "results/h1_depth_weighting"
 VERIFY = ROOT / "verification"
 PLAN_COMMIT = "d528566acb2488380b5efd42d91b9e81fc739aaf"
-IMPLEMENTATION_COMMIT = "d9a5ce0e499ebc74bb352c969dc50a61246ade6c"
+IMPLEMENTATION_COMMIT = "cc3475477742ec25e0c6091e4a2720b5265a2747"
 MATERIALITY_SE = 0.0010812660
 
 
@@ -154,7 +154,7 @@ No manuscript file was edited. Machine-readable contrasts, covariance matrices, 
 """
     (VERIFY / "h1_depth_weighting_results.md").write_text(report, encoding="utf-8")
 
-    files = sorted(p for p in BASE.rglob("*") if p.is_file() and p.name != "artifact_checksums.json")
+    files = sorted(p for p in BASE.rglob("*") if p.is_file() and p.name not in {"artifact_checksums.json", "provenance.json"})
     checksums = {str(p.relative_to(ROOT)).replace("\\", "/"): sha256(p) for p in files}
     (BASE / "comparison/artifact_checksums.json").write_text(json.dumps(checksums, indent=2) + "\n", encoding="utf-8")
 
