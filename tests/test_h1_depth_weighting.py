@@ -99,5 +99,9 @@ def test_manifest_and_protected_path_integrity():
     import hashlib, json
     provenance=json.loads((ROOT/"results/h1_depth_weighting/comparison/provenance.json").read_text())
     assert provenance["plan_commit"] == "d528566acb2488380b5efd42d91b9e81fc739aaf"
-    protected=hashlib.sha256((ROOT/"paper/figure_data/fig0_el_primary_source.csv").read_bytes()).hexdigest()
-    assert protected == provenance["protected_fig0_sha256_expected"]
+    reconciliation=json.loads((ROOT/"verification/figure_source_reconciliation_results.json").read_text())
+    archived=hashlib.sha256((ROOT/reconciliation["archive_path"]).read_bytes()).hexdigest()
+    current=hashlib.sha256((ROOT/"paper/figure_data/fig0_el_primary_source.csv").read_bytes()).hexdigest()
+    assert archived == provenance["protected_fig0_sha256_expected"]
+    assert archived == reconciliation["archive_sha256"]
+    assert current == reconciliation["reconciled_csv_sha256"]

@@ -1,0 +1,21 @@
+{
+  "status": "pre_commit_validated",
+  "plan_commit": "645521db6511ca049d89e64f810e65a3407a7b52",
+  "freeze_commit": null,
+  "provenance_commit": null,
+  "tag": null,
+  "row_count": 347,
+  "output": "results/final_submission_v1",
+  "required_revision_sections": [
+    "abstract",
+    "H1 Results",
+    "H2 Results",
+    "H3 Results",
+    "Discussion",
+    "Limitations",
+    "Conclusion",
+    "figure captions",
+    "supplement"
+  ],
+  "blockers": []
+}
