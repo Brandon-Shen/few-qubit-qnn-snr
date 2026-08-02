@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "status": "factor_coding_correction_frozen",
+  "protocol_coding": "unspecified_in_accessible_evidence",
+  "primary_coding": "centered_effect_coding_minus_half_plus_half",
+  "exact_reparameterization": true,
+  "commits": {
+    "adjudication": "79b6b87bbde5228e1450fafcd6a8df132b56cf4d",
+    "plan": "ec35570569cb0078bbf3f49a4b1b421ccad8c1c4",
+    "model_and_family_correction": "948e81c5087d6a829d3aa698c7cc623799177a36",
+    "bootstrap_extension_and_validation": "c6c9f2a05ece0d42f09c3ebbf486e1c3e10a5040"
+  },
+  "primary_family": [
+    {"hypothesis":"H1","coefficient":"E_c:L_c","estimate":0.004042796799656259,"standard_error":0.0010812660133762467,"ci_95":[0.0019235543557316113,0.0061620392435809065],"p_raw":0.00018479234956002435,"p_holm":0.0007391693982400974,"reject":true,"decision_changed":false},
+    {"hypothesis":"H2","coefficient":"E_c:L_c","estimate":0.014338316406915418,"standard_error":0.0051448431772793575,"ci_95":[0.004254609073341258,0.02442202374048958],"p_raw":0.005321001591502333,"p_holm":0.015963004774507,"reject":true,"decision_changed":false},
+    {"hypothesis":"H3","coefficient":"E_c:R_c","estimate":-0.011615106336627561,"standard_error":0.005143677510109588,"ci_95":[-0.021696529004531014,-0.0015336836687241083],"p_raw":0.023937388077418142,"p_holm":0.047874776154836284,"reject":true,"decision_changed":true},
+    {"hypothesis":"H4","coefficient":"L_c:R_c:depth_z","estimate":-0.01017875771671275,"standard_error":0.0053620749927248525,"ci_95":[-0.02068823158485633,0.00033071615143083315],"p_raw":0.05765827411088321,"p_holm":0.05765827411088321,"reject":false,"decision_changed":false}
+  ],
+  "bootstrap": [
+    {"hypothesis":"H1","completed_bootstrap_fits":2000,"failed":0,"median":0.004066696472716462,"percentile_ci_95":[0.0004734072169480898,0.007534934562629804]},
+    {"hypothesis":"H2","completed_bootstrap_fits":443,"failed":0,"median":0.014733545037976432,"percentile_ci_95":[-0.016638419189621396,0.043562519862851735]},
+    {"hypothesis":"H3","completed_bootstrap_fits":443,"failed":0,"median":-0.011354293103272566,"percentile_ci_95":[-0.030943473538764317,0.010259358600171183]},
+    {"hypothesis":"H4","completed_bootstrap_fits":443,"failed":0,"median":-0.010811262668291884,"percentile_ci_95":[-0.02697505065417311,0.006403112140260393]}
+  ],
+  "bootstrap_transform_validation": {"status":"passed","h1_explicit_refits":10,"h2h4_explicit_refits":3,"maximum_absolute_difference_less_than":2e-15},
+  "decision_changes": ["H3 changed from non-rejection to rejection after centered recoding and full-family Holm recomputation"],
+  "manuscript_material_revision_required": true,
+  "title_revision_required_by_coding_correction": false,
+  "remaining_blockers": ["Protocol full text was not locally present or retrievable; reopen adjudication if authoritative explicit coding evidence is later supplied."]
+}
