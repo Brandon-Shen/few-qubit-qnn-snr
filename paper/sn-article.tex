@@ -370,6 +370,7 @@ The corrected centered $L\times R\times$depth coefficient was $-0.010179$ (SE $0
 \begin{table*}[t]
 \centering\scriptsize
 \setlength{\tabcolsep}{2.5pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llrrrrrlll}
 \toprule
 Hyp. & Estimand & Estimate & SE & Wald 95\% CI & Raw $p$ & Holm $p$ & Decision & Fits & Bootstrap 95\% CI \\
@@ -379,7 +380,7 @@ H2 & $E_cL_c$, end-to-end & 0.014338 & 0.005145 & [0.004255, 0.024422] & 0.00532
 H3 & $E_cR_c$, end-to-end & -0.011615 & 0.005144 & [-0.021697, -0.001534] & 0.023937 & 0.047875 & Reject & 443 & [-0.030943, 0.010259] \\
 H4 & $L_cR_c\times$depth & -0.010179 & 0.005362 & [-0.020688, 0.000331] & 0.057658 & 0.057658 & Do not reject & 443 & [-0.026975, 0.006403] \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \caption{Corrected centered H1--H4 family. Decisions follow the primary model-based Wald/Holm rule. Percentile bootstrap intervals corroborate H1; H2 and H3 intervals include zero despite model-based rejection; H4 is unresolved. Fits are completed bootstrap fits, distinct from the 50 independent initialization clusters.}
 \label{tab:confirmatory-summary}
 \end{table*}
