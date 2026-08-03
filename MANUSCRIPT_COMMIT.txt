@@ -1,12 +1,16 @@
 # Finalized manuscript substantive commit
 
 Commit A:
-4ef0bea1cd5769c6c35f556063193ad1f19446f2
+c266f5ea9322cd127d84dcee4cc1cdd7bc405354
 
 Commit A is the substantive finalized repository state against which the
 manuscript text, numerical values, tables, figures, source files,
 documentation, verification scripts, and submission-facing materials were
 finalized.
+
+The recorded hash is the substantive manuscript source, documentation, and
+validation state for release sncs-submission-v2. Compiled PDF artifacts are
+excluded from this release commit by author direction.
 
 Canonical sources:
 - paper/sn-article.tex
@@ -26,7 +30,7 @@ The historical numerical-results freeze is separate:
 - numerical freeze commit: f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05
 
 The intended final manuscript/repository release tag on Commit B is:
-- sncs-submission-v1
+- sncs-submission-v2
 
 To inspect the substantive finalized state:
-git checkout 4ef0bea1cd5769c6c35f556063193ad1f19446f2
+git checkout c266f5ea9322cd127d84dcee4cc1cdd7bc405354
