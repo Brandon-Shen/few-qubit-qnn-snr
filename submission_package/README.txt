@@ -1,10 +1,11 @@
 OVERLEAF / SPRINGER PACKAGE STAGING README
 
-Status: INCOMPLETE AND NOT FINAL. The included PDFs are the user-supplied
-Overleaf renders, but they predate the table-width and supplement-metadata
-corrections in main.tex and ESM_1.tex. A fresh Overleaf compile is required.
+Status: FINAL PACKAGE PREPARED FOR INTENDED RELEASE sncs-submission-v5.
+The included PDFs are the final compiled renders corresponding to the synchronized main.tex and ESM_1.tex
+sources. Their immutable hashes are recorded in
+verification/final_release_artifacts.json.
 
-Required files still to export from the existing Overleaf project:
+Official template files required only to recompile the sources independently:
   sn-jnl.cls
   sn-basic.bst
 
@@ -13,15 +14,15 @@ Project layout:
   ESM_1.tex                Online Resource 1 source
   references.bib           bibliography database
   figures/                 six referenced vector PDFs
-  Manuscript.pdf           supplied pre-correction 20-page render
-  ESM_1.pdf                supplied pre-correction 7-page render
+  Manuscript.pdf           final compiled main-article render
+  ESM_1.pdf                final compiled Online Resource 1 render
 
-Overleaf steps:
+Optional independent-recompilation steps:
   1. Add the two official Springer files above.
   2. Set main.tex as the main document and compile using the project's
      existing pdfLaTeX/BibTeX workflow.
   3. Set ESM_1.tex as the main document and compile Online Resource 1.
   4. Verify all table columns are visible on main page 14 and ESM page 2.
-  5. Export and replace both PDFs, then return them for final audit.
+  5. Compare any replacement PDFs against the final artifact record and audit them before substitution.
 
 No local TeX compilation was performed or claimed.

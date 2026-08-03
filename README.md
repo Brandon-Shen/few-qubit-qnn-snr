@@ -22,11 +22,11 @@ H1 is supported by both model-based and bootstrap inference. H2 and H3 meet the 
 - Upload copies: `submission_package/main.tex` and `submission_package/ESM_1.tex`, synchronized byte-for-byte with the canonical sources
 - Numerical manifest: [`results/final_submission_v1/manifest.json`](results/final_submission_v1/manifest.json)
 - Finalized-state record: [`MANUSCRIPT_COMMIT.txt`](MANUSCRIPT_COMMIT.txt)
-- Preferred immutable reviewer entry point after release: tag `sncs-submission-v2`
+- Preferred immutable reviewer entry point after release: tag `sncs-submission-v5`
 
 The existing `submission-numerical-results-freeze-v1` tag identifies the numerical-results freeze and is distinct from the final manuscript release.
 
-Submission provenance at the start of the 2026-08-02 revision is branch `submission-manuscript-revision-20260802`, commit `d8ebcf361ca3399c40e1cd1496f15304494b182d`. The intended public reviewer entry point for this finalized revision is [`sncs-submission-v2`](https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2); the numerical freeze remains [`submission-numerical-results-freeze-v1`](https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/submission-numerical-results-freeze-v1). `MANUSCRIPT_COMMIT.txt` distinguishes the metadata commit from the substantive manuscript state.
+The final substantive manuscript state is commit `0e2aa2a55d8de70777434e079508c06bca560b70` on branch `submission-manuscript-revision-20260802`. The immutable reviewer entry point is [`sncs-submission-v5`](https://github.com/Brandon-Shen/few-qubit-qnn-snr/releases/tag/sncs-submission-v5). The numerical freeze remains [`submission-numerical-results-freeze-v1`](https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/submission-numerical-results-freeze-v1). `MANUSCRIPT_COMMIT.txt` distinguishes the release-metadata commit from the substantive manuscript state.
 
 ## Installation
 

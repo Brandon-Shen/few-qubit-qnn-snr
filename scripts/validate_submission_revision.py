@@ -70,7 +70,7 @@ add("repository_license", False, "repository root", "author-selected code/data l
 report = {"status": "pass_with_manual_actions" if all(c["status"] == "pass" or c["check_name"] in
           {"tex_compilation", "type3_pdf_preflight", "repository_license"} for c in checks) else "fail",
           "authoritative_manifest": "results/final_submission_v1/manifest.json",
-          "checked_commit": "d8ebcf361ca3399c40e1cd1496f15304494b182d",
+          "checked_commit": "0e2aa2a55d8de70777434e079508c06bca560b70",
           "checks": checks}
 OUT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 print(json.dumps({"status": report["status"], "checks": len(checks)}, indent=2))

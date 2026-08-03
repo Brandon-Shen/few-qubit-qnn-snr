@@ -49,16 +49,16 @@ The first reread the already frozen, reconciled figure source and reproduced the
 
 ## 6. Numerical-consistency results
 
-- `scripts/check_manuscript_frozen_values.py`: pass; 28 required values, no prohibited current values, no manifest/hash errors, no source synchronization errors; abstract 200 words.
+- `scripts/check_manuscript_frozen_values.py`: pass on 2026-08-03; 28 required values, no prohibited current values, no manifest/hash errors, no source synchronization errors; abstract 201 words.
 - Active and immutable checksum inventories: pass.
-- Focused manuscript/figure/submission tests: 30 passed. Smoke-only temporary model fits emitted their expected warnings; no test failed.
+- Focused frozen-value, checksum, and source-synchronization tests: 14 passed. A separate Overleaf staging assertion reports that the newer `submission_package/Manuscript.pdf` differs from the archived imported PDF; the source checks and canonical/upload byte-identity checks pass.
 - Full suite: 276 passed, 1 skipped, 0 failed in 324.97 seconds. The 567 warnings arose from deliberately small smoke/pilot mixed-model fits and are covered by existing warning/fallback tests; they did not fail validation.
 - Canonical and upload TeX sources are byte-identical.
 - No current figure or table input references a superseded directory.
 
 ## 7. Repository-access status
 
-The repository is publicly accessible at <https://github.com/Brandon-Shen/few-qubit-qnn-snr>. The manuscript directly links intended release `sncs-submission-v2`; numerical tag `submission-numerical-results-freeze-v1`, manifest `results/final_submission_v1/manifest.json`, and `MANUSCRIPT_COMMIT.txt` remain distinct and explicit. The published protocol is cited. The full protocol source is not claimed to be locally archived; local decision plans, adjudication records, and verification reports are described accurately.
+The repository is publicly accessible at <https://github.com/Brandon-Shen/few-qubit-qnn-snr>. The manuscript directly links release `sncs-submission-v5`. Substantive commit `0e2aa2a55d8de70777434e079508c06bca560b70`, numerical tag `submission-numerical-results-freeze-v1`, manifest `results/final_submission_v1/manifest.json`, and `MANUSCRIPT_COMMIT.txt` remain distinct and explicit. The published protocol is cited. The full protocol source is not claimed to be locally archived; local decision plans, adjudication records, and verification reports are described accurately.
 
 ## 8. Remaining manual tasks
 
@@ -81,6 +81,6 @@ Four qubits; one TFIM task; one reset-per-block architecture; one pair-restricte
 - Lower-order direct-coded interpretations were corrected to centered factorial estimands without changing fitted values or selecting a more favorable model.
 - The second dataset is an internal new-seed replication, not an external replication.
 - Generative-AI tools assisted planning, scripting, checking, and prose feedback but were neither authors nor evidence; the author reviewed and accepts responsibility.
-- Cite the public repository, `sncs-submission-v2`, numerical freeze tag, manifest, and substantive commit record distinctly.
+- Cite the public repository, immutable release `sncs-submission-v5`, numerical freeze tag, manifest, and substantive commit record distinctly.
 
 Submission-portal caption: “Online Resource 1. Corrected interaction estimates, bootstrap procedures, depth-weighting analyses, estimator-mode sensitivities, implementation-validation results, resource accounting, and reproducibility information.”
