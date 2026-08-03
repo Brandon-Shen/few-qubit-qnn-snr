@@ -21,16 +21,23 @@ def test_staging_package_sources_and_references():
     package=ROOT/'submission_package'
     assert sha(package/'main.tex')==sha(ROOT/'paper/sn-article.tex')
     assert sha(package/'ESM_1.tex')==sha(ROOT/'paper/supplemental.tex')
-    assert sha(package/'Manuscript.pdf')==sha(ROOT/'verification/overleaf_import/main_overleaf.pdf')
-    assert sha(package/'ESM_1.pdf')==sha(ROOT/'verification/overleaf_import/ESM_1_overleaf.pdf')
+    final=json.loads((ROOT/'verification/final_release_artifacts.json').read_text())
+    assert final['status']=='final_compiled_artifacts_frozen'
+    for artifact in final['artifacts']:
+        path=ROOT/artifact['path']
+        assert path.exists()
+        assert path.stat().st_size==artifact['bytes']
+        assert sha(path)==artifact['sha256']
     for tex in [package/'main.tex',package/'ESM_1.tex']:
         text=tex.read_text(encoding='utf-8')
         for ref in re.findall(r'\\includegraphics(?:\[[^]]*\])?\{([^}]+)\}',text): assert (package/ref).exists(),ref
     dep=json.loads((ROOT/'verification/source_dependency_inventory.json').read_text())
     assert dep['missing_required_official_files']==['sn-jnl.cls','sn-basic.bst']
 
-def test_current_pdf_is_explicitly_outdated_pending_overleaf():
+def test_current_pdf_is_explicitly_final_for_release():
     stage=json.loads((ROOT/'verification/submission_package_staging.json').read_text())
-    assert stage['pdfs_outdated_relative_to_current_source'] is True
-    assert stage['new_overleaf_compile_required'] is True
+    assert stage['status']=='final_release_package_prepared'
+    assert stage['pdfs_outdated_relative_to_current_source'] is False
+    assert stage['new_overleaf_compile_required'] is False
+    assert stage['historical_imports_retained'] is True
     assert stage['zip_created'] is False
