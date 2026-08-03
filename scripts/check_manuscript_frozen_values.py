@@ -7,6 +7,8 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 MAIN = ROOT / "paper/sn-article.tex"
 SUPP = ROOT / "paper/supplemental.tex"
+UPLOAD_MAIN = ROOT / "submission_package/main.tex"
+UPLOAD_SUPP = ROOT / "submission_package/ESM_1.tex"
 OUT = ROOT / "verification/manuscript_value_check.json"
 
 REQUIRED_MAIN = {
@@ -39,6 +41,20 @@ def main(output: Path = OUT) -> dict:
     missing = {label: token for label, token in REQUIRED_MAIN.items() if token not in text}
     prohibited = {token: reason for token, reason in PROHIBITED_MAIN.items() if token in text}
     ambiguous_j = bool(re.search(r"J_\{EL\}(?!\\mid)", text))
+    availability_tokens = (
+        "results/final\\_submission\\_v1/manifest.json",
+        "submission-numerical-results-freeze-v1",
+        "sncs-submission-v1",
+        "https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v1",
+        "MANUSCRIPT\\_COMMIT.txt",
+        "results/superseded/",
+    )
+    availability_errors = [token for token in availability_tokens if token not in text]
+    synchronization_errors = []
+    if MAIN.read_bytes() != UPLOAD_MAIN.read_bytes():
+        synchronization_errors.append("main manuscript upload copy")
+    if SUPP.read_bytes() != UPLOAD_SUPP.read_bytes():
+        synchronization_errors.append("supplement upload copy")
 
     manifest = json.loads((ROOT / "results/final_submission_v1/manifest.json").read_text())
     hash_errors = []
@@ -59,7 +75,7 @@ def main(output: Path = OUT) -> dict:
     abstract_plain = re.sub(r"\\[A-Za-z]+|[{}$]", " ", abstract)
     abstract_words = len(re.findall(r"[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*", abstract_plain))
     result = {
-        "status": "pass" if not (missing or prohibited or ambiguous_j or hash_errors or figure_errors) and 150 <= abstract_words <= 250 else "fail",
+        "status": "pass" if not (missing or prohibited or ambiguous_j or hash_errors or figure_errors or availability_errors or synchronization_errors) and 150 <= abstract_words <= 250 else "fail",
         "authoritative_manifest": "results/final_submission_v1/manifest.json",
         "main_source": str(MAIN.relative_to(ROOT)).replace("\\", "/"),
         "supplement_source": str(SUPP.relative_to(ROOT)).replace("\\", "/"),
@@ -67,6 +83,8 @@ def main(output: Path = OUT) -> dict:
         "required_values_checked": len(REQUIRED_MAIN), "missing_required": missing,
         "prohibited_matches": prohibited, "ambiguous_unconditioned_j": ambiguous_j,
         "manifest_hash_errors": hash_errors, "figure_source_errors": figure_errors,
+        "availability_errors": availability_errors,
+        "synchronization_errors": synchronization_errors,
         "supplement_contains_explicit_historical_audit": "Historical correction and audit record" in supp,
     }
     output.parent.mkdir(parents=True, exist_ok=True)

@@ -1,20 +1,33 @@
 {
-  "status": "pending_cross_platform_ci",
-  "base_commit": "b68eacbbeaff947657320a799b5df6f7d2bf4bb7",
+  "status": "cross_platform_pass_after_corrective_commit",
   "local_windows": {
+    "state": "working_tree",
+    "base_commit": "b68eacbbeaff947657320a799b5df6f7d2bf4bb7",
     "os": "Windows 11",
     "python": "3.12.10",
-    "state": "working_tree",
     "passed": 275,
     "skipped": 1,
     "failed": 0,
-    "duration_seconds": 327.24,
-    "manifest_check": "pass",
-    "abstract_word_count": 205,
+    "pytest_duration_seconds": 327.24,
+    "manuscript_check": "pass",
     "checksum_check": "pass"
   },
-  "clean_linux": null,
-  "clean_windows": null,
-  "github_cli_available": false,
-  "cross_platform_claim": false
+  "original_candidate": {
+    "commit": "a665b75303cdcfcd2a0c8d60eac02a37fd049f4e",
+    "workflow_name": "tests",
+    "run_id": 30771907844,
+    "run_url": "https://github.com/Brandon-Shen/few-qubit-qnn-snr/actions/runs/30771907844",
+    "conclusion": "failure",
+    "ubuntu": {"job_id": 91560376847, "job_url": "https://github.com/Brandon-Shen/few-qubit-qnn-snr/actions/runs/30771907844/job/91560376847", "passed": 270, "skipped": 1, "failed": 5, "pytest_duration_seconds": 423.82},
+    "windows": {"job_id": 91560376865, "job_url": "https://github.com/Brandon-Shen/few-qubit-qnn-snr/actions/runs/30771907844/job/91560376865", "passed": 270, "skipped": 1, "failed": 5, "pytest_duration_seconds": 327.21}
+  },
+  "corrected_candidate": {
+    "commit": "82c2fd7fc097e9e1c01d4615e3cc6bf24588c098",
+    "workflow_name": "tests",
+    "run_id": 30772885026,
+    "run_url": "https://github.com/Brandon-Shen/few-qubit-qnn-snr/actions/runs/30772885026",
+    "conclusion": "success",
+    "ubuntu": {"job_id": 91563004440, "job_url": "https://github.com/Brandon-Shen/few-qubit-qnn-snr/actions/runs/30772885026/job/91563004440", "image": "ubuntu-24.04", "image_version": "20260720.247.2", "python": "3.12.10", "passed": 275, "skipped": 1, "failed": 0, "pytest_duration_seconds": 269.39, "job_duration_seconds": 341, "manuscript_check": "pass", "checksum_check": "pass", "manifest_check": "pass", "smoke": "pass", "diagnostic_artifact_id": 8841148381},
+    "windows": {"job_id": 91563004456, "job_url": "https://github.com/Brandon-Shen/few-qubit-qnn-snr/actions/runs/30772885026/job/91563004456", "image": "windows-2025-vs2026", "image_version": "20260714.173.1", "python": "3.12.10", "passed": 275, "skipped": 1, "failed": 0, "pytest_duration_seconds": 387.84, "job_duration_seconds": 508, "manuscript_check": "pass", "checksum_check": "pass", "manifest_check": "pass", "smoke": "not_run_by_design", "diagnostic_artifact_id": 8841178816}
+  }
 }

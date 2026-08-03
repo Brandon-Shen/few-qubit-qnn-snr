@@ -51,4 +51,4 @@ The production raw-data generation and nested bootstrap are expensive and are no
 python -m qnn_snr run-all --config configs/smoke.yaml --iterations 5 --pointwise-bootstrap-iterations 10
 ```
 
-See [`results/README.md`](results/README.md) for provenance and current-versus-historical status. The final verified cross-platform test count and candidate commit are recorded only after actual Linux and Windows validation.
+The corrected candidate submission state was validated in clean Ubuntu and Windows GitHub Actions environments using Python 3.12.10: 275 tests passed, 1 was skipped, and none failed on each operating system. See [`verification/cross_platform_submission_validation.md`](verification/cross_platform_submission_validation.md) for the exact runs, commits, counts, images, durations, checker results, smoke result, and diagnostic artifacts. See [`results/README.md`](results/README.md) for numerical provenance and current-versus-historical status.

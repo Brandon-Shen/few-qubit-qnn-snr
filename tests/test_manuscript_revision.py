@@ -39,3 +39,17 @@ def test_canonical_submission_sources_are_byte_identical():
     assert (ROOT / "paper/sn-article.tex").read_bytes() == (ROOT / "submission_package/main.tex").read_bytes()
     assert (ROOT / "paper/supplemental.tex").read_bytes() == (ROOT / "submission_package/ESM_1.tex").read_bytes()
     assert "0.004346" not in main and "0.024996" not in main
+
+
+def test_final_availability_identifiers_are_explicit():
+    main = (ROOT / "paper/sn-article.tex").read_text(encoding="utf-8")
+    supplement = (ROOT / "paper/supplemental.tex").read_text(encoding="utf-8")
+    required = (
+        "results/final\\_submission\\_v1/manifest.json",
+        "submission-numerical-results-freeze-v1",
+        "sncs-submission-v1",
+        "https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v1",
+        "MANUSCRIPT\\_COMMIT.txt",
+    )
+    assert all(token in main for token in required)
+    assert all(token in supplement for token in required)

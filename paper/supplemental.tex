@@ -22,7 +22,7 @@
 
 \section{Scope and frozen provenance}
 
-This supplement reports the corrected centered H1--H4 family and the post-primary analyses frozen before manuscript revision. The machine-readable source of truth is indexed by \ttf{results/final\_submission\_v1/manifest.json} in the public repository, under the tag \ttf{submission-numerical-results-freeze-v1}. Historical outputs remain archived under \ttf{results/superseded/} and are not current primary results.
+This supplement reports the corrected centered H1--H4 family and the post-primary analyses frozen before manuscript revision. The machine-readable source of truth is \ttf{results/final\_submission\_v1/manifest.json}. The numerical-results freeze, \ttf{submission-numerical-results-freeze-v1}, preserves the frozen scientific outputs. The distinct final manuscript/repository release, \ttf{sncs-submission-v1}, contains the finalized manuscript and supplement sources, code, documentation, verification scripts, and submission-facing repository state. Historical outputs under \ttf{results/superseded/}, \ttf{results/superseded\_pooled/}, and other explicitly superseded directories are audit-only and are not current primary results.
 
 \section{Factor-coding correction and estimands}
 
@@ -180,10 +180,9 @@ Historical direct-0/1 coefficient tables and older pooled estimator-mode outputs
 \section{Reproducibility index}
 
 All frozen inputs, numerical outputs, figures, and verification reports are indexed by
-\ttf{results/final\_submission\_v1/manifest.json} in the public repository
-(\url{https://github.com/Brandon-Shen/few-qubit-qnn-snr}). The numerical state is tagged
-\ttf{submission-numerical-results-freeze-v1}; the finalized manuscript commit is recorded in
-\ttf{MANUSCRIPT\_COMMIT.txt}. The principal materials are grouped under:
+\ttf{results/final\_submission\_v1/manifest.json}. The numerical-results freeze
+\ttf{submission-numerical-results-freeze-v1} preserves the frozen scientific outputs. The separate final manuscript/repository release \ttf{sncs-submission-v1}
+(\url{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v1}) contains the finalized manuscript sources, supplement sources, documentation, verification scripts, and submission-facing repository state. \ttf{MANUSCRIPT\_COMMIT.txt} records the exact substantive commit against which those materials were finalized. The principal materials are grouped under:
 \begin{itemize}
 \item \ttf{results/primary\_corrected/} and \ttf{results/independent\_seed\_h1/} for corrected primary and independent-seed outputs;
 \item \ttf{results/h1\_depth\_weighting/}, \ttf{results/h3\_centered\_robustness/}, and \ttf{results/jel\_conditional/} for post-primary analyses;
