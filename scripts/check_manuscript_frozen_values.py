@@ -10,6 +10,10 @@ SUPP = ROOT / "paper/supplemental.tex"
 UPLOAD_MAIN = ROOT / "submission_package/main.tex"
 UPLOAD_SUPP = ROOT / "submission_package/ESM_1.tex"
 OUT = ROOT / "verification/manuscript_value_check.json"
+TEXT_SUFFIXES = {
+    ".py", ".tex", ".bib", ".md", ".txt", ".json", ".yaml", ".yml",
+    ".csv", ".tsv", ".toml", ".sha256",
+}
 
 REQUIRED_MAIN = {
     "H1 estimate": "0.004043", "H1 SE": "0.001081", "H1 Holm": "0.000739",
@@ -33,7 +37,10 @@ PROHIBITED_MAIN = {
 }
 
 def sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    data = path.read_bytes()
+    if path.suffix.lower() in TEXT_SUFFIXES:
+        data = data.replace(b"\r\n", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 def main(output: Path = OUT) -> dict:
     text = MAIN.read_text(encoding="utf-8")

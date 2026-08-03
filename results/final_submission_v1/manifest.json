@@ -36,13 +36,13 @@
     {
       "path": "results/h1_marginal_effects/h1_marginal_effects.json",
       "role": "H1 marginal effects",
-      "sha256": "fa06261d3575469ce5cb08ed9297fd31538ab9402789dde15016f3ec521c2353",
+      "sha256": "a73bf768fcae27106063cf931efcb92b87982d45b2499689e6b1e9dafeb891d7",
       "bytes": 3775
     },
     {
       "path": "results/h1_marginal_effects/h1_marginal_effects_table.tex",
       "role": "H1 generated marginal table",
-      "sha256": "dc2bb76d0093e72b7aa13cc9ed25febf7ff25da33e592b8576ef77ed15b233a2",
+      "sha256": "9b63fc6ce7327d4f49d8b57d7a0266bacc1bfd8805e3d09d7094ce4fe096bca8",
       "bytes": 1958
     },
     {
@@ -78,13 +78,13 @@
     {
       "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_seed_manifest.csv",
       "role": "H2-H4 seed manifest",
-      "sha256": "b2b10433687c1328949473b66ae87c7853f69a04ad9ed85c9e81aab4f02b60d9",
+      "sha256": "ca9069deb2fe00212ca449da1403331ffcf06200ca433510c60db93959a71db4",
       "bytes": 441110
     },
     {
       "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_summary.csv",
       "role": "H2-H4 1000-fit summary",
-      "sha256": "dd5275066b2bd2bebb1e9d43f4fb65502266835fd36f63da80645e481f4e6763",
+      "sha256": "9138f2e17be90bbc38f752de9668bce9fd65c968cf47122834cc29db3ccad900",
       "bytes": 959
     },
     {
@@ -126,7 +126,7 @@
     {
       "path": "verification/h3_centered_interaction_robustness_results.json",
       "role": "H3 robustness",
-      "sha256": "36a804c120b204ac4098e65915aa88ae1dfb433065d5eade5f39367bd7b2314e",
+      "sha256": "721e1dc681d6dfa57bd409248e6b1117bb8eb2336b5c45a49aec42d6846135b6",
       "bytes": 1904
     }
   ],

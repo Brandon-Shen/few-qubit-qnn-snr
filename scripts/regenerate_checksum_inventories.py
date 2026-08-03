@@ -22,10 +22,17 @@ IMMUTABLE_INVENTORIES = (
     "results/superseded_pooled/SHA256SUMS.txt",
     "verification/input_checksums.sha256",
 )
+TEXT_SUFFIXES = {
+    ".py", ".tex", ".bib", ".md", ".txt", ".json", ".yaml", ".yml",
+    ".csv", ".tsv", ".toml", ".sha256",
+}
 
 
 def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    data = path.read_bytes()
+    if path.suffix.lower() in TEXT_SUFFIXES:
+        data = data.replace(b"\r\n", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def normalize_path(value: str) -> str:
