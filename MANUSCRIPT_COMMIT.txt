@@ -25,11 +25,21 @@ a commit cannot contain its own hash. Commit B changes only this
 MANUSCRIPT_COMMIT.txt record and any unavoidable release-pointer metadata; it
 does not change scientific outputs or the substantive finalized state.
 
+Commit C:
+fd25501366de8361eae3ad4ea69a01cfcc53a51d
+
+Commit C makes checksum verification platform-independent by canonicalizing
+tracked text artifacts to LF before hashing. It updates only checksum logic,
+tests, and derived checksum records; it does not alter scientific values or
+the substantive manuscript state. GitHub Actions passed on both Ubuntu and
+Windows at Commit C before the replacement release tag was created.
+
 The historical numerical-results freeze is separate:
 - tag: submission-numerical-results-freeze-v1
 - numerical freeze commit: f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05
 
-The intended final manuscript/repository release tag on Commit B is:
+The final manuscript/repository release tag on the complete provenance and
+portable-validation state is:
 - sncs-submission-v5
 
 The authorized release step creates this new tag without moving or rewriting any prior tag.
