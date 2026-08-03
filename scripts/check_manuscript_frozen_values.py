@@ -44,8 +44,8 @@ def main(output: Path = OUT) -> dict:
     availability_tokens = (
         "results/final\\_submission\\_v1/manifest.json",
         "submission-numerical-results-freeze-v1",
-        "sncs-submission-v1",
-        "https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v1",
+        "sncs-submission-v2",
+        "https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2",
         "MANUSCRIPT\\_COMMIT.txt",
         "results/superseded/",
     )

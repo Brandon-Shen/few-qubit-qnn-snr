@@ -1,0 +1,15 @@
+{
+  "status": "referenced_figures_type3_free",
+  "verification_tool": "Poppler pdffonts 25.07.0",
+  "tex_rebuild_performed": false,
+  "tex_rebuild_reason": "User explicitly stated that TeX compilation was not needed.",
+  "figures": [
+    {"path":"paper/figures/fig16_architecture.pdf","generator":"paper/scripts/make_fig16_architecture.py","before_types":["CID TrueType"],"after_types":["CID TrueType"],"type3_after":false,"sha256_before":"a46d8068dc0ee220ed5fd2c12692d1731aa1cb447523aff51283a12b4aa24e55","sha256_after":"a46d8068dc0ee220ed5fd2c12692d1731aa1cb447523aff51283a12b4aa24e55"},
+    {"path":"paper/figures/fig13_h1_depth.pdf","generator":"scripts/run_h1_depth_weighting.py::figures","before_types":["Type 3"],"after_types":["CID TrueType"],"type3_after":false,"sha256_before":"8403f4d3d6b18a3f91c249f0a5eed44988eb4a0fc466852fdc8d85c4287998a0","sha256_after":"a2153cba375dec7cb013cdf0abb93e0c8f51e4e68f7608dc8f55451214f6a769"},
+    {"path":"paper/figures/fig14_h1_weighting.pdf","generator":"scripts/run_h1_depth_weighting.py::figures","before_types":["Type 3"],"after_types":["CID TrueType"],"type3_after":false,"sha256_before":"40c590a409909a740cd085fdaf258bdc58862c59c39312d99384b1f2e1aeb5e3","sha256_after":"3bce90e577750449e092d17085b90485f6b7138a440a5a14dd94057364ece675"},
+    {"path":"paper/figures/fig0_el_primary.pdf","generator":"paper/scripts/make_fig0_el_primary.py","before_types":["CID TrueType"],"after_types":["CID TrueType"],"type3_after":false,"sha256_before":"05007ea46bfdb20d83abce3d1d579187b519c82e551738b1eada45b1df63180a","sha256_after":"929faf1642a7234f7cb16a59352711585a68e965172589bf1ddf37c1ba1aade7"},
+    {"path":"paper/figures/fig1_confirmatory_forest.pdf","generator":"paper/scripts/make_fig1_forest.py","before_types":["CID TrueType"],"after_types":["CID TrueType"],"type3_after":false,"sha256_before":"f7042e8b4d19c236f677376d1015d738dafae62e11537ee80519c432e58d6b59","sha256_after":"ba3136b6fa0e16d6ba4daf70278ff1534edb617bc24503b721451b26ee2d0fef"},
+    {"path":"paper/figures/fig12_j_conditional.pdf","generator":"paper/scripts/make_fig12_j_conditional.py","before_types":["Type 3"],"after_types":["CID TrueType"],"type3_after":false,"sha256_before":"5fe0ee6ae54dffde5de673523431506841c12b5fc6bf7f6255dabc3940c06341","sha256_after":"0ceb356621295ddc601e76f384c60fa5ccae7dac0f950adca02b8e52067f8351"}
+  ],
+  "content_checks": {"page_dimensions_unchanged":true,"normalized_extracted_text_unchanged":true,"visual_inspection_passed":true,"superseded_inputs_used":false}
+}

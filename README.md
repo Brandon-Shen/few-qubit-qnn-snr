@@ -1,4 +1,4 @@
-# Interaction-Aware Benchmarking of Exact-Gradient Signal and Finite-Shot Resolvability in a Four-Qubit Hybrid Quantum Neural Network
+# Factorial Benchmarking of Exact and Finite-Shot Gradient Resolvability in a Four-Qubit Hybrid Quantum Neural Network
 
 This repository contains the manuscript, frozen data, analysis code, and audit trail for the current submission. If one machine-readable source is used for the submitted numerical conclusions, use [`results/final_submission_v1/manifest.json`](results/final_submission_v1/manifest.json).
 
@@ -22,9 +22,11 @@ H1 is supported by both model-based and bootstrap inference. H2 and H3 meet the 
 - Upload copies: `submission_package/main.tex` and `submission_package/ESM_1.tex`, synchronized byte-for-byte with the canonical sources
 - Numerical manifest: [`results/final_submission_v1/manifest.json`](results/final_submission_v1/manifest.json)
 - Finalized-state record: [`MANUSCRIPT_COMMIT.txt`](MANUSCRIPT_COMMIT.txt)
-- Preferred immutable reviewer entry point after release: tag `sncs-submission-v1`
+- Preferred immutable reviewer entry point after release: tag `sncs-submission-v2`
 
 The existing `submission-numerical-results-freeze-v1` tag identifies the numerical-results freeze and is distinct from the final manuscript release.
+
+Submission provenance at the start of the 2026-08-02 revision is branch `submission-manuscript-revision-20260802`, commit `d8ebcf361ca3399c40e1cd1496f15304494b182d`. The intended public reviewer entry point for this finalized revision is [`sncs-submission-v2`](https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2); the numerical freeze remains [`submission-numerical-results-freeze-v1`](https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/submission-numerical-results-freeze-v1). `MANUSCRIPT_COMMIT.txt` distinguishes the metadata commit from the substantive manuscript state.
 
 ## Installation
 
@@ -44,6 +46,27 @@ python -m pytest tests/ -q
 python scripts/check_manuscript_frozen_values.py --output verification/manuscript_check.json
 python scripts/regenerate_checksum_inventories.py --check
 ```
+
+## Regenerating submission artifacts
+
+Quick, non-scientific rendering and validation commands are:
+
+```text
+python paper/scripts/make_fig0_el_primary.py
+python paper/scripts/make_fig1_forest.py
+python paper/scripts/make_fig12_j_conditional.py
+python paper/scripts/make_fig16_architecture.py
+python scripts/check_manuscript_frozen_values.py --output submission_validation_report.json
+python -m pytest tests/ -q
+```
+
+Compile `paper/sn-article.tex` with pdfLaTeX, BibTeX, pdfLaTeX, pdfLaTeX in a Springer Nature template project containing the official `sn-jnl.cls` and `sn-basic.bst`. Repeat for `paper/supplemental.tex` and name its output exactly `ESM_1.pdf`. The repository export does not include those Springer-owned template files, so local compilation requires an existing TeX installation/template project or Overleaf.
+
+The frozen result map is `results/final_submission_v1/manifest.json`. Primary centered results are in `results/primary_corrected/`; the internal new-seed data and results are in `results/independent_seed_h1/` and `results/h2_replication_v1/`; post-primary sensitivities are under `results/h1_depth_weighting/`, `results/h3_centered_robustness/`, `results/jel_conditional/`, and `results/sensitivity_analyses/`; figures and generators are under `paper/figures/` and `paper/scripts/`; verification records are under `verification/`; historical results are under `results/superseded/` and `results/superseded_pooled/`.
+
+Figure regeneration and frozen-value checks normally complete in seconds to minutes on an ordinary laptop. The full test suite took approximately 5--7 minutes in recorded clean Windows/Linux runs. Raw confirmatory simulation, new-seed simulation, and nested mixed-model bootstraps require substantial CPU time and memory and are not needed to verify the frozen submission. Exact recorded commands are in `results/final_submission_v1/commands.txt` and the relevant verification plans/reports.
+
+No repository code or data license has been selected. A license is therefore a manual pre-submission decision; none is implied by public GitHub access.
 
 The production raw-data generation and nested bootstrap are expensive and are not required to verify the frozen submission. The smoke pipeline is non-scientific:
 

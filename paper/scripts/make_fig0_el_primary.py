@@ -42,8 +42,9 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import matplotlib
-matplotlib.use("Agg")
+import matplotlib as mpl
+mpl.use("Agg")
+mpl.rcParams.update({"pdf.fonttype": 42, "ps.fonttype": 42, "svg.fonttype": "none"})
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -304,8 +305,6 @@ def main():
     ax.set_yticks(y_positions)
     ax.set_yticklabels([r[0] for r in rows_plot])
     ax.set_xlabel("Secondary multiplicative interaction index")
-    ax.set_title(r"Primary $E \times L$ Interaction: Practical Magnitude",
-                 fontsize=ANNOTATION_FONT_SIZE + 1)
     lo = min(1.0, I_EL, J_EL) - 0.06
     hi = max(1.0, I_EL, J_EL) + 0.09
     ax.set_xlim(lo, hi)

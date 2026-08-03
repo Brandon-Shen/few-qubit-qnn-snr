@@ -6,8 +6,9 @@ import platform
 import subprocess
 from pathlib import Path
 
-import matplotlib
-matplotlib.use("Agg")
+import matplotlib as mpl
+mpl.use("Agg")
+mpl.rcParams.update({"pdf.fonttype": 42, "ps.fonttype": 42, "svg.fonttype": "none"})
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

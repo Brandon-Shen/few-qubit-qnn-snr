@@ -1,8 +1,9 @@
 """Render conditional exact-gradient J indices from the frozen summary CSV."""
 from pathlib import Path
 import pandas as pd
-import matplotlib
-matplotlib.use("Agg")
+import matplotlib as mpl
+mpl.use("Agg")
+mpl.rcParams.update({"pdf.fonttype": 42, "ps.fonttype": 42, "svg.fonttype": "none"})
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[2]

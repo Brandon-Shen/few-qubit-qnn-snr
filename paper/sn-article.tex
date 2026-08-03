@@ -10,19 +10,20 @@
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage{enumitem}
-\usepackage{seqsplit}
+\usepackage{xurl}
 
 % PDF metadata; hyperref is loaded by the Springer Nature class.
 \AtBeginDocument{\hypersetup{
-  pdftitle={Interaction-Aware Benchmarking of Exact-Gradient Signal and Finite-Shot Resolvability in a Four-Qubit Hybrid Quantum Neural Network},
+  pdftitle={Factorial Benchmarking of Exact and Finite-Shot Gradient Resolvability in a Four-Qubit Hybrid Quantum Neural Network},
   pdfauthor={Brandon Shen},
   pdfsubject={Factorial benchmarking of exact-gradient signal and finite-shot resolvability in a four-qubit hybrid QNN},
   pdfkeywords={quantum machine learning, quantum neural networks, factorial design, finite-shot gradient estimation, gradient resolvability, reproducible benchmarking}
 }}
 
-\newcommand{\ttf}[1]{\texttt{\seqsplit{#1}}}
+\urlstyle{same}
 \newcommand{\cx}[2]{CX($#1\!\to\!#2$)}
-\newcommand{\snrest}{\mathrm{SNR}_{\mathrm{est}}}
+\newcommand{\snrstar}{\mathrm{SNR}^{*}_{\mathrm{est}}}
+\newcommand{\snrest}{\widehat{\mathrm{SNR}}_{\mathrm{est}}}
 \newcommand{\snrexact}{\mathrm{SNR}_{\mathrm{exact}}}
 \newcommand{\vshots}{\mathrm{Var}_{\mathrm{shots}}}
 
@@ -33,8 +34,8 @@
 \begin{document}
 
 
-\title[Interaction-Aware Benchmarking of QNN Gradients]
-{Interaction-Aware Benchmarking of Exact-Gradient Signal and Finite-Shot Resolvability in a Four-Qubit Hybrid Quantum Neural Network}
+\title[Factorial Benchmarking of QNN Gradients]
+{Factorial Benchmarking of Exact and Finite-Shot Gradient Resolvability in a Four-Qubit Hybrid Quantum Neural Network}
 
 \author*[1]{\fnm{Brandon} \sur{Shen} (ORCID: \href{https://orcid.org/0009-0002-3545-2106}{0009-0002-3545-2106})} \email{brandonshen123@gmail.com}
 
@@ -46,7 +47,7 @@
 
 \textbf{Methods:} A complete $2^3$ factorial benchmark crossed a pair-restricted CNOT schedule, normalized transverse-field Ising energy objective, and fixed residual shortcut in a measure--re-encode--reset architecture. Centered binary coding made lower-order interactions equal averages over the third factor. The frozen study used 50 matched initialization clusters and 30 finite-shot replicates per scientific cell, with configurations matched by block count, parameter identity, and total implemented simulator-shot budget.
 
-\textbf{Results:} The exact-gradient $E\times L$ interaction was supported by both model-based inference and initialization-cluster bootstrap, and its positive direction was retained in an independent-seed rerun, although its magnitude and depth profile varied. Finite-shot $E\times L$ and $E\times R$ interactions met the model-based Wald/Holm decision rule but were not corroborated by their 443-fit nested-bootstrap intervals, while the $L\times R$-by-depth interaction remained unresolved. Post-primary analyses showed weighting sensitivity for the exact-gradient interaction and objective- and estimator-mode sensitivity for the residual-related finite-shot interaction.
+\textbf{Results:} The exact-gradient $E\times L$ interaction was supported by both model-based inference and initialization-cluster bootstrap. Its positive direction was retained in a new-seed dataset, although magnitude, depth profile, covariance dependence, and weighting dependence remained uncertain. Finite-shot $E\times L$ and $E\times R$ interactions met the protocol-derived Wald/Holm rule, but their 443-completed-fit nested-bootstrap intervals included zero. The residual-related result was objective-specific, estimator-mode sensitive, and inactive by construction at $D=1,2$; the $L\times R$-by-depth interaction remained unresolved.
 
 \textbf{Conclusion:} Factorial benchmarking separates exact signal from finite-shot measurement behavior and exposes inference-dependent composition effects. These initialization-gradient results do not establish optimization success, trainability improvement, hardware advantage, shot savings, or matched physical-resource cost.}
 
@@ -70,23 +71,26 @@ The contribution is threefold. First, the experiment directly estimates non-addi
 
 \subsection{Finite-sample gradient usability}
 
-For parameter $\theta_k$, let $\hat g_k(\theta)$ be the complete finite-shot gradient estimator and $\mu_k(\theta)=\mathbb{E}_{\mathrm{shots}}[\hat g_k(\theta)]$ its repeated-shot mean. The operational estimator-SNR metric is
+For parameter $\theta_k$, let $\hat g_{kr}(\theta)$ be replicate $r$ of the complete finite-shot gradient estimator, $\mu_k=\mathbb{E}_{\mathrm{shots}}[\hat g_{kr}\mid\theta]$, and $\sigma_k^2=\mathrm{Var}_{\mathrm{shots}}[\hat g_{kr}\mid\theta]$. The inaccessible repeated-shot population target is
 \[
-\snrest(\theta)=
-\frac{|\mu_k(\theta)|}
-{\sqrt{\vshots[\hat g_k(\theta)\mid\theta]}}.
+\snrstar_k=\frac{|\mu_k|}{\sigma_k}.
+\]
+With $R_{\mathrm{rep}}=30$ independent finite-shot replicates, the analyzed plug-in estimator is
+\[
+\snrest_k=\frac{|\bar g_k|}{s_k},\qquad
+\bar g_k=\frac{1}{30}\sum_{r=1}^{30}\hat g_{kr},\qquad
+s_k^2=\frac{1}{29}\sum_{r=1}^{30}(\hat g_{kr}-\bar g_k)^2.
 \]
 When an exact statevector derivative is available, the complementary measure is
 \[
 \snrexact(\theta)=
-\frac{|g_k^{\mathrm{exact}}(\theta)|}
-{\sqrt{\vshots[\hat g_k(\theta)\mid\theta]}},
+\frac{|g_k^{\mathrm{exact}}(\theta)|}{s_k},
 \qquad
 \mathrm{Bias}_k(\theta)=\mu_k(\theta)-g_k^{\mathrm{exact}}(\theta).
 \]
 High $\snrest$ indicates that the estimator's own mean is distinguishable from its repeated-shot uncertainty. It does not establish unbiasedness, correct sign, convergence, or task fidelity, so these outcomes are reported separately.
 
-The plug-in ratio is defined only when estimated repeated-shot variance is positive. The finite-shot estimand is therefore conditional on that eligibility rule. Exactly zero-variance cells are excluded without an epsilon or variance floor, their occurrence is reported as a separate outcome, and a labeled sensitivity analysis assigns zero SNR when both the estimated mean and variance are exactly zero.
+H2--H4 analyze $\snrest_k$, not $\snrstar_k$. The plug-in ratio carries finite-replicate uncertainty, motivating resampling of both initialization clusters and within-cell replicates. It is undefined when $s_k^2=0$; primary models exclude those cells without an epsilon or floor, and a labeled sensitivity assigns zero only when both $\bar g_k=0$ and $s_k^2=0$. Input validation rejects duplicate replicate keys and invalid rows before aggregation; the frozen production validation found neither. Online Resource~1 reports exclusions and conventions in detail.
 
 \subsection{Interventions and interaction hypotheses}
 
@@ -128,6 +132,15 @@ Both objectives have the same nondegenerate target ground state, preventing targ
 
 To avoid conflict with the objective factor $L$, the number of hybrid blocks is denoted by $D\in\{1,2,3,4,6\}$. Each block applies one independently parameterized $R_y$ rotation to each qubit, followed by exactly four logical CNOT gates. $D$ is a \emph{hybrid block count}, not the depth of one continuously evolving quantum state: each block begins from $\lvert0000\rangle$, is evaluated and measured independently, and passes only classically re-encoded features to later blocks. The results therefore apply specifically to this measure--re-encode--reset architecture.
 
+Every $x^{(\ell)},z^{(\ell)},\theta^{(\ell)}\in\mathbb{R}^{4}$; each $W_\ell\in\mathbb{R}^{4\times4}$ and $b_\ell\in\mathbb{R}^{4}$. The first input is $x^{(1)}=0$. In block $\ell$, qubit $q$ receives the angle $a_q^{(\ell)}=\theta_q^{(\ell)}+x_q^{(\ell)}$ in a single $R_y(a_q^{(\ell)})$ gate, followed by the four ordered CNOTs below. No clipping, modular wrapping, normalization, nonlinear activation, rescaling, or additional encoding gate is applied. For $\ell<D$, one shared computational-basis measurement yields $z_j^{(\ell)}=\langle Z_j\rangle$ for all four qubits; the register is then discarded. The terminal state is evaluated directly with the selected objective rather than converted to an inter-block $z^{(D)}$.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=.94\textwidth]{figures/fig16_architecture.pdf}
+\caption{Implemented forward pass. Each quantum block starts from a reset four-qubit register, angle-encodes the four-dimensional classical feature by addition to four trainable $R_y$ angles, applies one of the two four-CNOT schedules, and either returns four $Z$ expectations to the classical transition or evaluates the terminal objective. The dashed shortcut is present only for $R=1$ and first changes $x^{(3)}$, so it is inactive for $D=1,2$. The baseline schedule is the ordered ring \cx{0}{1}, \cx{1}{2}, \cx{2}{3}, \cx{3}{0}; the pair-restricted schedule uses the ordered odd/even block pairings stated in the text.}
+\label{fig:architecture}
+\end{figure*}
+
 Two logical CNOT schedules are used within each block:
 
 \begin{itemize}
@@ -156,6 +169,10 @@ W_\ell z^{(\ell)}+b_\ell, & R=0,
 \end{cases}
 \]
 with fixed shortcut gain $\gamma=1$ in the residual condition and $\gamma=0$ otherwise. $W_\ell$ and $b_\ell$ are parameterized and initialized identically across residual and non-residual conditions; the fixed shortcut adds no trainable parameters, quantum gates, or additional observables.
+
+For every initialization--$D$ pair, the code derives separate SHA-256-based seeds from root seed 20260726 for quantum and classical parameters. Each component of every $\theta^{(\ell)}$ is drawn independently from $\mathrm{Uniform}(0,2\pi)$. Each $W_\ell$ uses Glorot uniform initialization, $\mathrm{Uniform}[-\sqrt{6/(4+4)},\sqrt{6/(4+4)}]$, and $b_\ell=0$. All eight configurations at fixed initialization and $D$ reuse these same arrays and parameter indices; configurations are matched, not independently initialized. Different tested values of $D$ use independently derived depth-specific seeds, so deeper architectures do not reuse shallow prefixes. Shot streams are separately derived by initialization, $D$, configuration, estimator mode, $B$, and replicate.
+
+One complete exact forward pass is therefore: initialize $x^{(1)}=0$ and $z^{(0)}=0$; for $\ell=1,\ldots,D$, reset the register, apply $R_y(\theta^{(\ell)}+x^{(\ell)})$ qubitwise and the ordered CNOT schedule; if $\ell<D$, measure $z^{(\ell)}$ and set $x^{(\ell+1)}=W_\ell z^{(\ell)}+b_\ell+\gamma z^{(\ell-1)}$; otherwise evaluate $C_L$ on the terminal state and return it.
 
 The boundary convention is $z^{(0)}=0$. Therefore, the shortcut first changes a real block input at $x^{(3)}=W_2z^{(2)}+b_2+\gamma z^{(1)}$, which exists only when $D\ge3$. Thus, under matched seeds, $R=0$ and $R=1$ are structurally identical at $D\in\{1,2\}$ and diverge only from $D=3$ onward.
 
@@ -198,7 +215,7 @@ All eight binary combinations of $E$, $L$, and $R$ are run (Table~\ref{tab:confi
 \label{tab:configurations}
 \end{table*}
 
-Within each hybrid block count, all configurations share initialization seeds, matched quantum-gate parameter indices, and the same nominal shot-budget levels.
+Within each hybrid block count, all configurations share initialization seeds, matched quantum-gate parameter indices, and the same nominal shot-budget levels. The matched gradient distribution contains the $4D$ quantum rotation derivatives $dC/d\theta_q^{(\ell)}$ for $q=0,\ldots,3$ and $\ell=1,\ldots,D$. Derivatives with respect to the $16(D-1)$ entries of $W_\ell$ and $4(D-1)$ entries of $b_\ell$ are excluded from H1--H4 and are retained only in repository-level implementation outputs; the manuscript makes no substantive classical-gradient claim.
 
 \subsection{Finite-shot estimator modes}
 
@@ -243,21 +260,26 @@ Candidate initialization counts were evaluated in increments of 25 using the the
 
 \subsection{Analysis provenance and amendments}\label{sec:provenance}
 
-The published protocol fixed the eight configurations, block-count and shot-budget sweeps, end-to-end estimator SNR as the primary finite-shot outcome, the mixed-effects model families, H1--H4, the $\operatorname{asinh}$ transformations, and Holm correction \cite{shen2026gradient}. It did not fix every operational detail. Most importantly, its prose permits both a reset-per-block reading, in which only classical features cross block boundaries, and a register-persisting reading, in which the quantum state evolves continuously across blocks (Online Resource 1, Appendix~A.2). We adopted the reset-per-block reading throughout this study (Section~\ref{sec:ansatz}). A register-persisting implementation would be a materially different experiment, and the inaccessible full protocol text remains a provenance limitation for the original factor-coding specification.
+The published protocol fixed the eight configurations, block-count and shot-budget sweeps, end-to-end estimator SNR as the primary finite-shot outcome, the mixed-effects model families, H1--H4, the $\operatorname{asinh}$ transformations, and Holm correction \cite{shen2026gradient}. It reported no data from the present implementation and did not fix every operational detail. The complete protocol source is not archived locally; the repository instead preserves implementation assumptions, decision plans, adjudication records, and verification reports. Its accessible prose permits both a reset-per-block reading and a register-persisting reading. We adopted the reset-per-block reading throughout this study (Section~\ref{sec:ansatz}); the alternative would be a materially different experiment.
 
 An implementation audit found that the originally reported lower-order H1--H3 coefficients had been interpreted using direct 0/1 reference-level coding. The adopted analysis instead uses centered coding, as required for equal averaging over the third binary factor. The direct and centered forms are exact reparameterizations: fitted values, likelihood, residuals, and random effects are unchanged. What changes is the lower-order estimand when a three-way interaction is retained. Historical direct-0/1 H1--H3 values are therefore preserved only as superseded reference-level simple interactions, not as current primary factorial effects. This was an implementation--interpretation correction, not selection of a better-fitting or more favorable model. Positive-variance eligibility, estimator-mode guards, active-residual subset fits, finite-difference checks, and later robustness analyses are labeled separately.
 
 \begin{table*}[t]
 \centering
 \small
-\begin{tabularx}{\textwidth}{@{}p{0.24\textwidth}p{0.36\textwidth}X@{}}
+\begin{tabularx}{\textwidth}{@{}p{.15\textwidth}p{.19\textwidth}p{.14\textwidth}p{.15\textwidth}X@{}}
 \toprule
-Analysis family & Provenance & Interpretive role \\
+Protocol item & Final implementation & Timing & Role & Effect on interpretation \\
 \midrule
-H1--H4 mixed-model Wald/Holm tests & Factors, hypotheses, transformations, and model families were inherited from the published protocol; reset semantics were resolved during implementation & Protocol-derived primary decision rule, conditional on the reset-per-block implementation \\
-Finite-difference checks, estimator-mode guards, optimizer refits, and residual diagnostics & Implementation audit & Validation and model diagnostics; not additions to the hypothesis family \\
-$D\geq3$, $D\neq1$, and include-zero eligibility analyses & Added after primary-output inspection & Post-run sensitivity analyses \\
-Cluster-robust inference, initialization-level resampling, independent-seed rerun, and depth moderation & Initiated after the primary analysis; each plan was frozen before its corresponding result was inspected & Post-run robustness, stability, or exploratory analyses \\
+Reset semantics & Reset per block & Implementation resolution & Primary architecture & Limits inference to measure--re-encode--reset blocks \\
+Factor coding & Centered $\{-1/2,+1/2\}$ & Post-run correction & Primary estimands & Lower-order terms average over the third factor \\
+Residual activation & First active at $D=3$ & Post-run audit & Structural check & Full-sweep H3/H4 are diluted by inactive depths \\
+Eligibility & Positive replicate variance & Implementation resolution & Primary finite-shot rule & H2--H4 condition on $s_k^2>0$ \\
+Estimator mode & End-to-end primary; conditional diagnostic & Protocol/implementation & Primary/diagnostic & Modes are never pooled \\
+Active-depth fits & $D\ge3$ & Post-primary & Sensitivity & Does not replace H3/H4 \\
+Cluster-robust inference & Initialization clusters & Post-primary & Robustness & Exposes covariance sensitivity \\
+New-seed dataset & Separate seed root & Post-primary plan & Internal replication & Tests direction, not external generalization \\
+Depth weighting & Parameter, equal-depth, depth-specific & Post-primary plan & Estimand sensitivity & Pooled magnitude depends on target population \\
 \bottomrule
 \end{tabularx}
 \caption{Analysis provenance and interpretive roles}
@@ -290,10 +312,14 @@ The protocol-derived primary decision rule uses model-based Wald standard errors
 
 A nested matched bootstrap propagates finite-$R_{\mathrm{rep}}$ uncertainty into coefficient intervals \cite{davison1997bootstrap}. Outer resampling is by complete initialization cluster, retaining all eight configurations, block counts, budgets, and parameter identities. For H2--H4, replicates are resampled within each selected initialization--configuration--parameter--block-count--budget cell, pointwise SNR is recomputed, and the model is refit. The achieved result was 443 completed nested-bootstrap fits with zero failures; the documented robustness target was at least 400 successful fits, with 1,000 preferred. H1 uses 2,000 completed initialization-cluster bootstrap fits with zero failures. Bootstrap iterations are distinct from the 50 independent initialization clusters and are not denoted as sample size.
 
+Existing checkpoint summaries at 40, 100, 200, 400, and 443 completed H2--H4 fits show that the relevant percentile interval included zero at every checkpoint. The 443-fit endpoints remain finite-Monte-Carlo estimates; checkpoint stability does not make them exact. No continuation was undertaken for manuscript revision.
+
 
 \subsection{Post-run robustness and independent-seed rerun}\label{sec:h2-depth-methods}
 
 Post-primary H1 analyses fit categorical depth moderation separately in the original and independent-seed datasets. Because matched parameter counts grow with depth, observation and matched-parameter weights are identical here: $0.0625$, $0.125$, $0.1875$, $0.25$, and $0.375$ for $D=1,2,3,4,6$. The primary pooled point estimate numerically matches the categorical observation-weighted point estimate; the equal-depth average answers a different question, and differing covariance structures give slightly different standard errors.
+
+Three H1 estimands are distinguished. The retained primary, parameter-weighted estimand is the interaction for a randomly selected implemented quantum parameter among all analyzed parameters; this matches the protocol-derived row-level mixed model and preserves its planned analysis population. The equal-depth estimand is the arithmetic mean of the five categorical depth contrasts, giving each tested $D$ weight $0.2$. Depth-specific estimands are the five separate categorical contrasts. These alternatives diagnose weighting and moderation without replacing the primary coefficient.
 
 Post-primary H3 analyses derived objective-specific $E_c\times R_c$ contrasts at $L=0$ and $L=1$, repeated the fit at active-residual depths $D\in\{3,4,6\}$, tested categorical depth moderation with model-based and initialization-clustered covariance, compared end-to-end and conditional estimator modes without pooling, and performed leave-one-initialization-out diagnostics. These are explanatory or sensitivity analyses, not additions to H1--H4.
 
@@ -306,9 +332,11 @@ Each $G$ follows the frozen configuration-level RMS exact-gradient construction:
 
 Prepared-state task metrics comprise raw TFIM energy, normalized prepared-state energy cost, target fidelity, and target infidelity for the terminal-block state at initialization. Exact-state duplicates across finite-shot budgets are removed. Since $L$ changes the evaluated objective rather than state preparation, paired $L=0$ and $L=1$ summaries are identical when all other factors are fixed. These descriptive metrics are not optimization outcomes.
 
-\subsection{Implementation audit and use of large language models}
+\subsection{Implementation validation}
 
 The implementation audit included black-box finite-difference validation of assembled hybrid gradients, inspection of reset semantics and residual activation, explicit estimator-mode guards, optimizer refits, deterministic seed checks, and regression testing of all principal analysis paths. Detailed audit history, superseded pooled-mode outputs, bootstrap checkpoints, and script-level provenance are reported in Online Resource 1 and the repository rather than in the main narrative.
+
+\subsection{Generative-AI assistance statement}
 
 Anthropic Claude and OpenAI Codex were used during 2026 for literature-search planning, clarification of technical concepts, implementation and verification scripting, consistency checking, and feedback on author-written prose. These systems were not treated as authors or evidentiary sources. The author independently inspected the cited literature, executed and reviewed the code, verified the numerical outputs, and accepts responsibility for every claim and analysis decision.
 
@@ -322,7 +350,7 @@ The frozen production dataset used $R_{\mathrm{rep}}=30$ independent gradient re
 
 The corrected centered $E\times L$ exact-gradient interaction was $0.004043$ (SE $0.001081$, Wald 95\% CI $[0.001924,0.006162]$, raw $p=0.000185$, Holm $p=0.000739$). The 2,000-completed-fit initialization-cluster bootstrap had zero failures and a percentile 95\% interval $[0.000473,0.007535]$. H1 is therefore the strongest cross-procedure result.
 
-The independent-seed estimate was $0.007726$ (Wald 95\% CI $[0.005592,0.009860]$); its 2,000-fit, zero-failure bootstrap interval was $[0.003402,0.011923]$. The positive direction was retained, but the larger point estimate and depth differences leave magnitude stability uncertain.
+The new-seed estimate was $0.007726$ (Wald 95\% CI $[0.005592,0.009860]$); its 2,000-fit, zero-failure bootstrap interval was $[0.003402,0.011923]$. This internal seed replication retained the positive direction, but the larger point estimate and depth differences leave magnitude stability uncertain.
 
 Post-primary depth contrasts were, for $D=1,2,3,4,6$, respectively, $-0.005251$, $-0.003579$, $0.012588$, $0.004664$, and $0.003446$ in the original data, and $0.001862$, $0.003120$, $0.006250$, $0.007885$, and $0.010870$ in the independent-seed data. The original equal-depth average was $0.002374$ (CI $[-0.000164,0.004911]$), whereas its observation-weighted average was $0.004043$ (CI $[0.001929,0.006157]$). The corresponding independent-seed summaries were $0.005997$ (CI $[0.003443,0.008552]$) and $0.007726$ (CI $[0.005597,0.009854]$). Thus the original equal-depth interval includes zero but the observation-weighted interval does not; both independent-seed intervals exclude zero. Observation and parameter weights are identical. Original depth moderation was detected by the mixed model ($\chi^2(4)=22.844$, $p=0.000136$) but not by initialization-clustered inference ($\chi^2(4)=6.008$, $p=0.1985$). Neither independent-seed test rejected (mixed $p=0.1090$; clustered $p=0.7706$). The depth profile is consequently covariance-sensitive, and the cross-seed magnitude difference has no clear depth localization under the frozen rule.
 
@@ -342,7 +370,7 @@ Post-primary depth contrasts were, for $D=1,2,3,4,6$, respectively, $-0.005251$,
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.64\textwidth]{figures/fig0_el_primary.pdf}
+\includegraphics[width=\columnwidth]{figures/fig0_el_primary.pdf}
 \caption{Descriptive multiplicative $E\times L$ indices conditional on $R=0$. $I_{EL\mid R=0}$ summarizes end-to-end estimator SNR and $J_{EL\mid R=0}$ exact-gradient magnitude; neither is a centered mixed-model coefficient. The line at one is the multiplicative no-interaction reference.}
 \label{fig:el-primary}
 \end{figure}
@@ -353,7 +381,7 @@ Among positive-variance-eligible end-to-end cells, the corrected centered $E\tim
 
 \subsection{Residual-related interactions (H3 and H4)}\label{sec:residual-results}
 
-The corrected centered end-to-end $E\times R$ coefficient averaged across $L$ was $-0.011615$ (SE $0.005144$, Wald 95\% CI $[-0.021697,-0.001534]$, raw $p=0.023937$, Holm $p=0.047875$). The model-based rule rejects H3, but its 443-fit percentile interval $[-0.030943,0.010259]$ includes zero.
+The corrected centered end-to-end $E\times R$ coefficient averaged across $L$ was $-0.011615$ (SE $0.005144$, Wald 95\% CI $[-0.021697,-0.001534]$, raw $p=0.023937$, Holm $p=0.047875$). The model-based rule rejects H3, but its 443-completed-fit percentile interval $[-0.030943,0.010259]$ includes zero. Matched $R=0$ and $R=1$ gradients are exactly equal at $D=1$ and $D=2$, as required by the inactive shortcut; this structural check passed exactly.
 
 Post-primary end-to-end contrasts explain the averaging: at $L=0$ the estimate was $-0.000958$ (CI $[-0.015251,0.013336]$, $p=0.896$), whereas at $L=1$ it was $-0.022273$ (CI $[-0.036493,-0.008052]$, $p=0.00214$). All corresponding 443-fit bootstrap intervals include zero. At active depths $D\in\{3,4,6\}$, the L-averaged estimate was $-0.014788$ (CI $[-0.024480,-0.005095]$); $L=0$ remained near zero and $L=1$ was $-0.027449$. Depth-specific averages were $0.006642$, $0.000696$, $-0.026492$, $-0.011553$, and $-0.011255$ at $D=1,2,3,4,6$. Neither model-based ($p=0.545$) nor cluster-robust ($p=0.721$) moderation rejected. Conditional mode reversed direction ($0.006978$, CI $[-0.004745,0.018701]$). Thus H3 is a model-dependent directional signal, objective-specific under end-to-end mode, not a robust or confirmed residual interaction.
 
@@ -362,17 +390,37 @@ The corrected centered $L\times R\times$depth coefficient was $-0.010179$ (SE $0
 \begin{table*}[t]
 \centering
 \footnotesize
-\begin{tabularx}{\textwidth}{@{}l p{0.15\textwidth} r p{0.18\textwidth} r p{0.19\textwidth} X@{}}
+\begin{tabularx}{\textwidth}{@{}l p{0.13\textwidth} r l r l >{\raggedright\arraybackslash}X@{}}
 \toprule
-Hyp. & Estimand & Estimate & Wald 95\% CI & Holm $p$ & Bootstrap 95\% CI & Cross-method interpretation \\
+Hyp. & Estimand & Estimate & Wald 95\% CI & Holm $p$ & Bootstrap 95\% CI & Evidence summary \\
 \midrule
-H1 & $E_cL_c$, exact & 0.004043 & [0.001924, 0.006162] & 0.000739 & [0.000473, 0.007535] & Model-based and bootstrap intervals exclude zero \\
-H2 & $E_cL_c$, end-to-end & 0.014338 & [0.004255, 0.024422] & 0.015963 & [-0.016638, 0.043563] & Wald/Holm rejection; bootstrap includes zero \\
-H3 & $E_cR_c$, end-to-end & -0.011615 & [-0.021697, -0.001534] & 0.047875 & [-0.030943, 0.010259] & Wald/Holm rejection; bootstrap includes zero \\
-H4 & $L_cR_c\times$depth & -0.010179 & [-0.020688, 0.000331] & 0.057658 & [-0.026975, 0.006403] & Not rejected; remains unresolved \\
+H1 & $E_cL_c$, exact
+   & 0.004043
+   & \mbox{$[0.001924,\,0.006162]$}
+   & 0.000739
+   & \mbox{$[0.000473,\,0.007535]$}
+   & Both methods \\
+H2 & $E_cL_c$, end-to-end
+   & 0.014338
+   & \mbox{$[0.004255,\,0.024422]$}
+   & 0.015963
+   & \mbox{$[-0.016638,\,0.043563]$}
+   & Wald only \\
+H3 & $E_cR_c$, end-to-end
+   & -0.011615
+   & \mbox{$[-0.021697,\,-0.001534]$}
+   & 0.047875
+   & \mbox{$[-0.030943,\,0.010259]$}
+   & Wald only \\
+H4 & $L_cR_c\times$depth
+   & -0.010179
+   & \mbox{$[-0.020688,\,0.000331]$}
+   & 0.057658
+   & \mbox{$[-0.026975,\,0.006403]$}
+   & Neither \\
 \bottomrule
 \end{tabularx}
-\caption{Corrected centered H1--H4 family. Wald intervals and Holm-adjusted $p$-values follow the primary model-based decision rule; the final interval column gives initialization-cluster percentile bootstrap results. H1 used 2,000 completed bootstrap fits with zero failures, whereas H2--H4 used 443 completed nested-bootstrap fits. Bootstrap iterations are distinct from the 50 independent initialization clusters.}
+\caption{Corrected centered H1--H4 family. Wald intervals and Holm-adjusted $p$-values follow the primary model-based decision rule; the Bootstrap 95\% CI column gives initialization-cluster percentile intervals. ``Both methods'' means that the Wald and bootstrap intervals exclude zero; ``Wald only'' means that the Wald/Holm rule rejects while the bootstrap interval includes zero; and ``Neither'' means that the Wald/Holm rule does not reject and the bootstrap interval includes zero. H1 used 2,000 completed bootstrap fits with zero failures, whereas H2--H4 used 443 completed nested-bootstrap fits. Bootstrap iterations are distinct from the 50 independent initialization clusters.}
 \label{tab:confirmatory-summary}
 \end{table*}
 
@@ -385,7 +433,7 @@ H4 & $L_cR_c\times$depth & -0.010179 & [-0.020688, 0.000331] & 0.057658 & [-0.02
 
 \subsection{Conditional multiplicative indices}
 
-For the original data, $J_{EL\mid R=0}=1.241760$ (bootstrap median $1.238674$, 95\% percentile CI $[1.082210,1.414864]$), 24.2\% above the no-interaction reference of one. At $R=1$, $J_{EL\mid R=1}=1.126633$ (median $1.124329$, CI $[0.991331,1.285152]$), 12.7\% above one; this interval includes one. Independent-seed values were $1.163219$ at $R=0$ (median $1.160949$, CI $[1.007100,1.352596]$) and $1.242137$ at $R=1$ (median $1.238157$, CI $[1.049874,1.449258]$). Each bootstrap completed 2,000 iterations with zero failures. These weighting-dependent ratios are descriptive and conditional on $R$.
+For the original data, $J_{EL\mid R=0}=1.241760$ (bootstrap median $1.238674$, 95\% percentile CI $[1.082210,1.414864]$). At $R=1$, $J_{EL\mid R=1}=1.126633$ (median $1.124329$, CI $[0.991331,1.285152]$), and this interval includes one. New-seed values were $1.163219$ at $R=0$ (median $1.160949$, CI $[1.007100,1.352596]$) and $1.242137$ at $R=1$ (median $1.238157$, CI $[1.049874,1.449258]$). Each bootstrap completed 2,000 iterations with zero failures. These weighting-dependent ratios are descriptive and conditional on $R$; they are not percent improvements and do not measure optimization.
 
 \subsection{Prepared-state metrics and implemented resources}
 
@@ -395,7 +443,7 @@ All 320 resource-design rows conserve nominal implemented $B$, with no negative 
 
 \subsection{Implementation checks}\label{sec:results-robustness}
 
-Black-box finite differences validated gradient assembly, centered and direct models were verified as exact reparameterizations, estimator modes were guarded against pooling, and frozen outputs passed deterministic regeneration and manifest-integrity tests. Detailed optimizer warnings, bootstrap failures, sensitivity results, and historical corrections are reported in Online Resource 1.
+Black-box finite differences checked 224 quantum-parameter derivatives across 16 cases at $D=1$ and $D=6$, configurations 1, 2, 3, and 5, and steps $10^{-3},10^{-4},10^{-5}$. At $10^{-5}$, the maximum relative error was $1.27\times10^{-5}$ overall and $9.77\times10^{-7}$ among 214 gradients with magnitude at least $10^{-5}$; four near-zero gradients exceeded the relative tolerance but retained six-significant-figure absolute agreement, with no sign or order-of-magnitude failures. Centered and direct models were verified as exact reparameterizations, estimator modes were guarded against pooling, and frozen outputs passed deterministic regeneration and manifest-integrity tests. The adopted H2--H4 fit converged with L-BFGS, was nonsingular, emitted one boundary warning, and agreed with BFGS to 8--9 significant figures; residual heteroscedasticity and heavy tails remain covariance caveats. Online Resource 1 reports complete diagnostics.
 
 \section{Discussion}
 
@@ -431,7 +479,7 @@ Follow-up work would require prospectively specified additional datasets, contin
 
 \section{Conclusion}\label{sec:conclusion}
 
-The strongest cross-procedure evidence concerns H1. The positive centered $E\times L$ exact-gradient interaction was retained in an independent-seed rerun, although its magnitude, depth profile, and weighting dependence remain uncertain. H2 and H3 satisfy the model-based Wald/Holm rule but have bootstrap intervals spanning zero, while H4 remains unresolved. These results support factorial and measurement-aware benchmarking of gradient usability, but do not establish optimization, hardware, or resource advantage.
+The strongest cross-procedure evidence concerns H1. The positive centered $E\times L$ exact-gradient interaction was retained in a new-seed dataset, although its magnitude, depth profile, covariance dependence, and weighting dependence remain uncertain. H2 and H3 satisfy the model-based Wald/Holm rule but have bootstrap intervals spanning zero, while H4 remains unresolved. These results support factorial and measurement-aware benchmarking of gradient usability, but do not establish optimization, hardware, or resource advantage.
 
 \backmatter
 
@@ -450,9 +498,9 @@ The strongest cross-procedure evidence concerns H1. The positive centered $E\tim
 \bmhead{Author contributions} Brandon Shen conceived the study, implemented the simulation and analysis pipeline, conducted the experiments and verification analyses, interpreted the results, prepared the figures, and wrote and revised the manuscript.
 
 % Before submission, mint a versioned archival DOI (for example via Zenodo) and add it here if available.
-\bmhead{Data availability} The machine-readable numerical source of truth is \ttf{results/final\_submission\_v1/manifest.json}. The immutable numerical-results freeze is \ttf{submission-numerical-results-freeze-v1}. The final manuscript-facing repository snapshot is designated by \ttf{sncs-submission-v1} at \url{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v1}. Files under \ttf{results/superseded/}, \ttf{results/superseded\_pooled/}, and other explicitly superseded directories are audit-only historical material and must not be read as current primary conclusions. \ttf{MANUSCRIPT\_COMMIT.txt} records the exact substantive commit against which the manuscript sources, numerical values, tables, figures, and documentation were finalized.
+\bmhead{Data availability} The machine-readable numerical source is \texttt{results/final\_submission\_v1/manifest.json}. The immutable numerical-results freeze is \nolinkurl{submission-numerical-results-freeze-v1}. The finalized manuscript-facing repository snapshot is the release \href{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2}{\texttt{sncs-submission-v2}}. Files under \path{results/superseded/}, \path{results/superseded_pooled/}, and other explicitly superseded directories are historical material and must not be read as current primary conclusions. \texttt{MANUSCRIPT\_COMMIT.txt} records the exact substantive commit against which the manuscript sources, numerical values, tables, figures, and documentation were finalized.
 
-\bmhead{Code availability} The final immutable manuscript, code, documentation, verification-script, and submission-facing repository release is designated by \ttf{sncs-submission-v1}: \url{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v1}. This release is distinct from the pre-existing \ttf{submission-numerical-results-freeze-v1} numerical-results freeze. The repository contains the simulation and gradient code, mixed-model and multiplicity analyses, bootstrap implementations, robustness analyses, figure scripts, and regression tests; \ttf{MANUSCRIPT\_COMMIT.txt} identifies the finalized substantive repository state.
+\bmhead{Code availability} The final immutable manuscript, code, documentation, verification scripts, and submission-facing repository state are available in the \href{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2}{\texttt{sncs-submission-v2}} release. This release is distinct from the numerical-results freeze identified above. The repository contains the simulation and gradient code, mixed-model and multiplicity analyses, bootstrap implementations, robustness analyses, figure scripts, and regression tests; \texttt{MANUSCRIPT\_COMMIT.txt} identifies the finalized substantive repository state.
 
 \bmhead{Materials availability} Not applicable.
 

@@ -47,8 +47,8 @@ def test_final_availability_identifiers_are_explicit():
     required = (
         "results/final\\_submission\\_v1/manifest.json",
         "submission-numerical-results-freeze-v1",
-        "sncs-submission-v1",
-        "https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v1",
+        "sncs-submission-v2",
+        "https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2",
         "MANUSCRIPT\\_COMMIT.txt",
     )
     assert all(token in main for token in required)
