@@ -1,15 +1,32 @@
-# Manuscript commit identifier
-#
-# The git commit hash below is the exact repository state (data, config,
-# code, and paper/main.tex) that the submitted manuscript's numbers,
-# figures, and tables were finalized against. `git checkout <hash>` to see
-# a byte-for-byte match to what is cited in the paper.
-#
-# This file is necessarily written in a commit *after* the one it names
-# (a commit cannot contain its own hash), so it points to its immediate
-# parent commit -- see `git log --oneline -2` from this file's commit to
-# confirm.
+# Finalized manuscript substantive commit
 
-b2ba9e23963e37dc4542632f2020d67f9fb65690
+Commit A:
+4ef0bea1cd5769c6c35f556063193ad1f19446f2
 
-git checkout b2ba9e23963e37dc4542632f2020d67f9fb65690
+Commit A is the substantive finalized repository state against which the
+manuscript text, numerical values, tables, figures, source files,
+documentation, verification scripts, and submission-facing materials were
+finalized.
+
+Canonical sources:
+- paper/sn-article.tex
+- paper/supplemental.tex
+
+Byte-identical synchronized upload sources:
+- submission_package/main.tex
+- submission_package/ESM_1.tex
+
+This file is necessarily updated in a following metadata-only Commit B because
+a commit cannot contain its own hash. Commit B changes only this
+MANUSCRIPT_COMMIT.txt record and any unavoidable release-pointer metadata; it
+does not change scientific outputs or the substantive finalized state.
+
+The historical numerical-results freeze is separate:
+- tag: submission-numerical-results-freeze-v1
+- numerical freeze commit: f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05
+
+The intended final manuscript/repository release tag on Commit B is:
+- sncs-submission-v1
+
+To inspect the substantive finalized state:
+git checkout 4ef0bea1cd5769c6c35f556063193ad1f19446f2
