@@ -3,18 +3,36 @@
 \usepackage{graphicx,amsmath,amssymb,booktabs,array,tabularx}
 \usepackage{xurl}
 \usepackage[title]{appendix}
+\usepackage{etoolbox}
+\usepackage{flafter}
+\usepackage[section]{placeins}
 \urlstyle{same}
 \setlength{\emergencystretch}{2em}
 \raggedbottom
 \AtBeginDocument{\hypersetup{
-  pdftitle={Online Resource 1: Interaction-Aware Benchmarking of Exact-Gradient Signal and Finite-Shot Resolvability in a Four-Qubit Hybrid Quantum Neural Network},
-  pdfauthor={Brandon Shen}
+  pdftitle={Online Resource 1: Factorial Benchmarking of Exact and Finite-Shot Gradient Resolvability in a Four-Qubit Hybrid Quantum Neural Network},
+  pdfauthor={Brandon Shen},
+  pdfsubject={Supplementary Information for SN Computer Science}
 }}
+
+% Clean single-author correspondence formatting produced by sn-jnl.cls.
+% Keep the conventional author asterisk while avoiding a duplicated asterisk
+% on the affiliation, plural labels, and a trailing semicolon after the email.
+\makeatletter
+\patchcmd{\@maketitle}
+  {Corresponding author(s). E-mail(s):}
+  {Corresponding author:}
+ {}{\PackageWarning{supplemental}{Could not patch corresponding-author label}}
+\patchcmd{\email}
+  {\textcolor{blue}{#1};\ }
+  {\textcolor{blue}{#1}}
+ {}{\PackageWarning{supplemental}{Could not remove corresponding-email semicolon}}
+\makeatother
 \begin{document}
 
 \title{Online Resource 1: Factorial Benchmarking of Exact and Finite-Shot Gradient Resolvability in a Four-Qubit Hybrid Quantum Neural Network}
 \author*[1]{\fnm{Brandon} \sur{Shen} (ORCID: \href{https://orcid.org/0009-0002-3545-2106}{0009-0002-3545-2106})}\email{brandonshen123@gmail.com}
-\affil*[1]{\orgname{Independent Researcher}, \orgaddress{\city{Belmont}, \state{California}, \postcode{94002}, \country{United States}}}
+\affil[1]{\orgname{Independent Researcher}, \orgaddress{\city{Belmont}, \state{California}, \postcode{94002}, \country{United States}}}
 \maketitle
 
 \begin{center}
@@ -23,7 +41,7 @@
 
 \section{Scope and frozen provenance}
 
-This supplement reports the corrected centered H1--H4 family and the post-primary analyses frozen before manuscript revision. The machine-readable source of truth is \path{results/final_submission_v1/manifest.json}. The numerical-results freeze, \nolinkurl{submission-numerical-results-freeze-v1}, preserves the frozen scientific outputs. The distinct final manuscript/repository release, \href{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2}{\texttt{sncs-submission-v2}}, contains the finalized manuscript and supplement sources, code, documentation, verification scripts, and submission-facing repository state. Historical outputs under \path{results/superseded/}, \path{results/superseded_pooled/}, and other explicitly superseded directories are audit-only and are not current primary results.
+This supplement reports the corrected centered H1--H4 family and the post-primary analyses frozen before manuscript revision. The machine-readable source of truth is \path{results/final_submission_v1/manifest.json}. The numerical-results freeze, \nolinkurl{submission-numerical-results-freeze-v1}, preserves the frozen scientific outputs. The distinct final manuscript/repository release, \href{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v3}{\texttt{sncs-submission-v3}}, contains the finalized manuscript and supplement sources, code, documentation, verification scripts, and submission-facing repository state. Historical outputs under \path{results/superseded/}, \path{results/superseded_pooled/}, and other explicitly superseded directories are audit-only and are not current primary results.
 
 \section{Factor-coding correction and estimands}
 
@@ -59,35 +77,12 @@ Duplicate replicate keys and invalid rows are rejected before aggregation; the f
 \footnotesize
 \begin{tabularx}{\textwidth}{@{}l p{0.13\textwidth} r l r l >{\raggedright\arraybackslash}X@{}}
 \toprule
-Hyp. & Estimand & Estimate & Wald 95\% CI & Holm $p$ & Bootstrap 95\% CI & Evidence summary \\
+Hyp. & Estimand & Estimate & Wald 95\% CI & Holm $p$ & Bootstrap 95\% CI & Evidence \\
 \midrule
-H1 & $E_cL_c$, exact
-   & 0.004043
-   & \mbox{$[0.001924,\,0.006162]$}
-   & 0.000739
-   & \mbox{$[0.000473,\,0.007535]$}
-   & Both methods \\
-H2 & $E_cL_c$, end-to-end
-   & 0.014338
-   & \mbox{$[0.004255,\,0.024422]$}
-   & 0.015963
-   & \mbox{$[-0.016638,\,0.043563]$}
-   & Wald only \\
-H3 & $E_cR_c$, end-to-end
-   & -0.011615
-   & \mbox{$[-0.021697,\,-0.001534]$}
-   & 0.047875
-   & \mbox{$[-0.030943,\,0.010259]$}
-   & Wald only \\
-H4 & $L_cR_c\times$depth
-   & -0.010179
-   & \mbox{$[-0.020688,\,0.000331]$}
-   & 0.057658
-   & \mbox{$[-0.026975,\,0.006403]$}
-   & Neither \\
+\input{../results/primary_corrected/effect_coded/primary_h1_h4_rows.tex}
 \bottomrule
 \end{tabularx}
-\caption{Corrected primary family. Wald intervals and Holm-adjusted $p$-values follow the primary model-based decision rule; the Bootstrap 95\% CI column gives initialization-cluster percentile intervals. ``Both methods'' means that the Wald and bootstrap intervals exclude zero; ``Wald only'' means that the Wald/Holm rule rejects while the bootstrap interval includes zero; and ``Neither'' means that the Wald/Holm rule does not reject and the bootstrap interval includes zero. H1 used 2,000 completed fits with zero failures, whereas H2--H4 used 443 completed nested-bootstrap fits. Bootstrap iterations are distinct from the 50 independent initialization clusters.}
+\caption{Corrected primary family. Wald intervals and Holm-adjusted $p$-values follow the primary model-based decision rule; the Bootstrap 95\% CI column gives initialization-cluster percentile intervals. ``Both'' means that the Wald and bootstrap intervals exclude zero; ``Wald only'' means that the Wald/Holm rule rejects while the bootstrap interval includes zero; and ``Neither'' means that the Wald/Holm rule does not reject and the bootstrap interval includes zero. H1 used 2,000 completed fits; H2--H4 used exactly 1,000 unique valid fits. Bootstrap iterations are distinct from the 50 independent initialization clusters.}
 \label{supp:tab:primary}
 \end{table*}
 
@@ -97,21 +92,17 @@ The frozen finite-shot production dataset used 30 independent gradient replicate
 
 The initialization-count pilot evaluated candidates in increments of 25 using the then-implemented H2--H4 mixed-model coefficients on the $\operatorname{asinh}(\mathrm{SNR}_{\mathrm{est}})$ response scale. At $N_{\mathrm{init}}=50$, the recorded 90th-percentile Wald 95\% CI half-widths were 0.1026212747780318 for $E{:}L$, 0.10253728880520716 for $E{:}R$, and 0.07250672321768473 for $L{:}R{:}\mathrm{depth}_z$, each below the configured 0.20 rule. That threshold was operational precision guidance on the transformed response scale, not a smallest effect of interest, equivalence margin, or scientific-importance claim. The pilot preceded the later centered-factor interpretation correction and did not evaluate H1.
 
-The 443 H2--H4 draws comprised 8 previously validated draws plus three independently seeded 145-draw shards. All 443 fits completed successfully with zero failures. The documented target was at least 400 completed fits, with 1,000 preferred; execution stopped at the documented 145-draw-per-shard target, yielding 443. These are completed bootstrap fits, not a sample size or a count of independent initialization clusters. Percentile endpoints retain finite Monte Carlo uncertainty.
+The final H2--H4 pool preserves the earlier 443 successful draws unchanged (8 validated draws plus three independently seeded 145-draw shards) and appends non-overlapping deterministic continuation draws to reach exactly 1,000 unique valid fits under the revised stopping instruction. A further 178 valid fits completed before workers stopped; they are preserved in the superseded/audit location and excluded from every reported interval. The 443 result is retained as an audit checkpoint rather than described as final. Attempted, included-successful, excluded-successful, failed, and rejected counts, global iteration IDs, shard seeds, convergence status, and coefficient vectors are recorded in the machine-readable provenance files. These are completed bootstrap fits, not a sample size or a count of independent initialization clusters. Percentile endpoints retain finite Monte Carlo uncertainty.
 
 \begin{table*}[t]\centering\small
 \begin{tabular}{crrr}
 \toprule
 Completed fits & H2 $E_cL_c$ interval & H3 $E_cR_c$ interval & H4 $L_cR_cD_z$ interval \\
 \midrule
-40  & [-0.012625, 0.055332] & [-0.021444, 0.016996] & [-0.024829, 0.006450] \\
-100 & [-0.020983, 0.057293] & [-0.030833, 0.025558] & [-0.027224, 0.005826] \\
-200 & [-0.015124, 0.061585] & [-0.028957, 0.025130] & [-0.024829, 0.005711] \\
-400 & [-0.015124, 0.062726] & [-0.030143, 0.024791] & [-0.026885, 0.006433] \\
-443 & [-0.016638, 0.043563] & [-0.030943, 0.010259] & [-0.026975, 0.006403] \\
+\input{../results/production_corrected_end_to_end/bootstrap_checkpoint_rows.tex}
 \bottomrule
 \end{tabular}
-\caption{Existing H2--H4 nested-bootstrap percentile endpoint checkpoints. Every interval includes zero. Rows are cumulative completed refits of resampled data, not independent datasets; endpoint movement reflects finite Monte Carlo uncertainty.}
+\caption{H2--H4 nested-bootstrap percentile endpoint checkpoints. The 443 row is the preserved historical checkpoint; 1,000 is the final included fit count. Rows are cumulative completed refits of resampled data, not independent datasets; endpoint movement reflects finite Monte Carlo uncertainty. Order-statistic/binomial-rank endpoint diagnostics in the machine-readable summary quantify Monte Carlo uncertainty and are not scientific confidence intervals.}
 \label{supp:tab:bootstrap-checkpoints}
 \end{table*}
 
@@ -160,14 +151,14 @@ Original moderation tests were mixed-model $\chi^2(4)=22.844$, $p=0.000136$, and
 \toprule
 Contrast or sensitivity & Estimate & Wald 95\% CI & Bootstrap 95\% CI \\
 \midrule
-End-to-end, $L=0$ & -0.000958 & [-0.015251, 0.013336] & [-0.030298, 0.024478] \\
-End-to-end, $L=1$ & -0.022273 & [-0.036493, -0.008052] & [-0.048098, 0.007609] \\
-End-to-end, L-average & -0.011615 & [-0.021697, -0.001534] & [-0.030943, 0.010259] \\
+End-to-end, $L=0$ & -0.000958 & [-0.015251, 0.013336] & [-0.029117, 0.024560] \\
+End-to-end, $L=1$ & -0.022273 & [-0.036493, -0.008052] & [-0.049490, 0.007197] \\
+End-to-end, L-average & -0.011615 & [-0.021697, -0.001534] & [-0.031375, 0.009563] \\
 Active depths $D\ge3$, L-average & -0.014788 & [-0.024480, -0.005095] & Not planned \\
 Conditional mode, L-average & 0.006978 & [-0.004745, 0.018701] & Not available \\
 \bottomrule
 \end{tabular}
-\caption{Post-primary H3 explanatory and sensitivity results. Bootstrap intervals contain zero for both objective-specific contrasts and their average. Active-depth and conditional-mode rows are not substitutions for the primary model.}
+\caption{Post-primary H3 explanatory and sensitivity results. The 1,000-fit bootstrap intervals contain zero for both objective-specific contrasts and their average. Active-depth and conditional-mode rows are not substitutions for the primary model.}
 \end{table*}
 
 Depth-specific L-averaged estimates at $D=1,2,3,4,6$ were $0.006642$, $0.000696$, $-0.026492$, $-0.011553$, and $-0.011255$. Joint moderation did not reject with model-based ($p=0.545$) or cluster-robust ($p=0.721$) covariance. All 50 leave-one-initialization-out fits completed; all retained the negative averaged sign, 41 had raw $p<0.05$, and estimates ranged from $-0.014433$ to $-0.008562$. These diagnostics do not justify deletion. The frozen classification is a model-dependent directional signal, objective-specific under end-to-end mode.
@@ -250,7 +241,7 @@ Historical direct-0/1 coefficient tables and older pooled estimator-mode outputs
 All frozen inputs, numerical outputs, figures, and verification reports are indexed by
 \texttt{results/final\_submission\_v1/manifest.json}. The numerical-results freeze
 \nolinkurl{submission-numerical-results-freeze-v1} preserves the frozen scientific outputs. The separate final manuscript/repository release
-\href{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2}{\texttt{sncs-submission-v2}}
+\href{https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v3}{\texttt{sncs-submission-v3}}
 contains the finalized manuscript sources, supplement sources, documentation, verification scripts, and submission-facing repository state. \texttt{MANUSCRIPT\_COMMIT.txt} records the exact substantive commit against which those materials were finalized. The principal materials are grouped under:
 \begin{itemize}
 \item \path{results/primary_corrected/} and \path{results/independent_seed_h1/} for corrected primary and independent-seed outputs;
@@ -274,6 +265,6 @@ The protocol prose could be read in two ways. Under the adopted reset-per-block 
 
 \section{Remaining limitations}
 
-Limitations include four qubits; one open-boundary TFIM task; reset-per-block architecture; one implementation per intervention; one initialization family; 50 top-level clusters per dataset; exact-state and abstract shot simulation; no hardware noise, readout, calibration, or optimization trajectories; prepared-state metrics only at initialization; $L$-linked finite-replicate zero-variance selection; depth weighting from parameter count; covariance-sensitive depth conclusions; H2/H3 procedure disagreement; H3 estimator-mode disagreement; weighting-dependent conditional J; absence of a locally archived full protocol source; finite Monte Carlo uncertainty in the 443-completed-fit percentile endpoints; and no matched physical-resource claim.
+Limitations include four qubits; one open-boundary TFIM task; reset-per-block architecture; one implementation per intervention; one initialization family; 50 top-level clusters per dataset; exact-state and abstract shot simulation; no hardware noise, readout, calibration, or optimization trajectories; prepared-state metrics only at initialization; $L$-linked finite-replicate zero-variance selection; depth weighting from parameter count; covariance-sensitive depth conclusions; H2/H3 procedure disagreement; H3 estimator-mode disagreement; weighting-dependent conditional J; absence of a locally archived full protocol source; finite Monte Carlo uncertainty in the 1,000-fit percentile endpoints; and no matched physical-resource claim.
 
 \end{document}
