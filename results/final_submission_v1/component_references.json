@@ -18,10 +18,22 @@
     "bytes": 1389
   },
   {
+    "path": "results/h1_marginal_effects/h1_marginal_effects.json",
+    "role": "H1 marginal effects",
+    "sha256": "fa06261d3575469ce5cb08ed9297fd31538ab9402789dde15016f3ec521c2353",
+    "bytes": 3775
+  },
+  {
+    "path": "results/h1_marginal_effects/h1_marginal_effects_table.tex",
+    "role": "H1 generated marginal table",
+    "sha256": "dc2bb76d0093e72b7aa13cc9ed25febf7ff25da33e592b8576ef77ed15b233a2",
+    "bytes": 1958
+  },
+  {
     "path": "results/h3_centered_robustness/bootstrap_draws.parquet",
     "role": "H3 draws",
-    "sha256": "79862825d2834288f24ffdb1a6f225e160d39939052bd658cfb8fe7805c0ce70",
-    "bytes": 16978
+    "sha256": "4c58e504a92172b9913ac275073288059c5e33de773162f5c045541264cb0149",
+    "bytes": 38697
   },
   {
     "path": "results/independent_seed_h1/effect_coded/coefficient.json",
@@ -46,6 +58,18 @@
     "role": "corrected primary family",
     "sha256": "280e36f53278b8c26cc7390e2e06d6a2f9040db1b414b5435203e4a4cadfc05c",
     "bytes": 1598
+  },
+  {
+    "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_seed_manifest.csv",
+    "role": "H2-H4 seed manifest",
+    "sha256": "b2b10433687c1328949473b66ae87c7853f69a04ad9ed85c9e81aab4f02b60d9",
+    "bytes": 441110
+  },
+  {
+    "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_summary.csv",
+    "role": "H2-H4 1000-fit summary",
+    "sha256": "dd5275066b2bd2bebb1e9d43f4fb65502266835fd36f63da80645e481f4e6763",
+    "bytes": 959
   },
   {
     "path": "results/resource_accounting/manifest.json",
@@ -86,7 +110,7 @@
   {
     "path": "verification/h3_centered_interaction_robustness_results.json",
     "role": "H3 robustness",
-    "sha256": "3a617780c7f12365a7f0760350413666998ad6c3f358bf8d4996113883a0bd8c",
-    "bytes": 1375
+    "sha256": "36a804c120b204ac4098e65915aa88ae1dfb433065d5eade5f39367bd7b2314e",
+    "bytes": 1904
   }
 ]

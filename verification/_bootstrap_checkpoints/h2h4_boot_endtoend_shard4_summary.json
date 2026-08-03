@@ -1,0 +1,13 @@
+{
+  "shard_id": 4,
+  "seed": 406001,
+  "successful_target": 130,
+  "n_attempted": 130,
+  "n_requested_stream_positions": 130,
+  "n_successful": 130,
+  "failed_iterations": [],
+  "n_rejected": 0,
+  "pointwise_bootstrap_iterations": 0,
+  "wall_clock_seconds": 6958.964758396149,
+  "implementation": "lowmem_redesign_endtoend_only"
+}

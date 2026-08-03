@@ -27,11 +27,8 @@ CKPT_DIR = REPO_ROOT / "verification" / "_bootstrap_checkpoints"
 POOL_SOURCES = [
     ("regression_a", "h2h4_boot_endtoend_regression_a", 266001, "pooled (real draws)"),
     ("regression_b", "h2h4_boot_endtoend_regression_b", 266001, "duplicate check ONLY -- excluded from pooled summary"),
-    ("shard0", "h2h4_boot_endtoend_shard0", 366001, "pooled (real draws)"),
-    ("shard1", "h2h4_boot_endtoend_shard1", 376001, "pooled (real draws)"),
-    ("shard2", "h2h4_boot_endtoend_shard2", 386001, "pooled (real draws)"),
-    ("shard3", "h2h4_boot_endtoend_shard3", 396001, "pooled (real draws)"),
-    ("shard4", "h2h4_boot_endtoend_shard4", 406001, "pooled (real draws)"),
+    *[(f"shard{i}", f"h2h4_boot_endtoend_shard{i}", 366001 + i * 10000,
+       "pooled (real draws)") for i in range(16)],
 ]
 
 INPUT_FILES = [
@@ -65,6 +62,7 @@ def main():
     input_hashes = {p.name: sha256_of(p) for p in INPUT_FILES if p.exists()}
 
     rows = []
+    global_id = 0
     for stream_name, filestem, seed, pooling_status in POOL_SOURCES:
         p = CKPT_DIR / f"{filestem}.parquet"
         meta_p = CKPT_DIR / f"{filestem}.meta.json"
@@ -75,9 +73,16 @@ def main():
         success_iters = sorted(df["iteration"].tolist())
         all_iters = sorted(set(success_iters) | set(failed))
         for it in all_iters:
+            completed = it in success_iters
             rows.append({
                 "stream": stream_name, "shard_seed": seed, "iteration": it,
-                "rng_key": f"({seed}, {it})", "status": "completed" if it in success_iters else "failed",
+                "global_iteration_id": global_id if completed and pooling_status == "pooled (real draws)" else "",
+                "percentile_inclusion": ("included_final_1000" if global_id < 1000 else
+                                          "excluded_completed_after_revised_target")
+                                         if completed and pooling_status == "pooled (real draws)"
+                                         else "excluded_duplicate_check_or_failed",
+                "rng_key": f"({seed}, {it})", "status": "completed" if completed else "failed",
+                "converged": True if completed else False,
                 "failure_reason": "recorded in .meta.json failed_iterations; per-exception detail not "
                                    "separately retained by the production checkpoint format" if it in failed else "",
                 "pooling_status": pooling_status,
@@ -85,6 +90,8 @@ def main():
                 "input_file_sha256": json.dumps(input_hashes),
                 "software_versions": json.dumps(versions),
             })
+            if completed and pooling_status == "pooled (real draws)":
+                global_id += 1
 
     manifest = pd.DataFrame(rows).sort_values(["stream", "iteration"])
     out_path = REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_seed_manifest.csv"

@@ -1,2 +1,5 @@
+python scripts/finalize_h2h4_bootstrap_1000.py
+python scripts/refresh_h3_bootstrap_from_h2h4_1000.py
+python scripts/generate_h1_marginal_effects.py
 python scripts/build_final_submission_freeze.py
 python -m pytest tests/ -q

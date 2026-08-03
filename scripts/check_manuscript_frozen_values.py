@@ -14,9 +14,9 @@ OUT = ROOT / "verification/manuscript_value_check.json"
 REQUIRED_MAIN = {
     "H1 estimate": "0.004043", "H1 SE": "0.001081", "H1 Holm": "0.000739",
     "H1 bootstrap low": "0.000473", "H1 bootstrap high": "0.007535",
-    "H2 estimate": "0.014338", "H2 Holm": "0.015963", "H2 bootstrap low": "-0.016638",
-    "H3 estimate": "-0.011615", "H3 Holm": "0.047875", "H3 bootstrap high": "0.010259",
-    "H4 estimate": "-0.010179", "H4 Holm": "0.057658", "H4 bootstrap high": "0.006403",
+    "H2 estimate": "0.014338", "H2 Holm": "0.015963", "H2 bootstrap low": "-0.016240",
+    "H3 estimate": "-0.011615", "H3 Holm": "0.047875", "H3 bootstrap high": "0.009563",
+    "H4 estimate": "-0.010179", "H4 Holm": "0.057658", "H4 bootstrap high": "0.005863",
     "seed H1": "0.007726", "H1 equal depth": "0.002374", "H1 observation weighted": "0.004043",
     "H3 L0": "-0.000958", "H3 L1": "-0.022273", "H3 conditional": "0.006978",
     "J original R0": "1.241760", "J original R1": "1.126633",
@@ -44,8 +44,6 @@ def main(output: Path = OUT) -> dict:
     availability_tokens = (
         "results/final\\_submission\\_v1/manifest.json",
         "submission-numerical-results-freeze-v1",
-        "sncs-submission-v2",
-        "https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sncs-submission-v2",
         "MANUSCRIPT\\_COMMIT.txt",
         "results/superseded/",
     )

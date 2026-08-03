@@ -8,7 +8,7 @@
       "status": "pass",
       "affected_file": "submission_package/main.tex",
       "expected_value": "byte-identical to canonical",
-      "observed_value": "7f5573ad7653ff0eb708bc2b188fd8538fbb15684379fbe17170a9582269270d",
+      "observed_value": "f836a04a6286fb3bec2b08220b1503161a9700f77f4a83301fe515cbae40d1d5",
       "resolution_or_remaining_action": ""
     },
     {
@@ -16,7 +16,7 @@
       "status": "pass",
       "affected_file": "submission_package/ESM_1.tex",
       "expected_value": "byte-identical to canonical",
-      "observed_value": "0c0a1fb676ecde0d91c091eb85d3dda07b27275622f0fb4410a75d6aba5f9d39",
+      "observed_value": "e2ec7e2c839dd86a26a045d366daf74c736b34d1a95df3e2e7f2fb08bcee632f",
       "resolution_or_remaining_action": ""
     },
     {
@@ -60,34 +60,10 @@
       "resolution_or_remaining_action": ""
     },
     {
-      "check_name": "frozen_token_0_016638_0_043563",
+      "check_name": "bootstrap_counts",
       "status": "pass",
       "affected_file": "paper/*.tex",
-      "expected_value": "[-0.016638,0.043563]",
-      "observed_value": "present",
-      "resolution_or_remaining_action": ""
-    },
-    {
-      "check_name": "frozen_token_0_030943_0_010259",
-      "status": "pass",
-      "affected_file": "paper/*.tex",
-      "expected_value": "[-0.030943,0.010259]",
-      "observed_value": "present",
-      "resolution_or_remaining_action": ""
-    },
-    {
-      "check_name": "frozen_token_0_026975_0_006403",
-      "status": "pass",
-      "affected_file": "paper/*.tex",
-      "expected_value": "[-0.026975,0.006403]",
-      "observed_value": "present",
-      "resolution_or_remaining_action": ""
-    },
-    {
-      "check_name": "h1_bootstrap_count",
-      "status": "pass",
-      "affected_file": "paper/*.tex",
-      "expected_value": "2,000 completed fits",
+      "expected_value": "H1 uses 2,000; H2--H4 use 1,000",
       "observed_value": "present",
       "resolution_or_remaining_action": ""
     },
@@ -95,16 +71,16 @@
       "check_name": "h2h4_bootstrap_transparency",
       "status": "pass",
       "affected_file": "paper/*.tex",
-      "expected_value": "443 completed; 1,000 preferred; Monte Carlo caveat",
+      "expected_value": "443 historical; 1,000 and 2,000 checkpoints; Monte Carlo caveat",
       "observed_value": "present",
       "resolution_or_remaining_action": ""
     },
     {
       "check_name": "checkpoint_rows",
       "status": "pass",
-      "affected_file": "paper/supplemental.tex",
-      "expected_value": "40,100,200,400,443",
-      "observed_value": "checkpoint table inspected",
+      "affected_file": "results/production_corrected_end_to_end/bootstrap_checkpoint_rows.tex",
+      "expected_value": "40,100,200,400,443,1000",
+      "observed_value": "checkpoint fragment inspected",
       "resolution_or_remaining_action": ""
     },
     {
@@ -160,8 +136,8 @@
       "status": "pass",
       "affected_file": "tests/",
       "expected_value": "all tests pass",
-      "observed_value": "276 passed, 1 skipped, 0 failed in 324.97 s on 2026-08-02",
-      "resolution_or_remaining_action": "Command: python -m pytest tests -q --basetemp verification/pytest_tmp_full_revision -p no:cacheprovider"
+      "observed_value": "279 passed, 1 skipped, 0 failed in 289.24 s on 2026-08-02",
+      "resolution_or_remaining_action": "Command: pytest -q tests -p no:cacheprovider --basetemp verification/pytest_tmp_full_1000_final"
     },
     {
       "check_name": "tex_compilation",
@@ -169,7 +145,7 @@
       "affected_file": "paper/*.tex",
       "expected_value": "pdflatex plus official Springer class/BST",
       "observed_value": "not available in repository environment",
-      "resolution_or_remaining_action": "Compile in the existing Springer Nature template/Overleaf project and replace working PDFs."
+      "resolution_or_remaining_action": "Compilation and visual PDF review were explicitly waived by the user for this task."
     },
     {
       "check_name": "type3_pdf_preflight",

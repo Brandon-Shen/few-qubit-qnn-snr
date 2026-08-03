@@ -2,6 +2,10 @@ __pycache__/
 *.pyc
 *.egg-info/
 .pytest_cache/
+.tmp_pytest/
+.release_pytest/
+.tag-validation/
+.claude/
 .venv/
 venv/
 
@@ -9,3 +13,7 @@ venv/
 # checkpoints). Archived/production results live under results/<category>/
 # and ARE tracked -- see results/README.md.
 results/_checkpoints/
+
+# Local visual comparison scratch output (regenerable, not release input).
+verification/figure_font_audit/before/
+verification/figure_font_audit/text_compare/

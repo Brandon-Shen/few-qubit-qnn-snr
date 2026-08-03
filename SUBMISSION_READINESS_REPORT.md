@@ -22,7 +22,7 @@ Pre-existing untracked `.claude/`, `.tag-validation/`, and `.tmp_pytest/` direct
 - Defined parameter-weighted, equal-depth, and depth-specific H1 estimands and preserved their distinct interpretations.
 - Made residual inactivity at `D=1,2`, active-depth interpretation, objective specificity, estimator-mode reversal, and lack of bootstrap corroboration central to H3.
 - Preserved the evidence hierarchy: H1 both procedures; H2/H3 Wald only; H4 neither/unresolved.
-- Added transparent H2--H4 bootstrap stopping language and checkpoint intervals at 40, 100, 200, 400, and 443 completed fits.
+- Added transparent H2--H4 bootstrap stopping language and checkpoint intervals at 40, 100, 200, 400, 443, and 1,000 completed fits.
 - Added finite-difference, optimizer, singularity, residual, influence, eligibility, resource, and promised-outcome summaries.
 - Separated implementation validation from the generative-AI statement and retained author responsibility.
 - Limited all resource conclusions to the implemented abstract simulator-shot protocol.
@@ -43,7 +43,7 @@ The first reread the already frozen, reconciled figure source and reproduced the
 ## 5. Analyses not rerun and why
 
 - H1--H4 mixed models, Holm correction, and all frozen bootstrap intervals: prohibited by the revision constraints and unnecessary.
-- H2--H4 bootstrap extension: retained at 443 completed fits as directed. At least 400 were targeted, 1,000 preferred, and 443 completed with zero failures. Every relevant interval included zero at all existing checkpoints. Percentile endpoints retain finite Monte Carlo uncertainty.
+- H2--H4 bootstrap extension: exactly 1,000 unique valid fits enter the final intervals under the revised stopping instruction; 178 additional successful fits completed before workers stopped and are preserved but excluded. There were zero failed or rejected fits. Every relevant interval includes zero. Percentile endpoints retain finite Monte Carlo uncertainty.
 - Raw confirmatory and new-seed simulation: frozen and computationally expensive; not required for source revision.
 - New categorical-depth or physical-overlap analysis: no new hypothesis-family or physical-resource analysis was authorized.
 
@@ -72,7 +72,7 @@ The repository is publicly accessible at <https://github.com/Brandon-Shen/few-qu
 
 ## 9. Scientific limitations intentionally retained
 
-Four qubits; one TFIM task; one reset-per-block architecture; one pair-restricted schedule; one fixed-gain classical shortcut; initialization behavior only; no optimization trajectories; no hardware noise or physical-resource comparison; 50 top-level clusters; finite-replicate objective-linked eligibility; H1 depth/weighting/covariance uncertainty; H2/H3 procedure disagreement; H3 objective and estimator-mode sensitivity; unresolved H4; and finite Monte Carlo uncertainty in the 443-fit percentile endpoints.
+Four qubits; one TFIM task; one reset-per-block architecture; one pair-restricted schedule; one fixed-gain classical shortcut; initialization behavior only; no optimization trajectories; no hardware noise or physical-resource comparison; 50 top-level clusters; finite-replicate objective-linked eligibility; H1 depth/weighting/covariance uncertainty; H2/H3 procedure disagreement; H3 objective and estimator-mode sensitivity; unresolved H4; and finite Monte Carlo uncertainty in the 1,000-fit percentile endpoints.
 
 ## 10. Recommended cover-letter disclosures
 

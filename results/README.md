@@ -13,7 +13,7 @@
 | `task_metrics/` | Prepared-state metrics at initialization; not optimization outcomes. |
 | `resource_accounting/` | Implemented simulator-shot and job accounting; not matched physical-resource costs. |
 | `production_confirmatory/` | Frozen production raw inputs and historical production outputs. Raw data remain valid; older direct-0/1 lower-order interpretations here are not current primary estimands. |
-| `production_corrected_end_to_end/` | Achieved 443-draw finite-shot bootstrap stream used by the corrected centered analysis. Older direct-coded coefficient summaries are not final centered primary estimates. |
+| `production_corrected_end_to_end/` | Final 1,000-draw finite-shot bootstrap stream used by the corrected centered analysis; the preserved 443 prefix is historical. Older direct-coded coefficient summaries are not final centered primary estimates. |
 | `superseded/`, `superseded_pooled/` | Audit-only historical outputs; never current conclusions. |
 | `sensitivity_analyses/` | Historical and current robustness artifacts as identified by the final manifest. |
 | `smoke_test/` | Non-scientific pipeline exercise. |
@@ -23,9 +23,9 @@
 | Hypothesis | Model-based Holm decision | Bootstrap corroboration | Current interpretation |
 |---|---|---|---|
 | H1, centered exact-gradient E×L | Reject; estimate 0.004043, Holm p=0.000739 | Yes; 2,000-fit CI [0.000473, 0.007535] | Only primary interaction supported by both procedures. |
-| H2, centered end-to-end E×L | Reject; estimate 0.014338, Holm p=0.015963 | No; 443-fit CI [-0.016638, 0.043563] | Model-based rejection, procedure-sensitive. |
-| H3, centered end-to-end E×R | Reject; estimate -0.011615, Holm p=0.047875 | No; 443-fit CI [-0.030943, 0.010259] | Model-dependent signal with objective- and estimator-mode sensitivity. |
-| H4, centered L×R×depth | Do not reject; estimate -0.010179, Holm p=0.057658 | No; 443-fit CI [-0.026975, 0.006403] | Unresolved; not evidence of absence. |
+| H2, centered end-to-end E×L | Reject; estimate 0.014338, Holm p=0.015963 | No; 1,000-fit CI [-0.016240, 0.045992] | Model-based rejection, procedure-sensitive. |
+| H3, centered end-to-end E×R | Reject; estimate -0.011615, Holm p=0.047875 | No; 1,000-fit CI [-0.031375, 0.009563] | Model-dependent signal with objective- and estimator-mode sensitivity. |
+| H4, centered L×R×depth | Do not reject; estimate -0.010179, Holm p=0.057658 | No; 1,000-fit CI [-0.025964, 0.005863] | Unresolved; not evidence of absence. |
 
 ## Reproducing current manuscript artifacts
 

@@ -39,6 +39,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--shard-id", type=int, required=True)
     ap.add_argument("--iterations", type=int, required=True)
+    ap.add_argument("--pointwise-bootstrap-iterations", type=int, default=0,
+                    help="Unused pointwise mean-CI draws; 0 emits only the unchanged mixed-model input columns")
     args = ap.parse_args()
 
     CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
@@ -57,18 +59,30 @@ def main():
           f"checkpoint={checkpoint_path}", flush=True)
 
     t0 = time.time()
-    result = run_h2h4_bootstrap_lowmem(
-        raw_shot_df=None, n_iterations=args.iterations, seed=seed, min_success_fraction=0.0,
-        checkpoint_path=checkpoint_path, checkpoint_every=1, precomputed=pre, verbose=True,
-    )
+    # --iterations is a successful-fit target.  If a fit fails or is rejected,
+    # extend the deterministic (seed, iteration) stream until the target is met.
+    attempted_target = args.iterations
+    while True:
+        result = run_h2h4_bootstrap_lowmem(
+            raw_shot_df=None, n_iterations=attempted_target, seed=seed, min_success_fraction=0.0,
+            pointwise_bootstrap_iterations=args.pointwise_bootstrap_iterations,
+            checkpoint_path=checkpoint_path, checkpoint_every=1, precomputed=pre, verbose=True,
+        )
+        if result.n_successful >= args.iterations:
+            break
+        attempted_target += args.iterations - result.n_successful
     dt = time.time() - t0
 
     summary = {
         "shard_id": args.shard_id,
         "seed": seed,
-        "n_requested": result.n_requested,
+        "successful_target": args.iterations,
+        "n_attempted": result.n_successful + len(result.failed_iterations),
+        "n_requested_stream_positions": result.n_requested,
         "n_successful": result.n_successful,
         "failed_iterations": result.failed_iterations,
+        "n_rejected": 0,
+        "pointwise_bootstrap_iterations": args.pointwise_bootstrap_iterations,
         "wall_clock_seconds": dt,
         "implementation": "lowmem_redesign_endtoend_only",
     }

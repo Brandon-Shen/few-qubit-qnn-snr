@@ -1,0 +1,36 @@
+{
+  "successful_fits": 1000,
+  "unique_global_iteration_ids": 1000,
+  "classifications": {
+    "H1": "Both",
+    "H2": "Wald only",
+    "H3": "Wald only",
+    "H4": "Neither"
+  },
+  "intervals": [
+    {
+      "hypothesis": "H2",
+      "coefficient": "E_c:L_c",
+      "completed_bootstrap_iterations": 1000,
+      "percentile_ci_lo": -0.016239720360808858,
+      "bootstrap_median": 0.01527985832693721,
+      "percentile_ci_hi": 0.04599223007362217
+    },
+    {
+      "hypothesis": "H3",
+      "coefficient": "E_c:R_c",
+      "completed_bootstrap_iterations": 1000,
+      "percentile_ci_lo": -0.03137523076780777,
+      "bootstrap_median": -0.011418042885588727,
+      "percentile_ci_hi": 0.009562515160802998
+    },
+    {
+      "hypothesis": "H4",
+      "coefficient": "L_c:R_c:depth_z",
+      "completed_bootstrap_iterations": 1000,
+      "percentile_ci_lo": -0.025964052587878452,
+      "bootstrap_median": -0.010425963897479133,
+      "percentile_ci_hi": 0.005863030737205194
+    }
+  ]
+}

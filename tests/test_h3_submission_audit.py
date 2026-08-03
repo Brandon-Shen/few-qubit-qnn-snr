@@ -21,7 +21,7 @@ def test_h3_bootstrap_transformation_draw_by_draw():
     frozen = pd.read_parquet(OUT / "bootstrap_draws.parquet")
     merged = frozen.merge(source, left_on=["stream", "iteration", "seed"],
                           right_on=["_stream", "iteration", "_seed"], validate="one_to_one")
-    assert len(merged) == 443
+    assert len(merged) == 1000
     assert np.allclose(merged.ER_L0, merged["E:R"])
     assert np.allclose(merged.ER_L1, merged["E:R"] + merged["E:L:R"])
     assert np.allclose(merged.ER_L_average, merged["E:R"] + .5 * merged["E:L:R"])

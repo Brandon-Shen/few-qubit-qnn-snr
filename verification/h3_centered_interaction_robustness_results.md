@@ -4,7 +4,7 @@
 
 The corrected end-to-end H3 average (`E_c:R_c=-0.011615`, Wald 95% CI `[-0.021697,-0.001534]`) is not a similar interaction under both objectives. At global infidelity (`L=0`) the simple E×R interaction is `-0.000958` (SE `0.007293`, CI `[-0.015251,0.013336]`, p=`0.896`). At normalized energy (`L=1`) it is `-0.022273` (SE `0.007256`, CI `[-0.036493,-0.008052]`, p=`0.00214`). Their equal average exactly reproduces corrected H3.
 
-The frozen 443-draw bootstrap intervals include zero for all three: L=0 `[-0.030298,0.024478]` (median `-0.001868`), L=1 `[-0.048098,0.007609]` (median `-0.020972`), and averaged `[-0.030943,0.010259]` (median `-0.011354`). Draw transformations were already validated by explicit centered refits.
+The final 1,000-draw bootstrap intervals include zero for all three: L=0 `[-0.029117,0.024560]`, L=1 `[-0.049490,0.007197]`, and averaged `[-0.031375,0.009563]`. The original 443 draws are the preserved historical prefix.
 
 Restricting to active-residual depths D={3,4,6} gives a more negative averaged interaction, `-0.014788` (SE `0.004945`, CI `[-0.024480,-0.005095]`, p=`0.00279`). Again L=0 is near zero (`-0.002126`, CI `[-0.015856,0.011603]`), while L=1 is negative (`-0.027449`, CI `[-0.041134,-0.013764]`). No active-subset nested bootstrap was planned, so the full-sweep interval is not reused.
 

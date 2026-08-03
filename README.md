@@ -9,9 +9,9 @@ The current analysis uses centered binary coding. Historical direct-0/1 lower-or
 | Hypothesis | Centered estimand | Estimate | SE | Wald 95% CI | raw p | Holm p | Bootstrap 95% CI | Fits |
 |---|---|---:|---:|---|---:|---:|---|---:|
 | H1 | exact-gradient E×L | 0.004043 | 0.001081 | [0.001924, 0.006162] | 0.000185 | 0.000739 | [0.000473, 0.007535] | 2,000 |
-| H2 | end-to-end E×L | 0.014338 | 0.005145 | [0.004255, 0.024422] | 0.005321 | 0.015963 | [-0.016638, 0.043563] | 443 |
-| H3 | end-to-end E×R | -0.011615 | 0.005144 | [-0.021697, -0.001534] | 0.023937 | 0.047875 | [-0.030943, 0.010259] | 443 |
-| H4 | L×R×depth | -0.010179 | 0.005362 | [-0.020688, 0.000331] | 0.057658 | 0.057658 | [-0.026975, 0.006403] | 443 |
+| H2 | end-to-end E×L | 0.014338 | 0.005145 | [0.004255, 0.024422] | 0.005321 | 0.015963 | [-0.016240, 0.045992] | 1,000 |
+| H3 | end-to-end E×R | -0.011615 | 0.005144 | [-0.021697, -0.001534] | 0.023937 | 0.047875 | [-0.031375, 0.009563] | 1,000 |
+| H4 | L×R×depth | -0.010179 | 0.005362 | [-0.020688, 0.000331] | 0.057658 | 0.057658 | [-0.025964, 0.005863] | 1,000 |
 
 H1 is supported by both model-based and bootstrap inference. H2 and H3 meet the model-based Wald/Holm rule but their nested-bootstrap intervals include zero. H4 remains unresolved.
 

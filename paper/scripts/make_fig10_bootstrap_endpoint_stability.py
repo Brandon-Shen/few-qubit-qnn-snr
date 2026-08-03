@@ -12,6 +12,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
+import matplotlib as mpl
+mpl.use("Agg")
 import matplotlib.pyplot as plt
 
 import sys
@@ -22,12 +24,13 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_PATH = Path(__file__).resolve().parents[1] / "figures" / "fig10_bootstrap_endpoint_stability.pdf"
 
 df = pd.read_csv(REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_checkpoints.csv")
-LABELS = {"E:L": r"$\beta_{EL}$ (H2)", "E:R": r"$\beta_{ER}$ (H3)", "L:R:depth_z": r"$\beta_{LRD}$ (H4)"}
+LABELS = {"E_c:L_c": r"$\beta_{EL}$ (H2)", "E_c:R_c": r"$\beta_{ER}$ (H3)",
+          "L_c:R_c:depth_z": r"$\beta_{LRD}$ (H4)"}
 
 apply_style()
 fig, axes = plt.subplots(1, 3, figsize=(TEXT_WIDTH_IN, 2.7), sharex=True)
 
-for ax, coef in zip(axes, ["E:L", "E:R", "L:R:depth_z"]):
+for ax, coef in zip(axes, LABELS):
     sub = df[df["coefficient"] == coef].sort_values("n")
     if sub.empty:
         ax.set_title(f"{LABELS[coef]}\n(no checkpoints yet)", fontsize=ANNOTATION_FONT_SIZE + 1)
