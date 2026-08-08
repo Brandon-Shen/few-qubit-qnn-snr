@@ -1,0 +1,24 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Model-adjusted H1 marginal predictions and contrasts. Predictions average equally over residual status and use the adopted parameter/observation weights over $D=1,2,3,4,6$. Random effects are set to zero. Original-scale entries are $\sinh$ transforms of adjusted means on the $\operatorname{asinh}(|g_{\mathrm{exact}}|)$ scale and are not arithmetic means of raw gradient magnitudes. The difference in objective-specific schedule effects equals the adopted centered H1 estimand.}
+\label{tab:h1-marginal-effects}
+\begin{tabularx}{\textwidth}{@{}llXX@{}}
+\toprule
+\multicolumn{4}{l}{\textbf{Panel A---Adjusted marginal predictions}}\\
+Objective & CNOT schedule & Adjusted $\operatorname{asinh}(|g_{\mathrm{exact}}|)$ (95\% CI) & $\sinh$ of adjusted mean (transformed 95\% CI)\\
+\midrule
+Global infidelity & Baseline & 0.023117 [0.021088, 0.025145] & 0.023119 [0.021090, 0.025148]\\
+Global infidelity & Pair-restricted & 0.025413 [0.023385, 0.027442] & 0.025416 [0.023387, 0.027445]\\
+TFIM energy & Baseline & 0.042397 [0.040369, 0.044425] & 0.042410 [0.040380, 0.044440]\\
+TFIM energy & Pair-restricted & 0.048737 [0.046708, 0.050765] & 0.048756 [0.046725, 0.050787]\\
+\midrule
+\multicolumn{4}{l}{\textbf{Panel B---Marginal contrasts}}\\
+\multicolumn{2}{p{0.30\textwidth}}{Contrast} & Difference on asinh scale (95\% CI) & Difference between $\sinh$-transformed adjusted values (delta-method 95\% CI)\\
+\midrule
+\multicolumn{2}{p{0.30\textwidth}}{Pair-restricted minus baseline at global infidelity} & 0.002297 [0.000798, 0.003795] & 0.002298 [0.000799, 0.003797]\\
+\multicolumn{2}{p{0.30\textwidth}}{Pair-restricted minus baseline at TFIM energy} & 0.006340 [0.004841, 0.007838] & 0.006346 [0.004846, 0.007846]\\
+\multicolumn{2}{p{0.30\textwidth}}{Difference in schedule effects, H1} & 0.004043 [0.001924, 0.006162] & 0.004049 [0.001928, 0.006169]\\
+\bottomrule
+\end{tabularx}
+\end{table*}

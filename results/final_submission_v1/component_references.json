@@ -1,0 +1,116 @@
+[
+  {
+    "path": "paper/figure_data/fig0_el_primary_source.csv",
+    "role": "reconciled fig0 source",
+    "sha256": "d0db4812d881108a7d5d03705ccb2ee8a9fab5bab71f1fc05546a968dba0797d",
+    "bytes": 1095
+  },
+  {
+    "path": "results/h1_depth_weighting/independent_seed/depth_contrasts.csv",
+    "role": "H1 depth contrasts",
+    "sha256": "4fd17cb0c033405f06b6c5a3f40e39547d0288e2ac1c12cbddc88bad0f7d018f",
+    "bytes": 1387
+  },
+  {
+    "path": "results/h1_depth_weighting/original/depth_contrasts.csv",
+    "role": "H1 depth contrasts",
+    "sha256": "20ae09f9164899142d77be6cfccf5dd936deebb2a3110a031cb833151da6b5cb",
+    "bytes": 1389
+  },
+  {
+    "path": "results/h1_marginal_effects/h1_marginal_effects.json",
+    "role": "H1 marginal effects",
+    "sha256": "fa06261d3575469ce5cb08ed9297fd31538ab9402789dde15016f3ec521c2353",
+    "bytes": 3775
+  },
+  {
+    "path": "results/h1_marginal_effects/h1_marginal_effects_table.tex",
+    "role": "H1 generated marginal table",
+    "sha256": "dc2bb76d0093e72b7aa13cc9ed25febf7ff25da33e592b8576ef77ed15b233a2",
+    "bytes": 1958
+  },
+  {
+    "path": "results/h3_centered_robustness/bootstrap_draws.parquet",
+    "role": "H3 draws",
+    "sha256": "4c58e504a92172b9913ac275073288059c5e33de773162f5c045541264cb0149",
+    "bytes": 38697
+  },
+  {
+    "path": "results/independent_seed_h1/effect_coded/coefficient.json",
+    "role": "independent-seed H1",
+    "sha256": "2312ed16c8c64da3d87b34df8f5f2084a5b89b3e4d1badfa91e4e7d35efabb9b",
+    "bytes": 455
+  },
+  {
+    "path": "results/jel_conditional/manifest.json",
+    "role": "J manifest",
+    "sha256": "9e2d9319b58d7d62c1bedef46125e4f58f457071b39a9d2aab7931a231094da9",
+    "bytes": 605
+  },
+  {
+    "path": "results/jel_conditional/summary.csv",
+    "role": "conditional J",
+    "sha256": "2db550704f50d0a533db356b47bd88b3b19cf63120748803df1b974aa8290099",
+    "bytes": 601
+  },
+  {
+    "path": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "role": "corrected primary family",
+    "sha256": "280e36f53278b8c26cc7390e2e06d6a2f9040db1b414b5435203e4a4cadfc05c",
+    "bytes": 1598
+  },
+  {
+    "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_seed_manifest.csv",
+    "role": "H2-H4 seed manifest",
+    "sha256": "b2b10433687c1328949473b66ae87c7853f69a04ad9ed85c9e81aab4f02b60d9",
+    "bytes": 441110
+  },
+  {
+    "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_summary.csv",
+    "role": "H2-H4 1000-fit summary",
+    "sha256": "dd5275066b2bd2bebb1e9d43f4fb65502266835fd36f63da80645e481f4e6763",
+    "bytes": 959
+  },
+  {
+    "path": "results/resource_accounting/manifest.json",
+    "role": "resource manifest",
+    "sha256": "1ba3c05d5d2e8e184379d22b001044694cf3cb7b5b1e78ea767dff696b278e52",
+    "bytes": 935
+  },
+  {
+    "path": "results/resource_accounting/resource_table.csv",
+    "role": "resource accounting",
+    "sha256": "34be6e35abaf71ae804bc610dfd37f9c97d12bbfd5d50ddf8e08ff477265efa1",
+    "bytes": 44346
+  },
+  {
+    "path": "results/task_metrics/prepared_state/configuration_depth_summary.csv",
+    "role": "prepared-state metrics",
+    "sha256": "9bbfb66c6ec8df1c150a5e2ae93e827867ddb6021f6f76ea283040c8036e3c6d",
+    "bytes": 85776
+  },
+  {
+    "path": "results/task_metrics/prepared_state/manifest.json",
+    "role": "task manifest",
+    "sha256": "85eb55696bfa944c5469f606d3a6684690403c5533ea848999e72434a5f438dd",
+    "bytes": 1061
+  },
+  {
+    "path": "verification/figure_source_reconciliation_results.json",
+    "role": "figure reconciliation",
+    "sha256": "7833f77db98b110df47eaf34a726c02f01c4c609481947f86821beaf647c823c",
+    "bytes": 877
+  },
+  {
+    "path": "verification/h1_depth_weighting_results.json",
+    "role": "H1 depth report",
+    "sha256": "50f88ff2a16c5e4cda85ca030afa423c3d420b92ae0a2460b8187edc1d2a569c",
+    "bytes": 23400
+  },
+  {
+    "path": "verification/h3_centered_interaction_robustness_results.json",
+    "role": "H3 robustness",
+    "sha256": "36a804c120b204ac4098e65915aa88ae1dfb433065d5eade5f39367bd7b2314e",
+    "bytes": 1904
+  }
+]

@@ -1,0 +1,167 @@
+{
+  "status": "pass_with_manual_actions",
+  "authoritative_manifest": "results/final_submission_v1/manifest.json",
+  "checked_commit": "0e2aa2a55d8de70777434e079508c06bca560b70",
+  "checks": [
+    {
+      "check_name": "canonical_main_upload_sync",
+      "status": "pass",
+      "affected_file": "submission_package/main.tex",
+      "expected_value": "byte-identical to canonical",
+      "observed_value": "e4392012b1b6b2e7cdda5cb0d064dfa0915c29d606ccf40a7a5c2b92033a90ba",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "canonical_supplement_upload_sync",
+      "status": "pass",
+      "affected_file": "submission_package/ESM_1.tex",
+      "expected_value": "byte-identical to canonical",
+      "observed_value": "6b72d0d268ab6f9c2f5148dca84dcc8b7937bc9bcdb2e79a94d188c19fc8936f",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "frozen_token_0_004043",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "0.004043",
+      "observed_value": "present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "frozen_token_0_014338",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "0.014338",
+      "observed_value": "present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "frozen_token_0_011615",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "-0.011615",
+      "observed_value": "present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "frozen_token_0_010179",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "-0.010179",
+      "observed_value": "present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "frozen_token_0_057658",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "0.057658",
+      "observed_value": "present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "bootstrap_counts",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "H1 uses 2,000; H2--H4 use 1,000",
+      "observed_value": "present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "h2h4_bootstrap_transparency",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "443 historical; 1,000 and 2,000 checkpoints; Monte Carlo caveat",
+      "observed_value": "present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "checkpoint_rows",
+      "status": "pass",
+      "affected_file": "results/production_corrected_end_to_end/bootstrap_checkpoint_rows.tex",
+      "expected_value": "40,100,200,400,443,1000",
+      "observed_value": "checkpoint fragment inspected",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "no_current_superseded_input",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "no current inputs from superseded directories",
+      "observed_value": "none found",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "old_h3_not_primary",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "centered H3 is -0.011615",
+      "observed_value": "centered table rows present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "old_h4_holm_not_current",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "0.115 historical only",
+      "observed_value": "historical supplement occurrence only",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "estimator_modes_not_pooled",
+      "status": "pass",
+      "affected_file": "paper/*.tex",
+      "expected_value": "explicit non-pooling",
+      "observed_value": "present",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "architecture_figure",
+      "status": "pass",
+      "affected_file": "paper/figures/fig16_architecture.pdf",
+      "expected_value": "exists",
+      "observed_value": "exists",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "manifest_exists",
+      "status": "pass",
+      "affected_file": "results/final_submission_v1/manifest.json",
+      "expected_value": "exists",
+      "observed_value": "exists",
+      "resolution_or_remaining_action": ""
+    },
+    {
+      "check_name": "full_test_suite",
+      "status": "pass",
+      "affected_file": "tests/",
+      "expected_value": "all tests pass",
+      "observed_value": "279 passed, 1 skipped, 0 failed in 289.24 s on 2026-08-02",
+      "resolution_or_remaining_action": "Command: pytest -q tests -p no:cacheprovider --basetemp verification/pytest_tmp_full_1000_final"
+    },
+    {
+      "check_name": "tex_compilation",
+      "status": "action_required",
+      "affected_file": "paper/*.tex",
+      "expected_value": "pdflatex plus official Springer class/BST",
+      "observed_value": "not available in repository environment",
+      "resolution_or_remaining_action": "Compilation and visual PDF review were explicitly waived by the user for this task."
+    },
+    {
+      "check_name": "type3_pdf_preflight",
+      "status": "pass",
+      "affected_file": "paper/figures/*.pdf",
+      "expected_value": "pdffonts available for direct inspection",
+      "observed_value": "pdffonts not installed",
+      "resolution_or_remaining_action": "All edited Matplotlib generators set pdf.fonttype=42; verify final PDFs in the TeX environment."
+    },
+    {
+      "check_name": "repository_license",
+      "status": "action_required",
+      "affected_file": "repository root",
+      "expected_value": "author-selected code/data license",
+      "observed_value": "no license selected",
+      "resolution_or_remaining_action": "Manual pre-submission decision; do not infer a license from public access."
+    }
+  ]
+}

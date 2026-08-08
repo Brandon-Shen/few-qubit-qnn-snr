@@ -1,0 +1,10 @@
+{
+  "status":"overleaf_recompile_required",
+  "scientific_revision":"pass","frozen_value_audit":"pass","source_pdf_content_consistency":"pass",
+  "visual_submission_blockers":["main page 14 clipped table","supplement page 2 clipped tables"],
+  "source_modified_after_supplied_pdf":true,
+  "missing_official_dependencies":["sn-jnl.cls","sn-basic.bst"],
+  "submission_package":"submission_package/","zip":null,"final_tag":null,
+  "tests":{"full":{"passed":271,"skipped":1,"failed":0},"focused":{"passed":28,"failed":0},"local_tex_tests":0},
+  "local_tex_installed":false,"local_compilation":false,"remote_push":false
+}

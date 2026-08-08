@@ -1,0 +1,9 @@
+{
+  "loo_completed": 50,
+  "loo_failed": [],
+  "cluster_robust_moderation": {
+    "statistic": 2.0829434499201143,
+    "df": 4,
+    "p": 0.7205065710867307
+  }
+}

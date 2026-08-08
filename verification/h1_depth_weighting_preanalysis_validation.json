@@ -1,0 +1,10 @@
+{
+  "result_inspection": false,
+  "scientific_key": ["initialization_id", "configuration_id", "depth", "parameter_id"],
+  "expected": {"rows": 25600, "configurations": [1,2,3,4,5,6,7,8], "depths": [1,2,3,4,6], "initialization_clusters": 50, "budget_values": [0], "rows_by_depth": {"1":1600,"2":3200,"3":4800,"4":6400,"6":9600}, "parameters_by_depth": {"1":4,"2":8,"3":12,"4":16,"6":24}},
+  "original": {"path":"results/production_confirmatory/raw/exact.parquet", "sha256":"77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542", "seed_root":20260726, "rows":25600, "duplicate_keys":0, "finite_gradients":true, "finite_responses":true, "balanced_configuration_coverage":true},
+  "independent_seed": {"path":"results/h2_replication_v1/_pipeline_output_stage1/raw/exact.parquet", "sha256":"70c562c2724f5310330c2ea4bf10efa4b0fd76327dde8becba9ffe1f7d602715", "seed_root":3872531887, "rows":25600, "duplicate_keys":0, "finite_gradients":true, "finite_responses":true, "balanced_configuration_coverage":true},
+  "initialization_seed_overlap": [],
+  "frozen_table_checksums": {"original":"f3e8b1c9a2088aba4a6c55acec0dcb6ba394e08fceef73f4db69bdee3f6b92bd", "independent_seed":"4863cebea4c4029679b970918a936077e53a0c2e38f510fed60ceafb1d3b495c"},
+  "all_checks_passed": true
+}

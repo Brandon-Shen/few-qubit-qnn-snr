@@ -1,0 +1,15 @@
+{
+  "seed": 55001,
+  "plan_commit": "ec35570569cb0078bbf3f49a4b1b421ccad8c1c4",
+  "attempted_iterations": 2000,
+  "completed_bootstrap_fits": 2000,
+  "failed_iterations": [],
+  "percentile_interval": [
+    0.0004734072169480898,
+    0.007534934562629804
+  ],
+  "median": 0.004066696472716462,
+  "elapsed_seconds": 1389.82541513443,
+  "historical_draws_preserved": 400,
+  "cluster_relabeling": "unique synthetic initialization_id per sampled draw"
+}

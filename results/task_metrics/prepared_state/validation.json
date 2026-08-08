@@ -1,0 +1,22 @@
+[
+  {
+    "dataset":"original",
+    "rows":2000,
+    "duplicate_keys":0,
+    "bounds_tolerance":0.0000000001,
+    "gradient_validation_max_abs_difference":0.0,
+    "errors":[
+
+    ]
+  },
+  {
+    "dataset":"independent_seed",
+    "rows":2000,
+    "duplicate_keys":0,
+    "bounds_tolerance":0.0000000001,
+    "gradient_validation_max_abs_difference":0.0,
+    "errors":[
+
+    ]
+  }
+]

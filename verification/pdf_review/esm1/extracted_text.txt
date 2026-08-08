@@ -1,0 +1,411 @@
+Online Resource 1: Interaction-Aware
+Benchmarking of Exact-Gradient Signal and
+Finite-Shot Resolvability in a Four-Qubit Hybrid
+Quantum Neural Network
+Brandon Shen (ORCID: 0009-0002-3545-2106)1*
+1*Independent Researcher, Belmont, California, 94002, United States.
+Corresponding author(s). E-mail(s): brandonshen123@gmail.com;
+1 Scope and frozen provenance
+This supplement reports the corrected centered H1–H4 family and prospectively
+planned post-primary packages frozen before manuscript revision. The machine-
+readable source of truth is results/final submission v1/manifest.json. The
+numerical tag is submission-numerical-results-freeze-v1; the numerical-results
+commit is f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05, and freeze provenance is 6
+ec255cab39a516bfc1cd188c71e0225713605c4. Historical files remain archived under
+results/superseded/; they are not current primary results.
+2 Factor-coding correction and estimands
+The adopted factors are
+Ec = E −1
+2,
+Lc = L −1
+2,
+Rc = R −1
+2,
+with values {−1/2, +1/2}. Because EcLcRc remains in each applicable model, cen-
+tered lower-order interactions average equally over the third binary factor. Direct-0/1
+lower-order coefficients instead describe simple interactions at the third factor’s refer-
+ence level. The parameterizations yield identical fitted values, likelihood, residuals, and
+random effects; only the interpretation of lower-order coefficients changes. The cor-
+rection was an implementation–interpretation correction rather than result-dependent
+1
+
+
+Hyp.
+Estimand
+Estimate
+SE
+Wald 95% CI
+Raw p
+Holm p
+Decision
+H1
+EcLc, exact
+0.004043
+0.001081
+[0.001924, 0.006162]
+0.000185
+0.000739
+Reject
+H2
+EcLc, end-to-end
+0.014338
+0.005145
+[0.004255, 0.024422]
+0.005321
+0.015963
+Reject
+H3
+EcRc, end-to-end
+-0.011615
+0.005144
+[-0.021697, -0.001534]
+0.023937
+0.047875
+Reject
+H4
+LcRc×depth
+-0.010179
+0.005362
+[-0.020688, 0.000331]
+0.057658
+0.057658
+Do not reject
+Table 1 Corrected primary family. Decisions follow model-based Wald tests with Holm
+adjustment. Intervals in the final column are initialization-cluster percentile bootstrap intervals. H1
+used 2,000 completed fits with zero failures; H2–H4 used 443 completed nested-bootstrap fits.
+Iterations are distinct from the 50 independent initialization clusters. H2 and H3 are model-based
+rejections not corroborated by their bootstrap intervals; H4 remains unresolved.
+D
+Original estimate
+Original 95% CI
+Independent-seed estimate
+Indepe
+1
+-0.005251
+[-0.013708, 0.003206]
+0.001862
+[-
+2
+-0.003579
+[-0.009560, 0.002401]
+0.003120
+[-
+3
+0.012588
+[0.007706, 0.017471]
+0.006250
+[
+4
+0.004664
+[0.000435, 0.008892]
+0.007885
+[
+6
+0.003446
+[-0.000007, 0.006898]
+0.010870
+[
+Equal depth
+0.002374
+[-0.000164, 0.004911]
+0.005997
+[
+Observation/parameter weighted
+0.004043
+[0.001929, 0.006157]
+0.007726
+[
+Table 2 Post-primary H1 depth contrasts and weighting summaries. Observation and
+matched-parameter weights are identical: 0.0625, 0.125, 0.1875, 0.25, and 0.375 at D = 1, 2, 3, 4, 6.
+Intervals are unadjusted Wald 95% intervals.
+model selection. H1 and H2 use EcLc, H3 uses EcRc averaged over L, and H4 uses
+LcRc moderated by centered/scaled depth.
+3 Corrected primary family and bootstrap
+For H2–H4, outer resampling selected complete initialization clusters and retained all
+configurations, depths, budgets, and matched parameters; within selected scientific
+cells, finite-shot replicates were resampled and SNR was recomputed before refitting.
+H1 resampled complete initialization clusters. Percentile intervals are reported without
+treating either Wald or bootstrap inference as universally preferable.
+4 Independent-seed H1 and depth weighting
+The
+independent-seed
+centered
+H1
+estimate
+was
+0.007726
+(Wald
+95%
+CI
+[0.005592, 0.009860]);
+its
+2,000-fit,
+zero-failure
+bootstrap
+interval
+was
+[0.003402, 0.011923]. The direction was retained but magnitude remained uncertain.
+Original moderation tests were mixed-model χ2(4) = 22.844, p = 0.000136, and
+cluster-robust χ2(4) = 6.008, p = 0.1985. Independent-seed tests were χ2(4) = 7.563,
+p = 0.1090, and χ2(4) = 1.810, p = 0.7706. The original conclusion is covariance-
+sensitive; cross-seed magnitude differences have no clear depth localization under the
+frozen rule.
+2
+
+
+1
+2
+3
+4
+6
+Block count D
+−0.015
+−0.010
+−0.005
+0.000
+0.005
+0.010
+0.015
+Centered E × L contrast in asinh(|gexact|)
+Original
+Independent seed
+Fig. 1 Post-primary centered H1 contrasts by block count. Bars are unadjusted Wald 95% intervals;
+zero is the reference. Dataset identity is encoded by shape and line style, not color alone. No monotonic
+depth law is assumed.
+0.000
+0.002
+0.004
+0.006
+0.008
+0.010
+Centered E × L estimate in asinh(|gexact|)
+equal_depth
+observation_weighted
+parameter_weighted
+adopted_pooled
+original
+independent seed
+Fig. 2 Post-primary equal-depth, observation/matched-parameter, and adopted pooled H1 sum-
+maries. Bars are Wald 95% intervals. Weightings answer different questions and were not selected by
+significance.
+5 H3 post-primary explanatory analyses
+Depth-specific L-averaged estimates at D = 1, 2, 3, 4, 6 were 0.006642, 0.000696,
+−0.026492, −0.011553, and −0.011255. Joint moderation did not reject with model-
+based (p = 0.545) or cluster-robust (p = 0.721) covariance. All 50 leave-one-
+initialization-out fits completed; all retained the negative averaged sign, 41 had raw
+p < 0.05, and estimates ranged from −0.014433 to −0.008562. These diagnostics do
+not justify deletion. The frozen classification is a model-dependent directional signal,
+objective-specific under end-to-end mode.
+3
+
+
+Contrast or sensitivity
+Estimate
+Wald 95% CI
+Bootstrap 95% CI
+End-to-end, L = 0
+-0.000958
+[-0.015251, 0.013336]
+[-0.030298, 0.024478]
+End-to-end, L = 1
+-0.022273
+[-0.036493, -0.008052]
+[-0.048098, 0.007609]
+End-to-end, L-average
+-0.011615
+[-0.021697, -0.001534]
+[-0.030943, 0.010259]
+Active depths D ≥3, L-average
+-0.014788
+[-0.024480, -0.005095]
+Not planned
+Conditional mode, L-average
+0.006978
+[-0.004745, 0.018701]
+Not available
+Table 3 Post-primary H3 explanatory and sensitivity results. Bootstrap intervals contain zero for
+both objective-specific contrasts and their average. Active-depth and conditional-mode rows are not
+substitutions for the primary model.
+Dataset
+Estimand
+Point
+Median
+Percentile 95% CI
+Original
+JEL|R=0
+1.241760
+1.238674
+[1.082210, 1.414864]
+Original
+JEL|R=1
+1.126633
+1.124329
+[0.991331, 1.285152]
+Independent seed
+JEL|R=0
+1.163219
+1.160949
+[1.007100, 1.352596]
+Independent seed
+JEL|R=1
+1.242137
+1.238157
+[1.049874, 1.449258]
+Table 4 Conditional descriptive exact-gradient indices. Each initialization-cluster
+bootstrap completed 2,000 iterations with zero failures. Values above one are above the
+multiplicative no-interaction reference, not percentage improvements in optimization.
+6 Conditional exact-gradient indices
+The frozen descriptive indices are
+JEL|R=0 = GELG0
+GEGL
+,
+JEL|R=1 = GELRGR
+GERGLR
+.
+Unique exact-gradient parameter rows are pooled before the configuration-level RMS
+construction, so deeper depths receive more observation/parameter weight. The indices
+are conditional on R, not transformations of centered coefficients.
+7 Prepared-state metrics at initialization
+The frozen table contains 4,000 unique terminal-block states after exact-state dupli-
+cation across shot budgets was removed. Fidelity and normalized-energy bounds, row
+uniqueness, energy spectral bounds, and fidelity–infidelity complementarity all passed.
+Original configuration–depth mean fidelity ranged approximately 0.0338–0.0817 and
+normalized energy 0.4631–0.5529; independent-seed ranges were 0.0322–0.0962 and
+0.4561–0.5537. The ranges overlap strongly. Since L changes evaluation rather than
+preparation, paired L = 0/L = 1 prepared-state summaries are identical. No
+significance test or causal gradient–task relationship is inferred.
+4
+
+
+Original
+R = 0
+Original
+R = 1
+Independent seed
+R = 0
+Independent seed
+R = 1
+0.9
+1.0
+1.1
+1.2
+1.3
+1.4
+1.5
+Conditional exact-gradient index JEL ∣R
+Fig. 3 All four frozen conditional JEL|R estimates with percentile 95% bootstrap intervals and
+reference line J = 1. Marker shape identifies R and line style identifies dataset. These are descriptive
+secondary ratios.
+8 Measurement implementation and resource
+accounting
+Global infidelity is sampled directly from exact statevector overlap probability as one
+abstract overlap setting; no inverse target-state circuit, preparation gates, or physical
+cost is represented. TFIM energy uses a shared Z-basis multinomial setting for three
+ZZ terms and a shared X-basis multinomial setting for four X terms. End-to-end
+mode samples D −1 forward-feature Z jobs and re-encodes noisy features; conditional
+mode holds those features exact. Modes are not pooled.
+All 320 resource rows conserve requested B exactly, allocations are determinis-
+tic and nonnegative, and no production job has zero shots. All 1,833 zero-variance
+cells join to complete resource records. At D = 6, conditional/global uses 48 jobs
+and end-to-end/local 61, a 27.08% increase. The experiment matches total imple-
+mented simulator shots, not circuits, jobs, shots per circuit, physical gates, calibration,
+readout, hardware noise, or wall-clock time.
+9 Eligibility and zero-variance resource join
+Exactly zero replicate variance was restricted to L = 0: 509 of 102,400 end-to-end
+and 1,324 of 102,400 conditional cells, with none under L = 1. The primary finite-
+shot estimand therefore conditions on positive estimated variance. The resource join
+demonstrates that these exclusions do not reflect missing accounting records. They
+remain an objective-linked selection limitation.
+10 Historical correction and audit record
+Historical direct-0/1 coefficient tables and older pooled estimator-mode outputs are
+retained in explicitly superseded directories for auditability. They must not be read
+as current primary factorial conclusions. In particular, the former H3 value near
+−0.000958 is the end-to-end E × R simple interaction at L = 0; it now appears as a
+5
+
+
+0.46
+0.48
+0.50
+0.52
+0.54
+Normalized prepared-state energy
+C1 original
+C1 independent_seed
+C2 original
+C2 independent_seed
+C3 original
+C3 independent_seed
+C4 original
+C4 independent_seed
+C5 original
+C5 independent_seed
+C6 original
+C6 independent_seed
+C7 original
+C7 independent_seed
+C8 original
+C8 independent_seed
+1
+2
+3
+4
+6
+Block count D
+0.03
+0.04
+0.05
+0.06
+0.07
+0.08
+0.09
+Prepared-state target fidelity
+Fig. 4 Descriptive terminal-block prepared-state fidelity and normalized energy at initialization from
+frozen source data. No regression or optimization trajectory is implied.
+post-primary explanatory contrast, not the centered H3 estimand. Historical ‘n=400’
+H1 bootstrap text is superseded by 2,000 completed fits. Historical H4 Holm p = 0.115
+is superseded by the corrected family value 0.057658.
+11 Reproducibility index
+12 Remaining limitations
+Limitations include four qubits; one open-boundary TFIM task; reset-per-block archi-
+tecture; one implementation per intervention; one initialization family; 50 top-level
+clusters per dataset; exact-state and abstract shot simulation; no hardware noise, read-
+out, calibration, or optimization trajectories; prepared-state metrics only at initializa-
+tion; L-linked finite-replicate zero-variance selection; depth weighting from parameter
+count; covariance-sensitive depth conclusions; H2/H3 procedure disagreement; H3
+estimator-mode disagreement; weighting-dependent conditional J; inaccessible full pro-
+tocol text as a factor-coding provenance limitation; and no matched physical-resource
+claim.
+6
+
+
+Component
+Frozen source
+Numerical
+source
+of truth
+results/final submission v1/manifest.json; final numerical
+results.json
+Factor coding
+verification/factor coding correction results.md
+Independent-seed
+H1
+verification/h1 independent seed results.md
+H1
+depth/weighting
+verification/h1 depth weighting results.md; results/h1 dept
+h weighting/
+H3 explanation
+verification/h3 centered interaction robustness results.md
+Conditional J
+verification/jel conditional bootstrap results.md; results/
+jel conditional/
+Prepared states
+verification/task metrics results.md; results/task metrics/
+Resources
+verification/measurement resource accounting.md; results/re
+source accounting/
+Figure 0 archive
+verification/figure source reconciliation results.md
+Table 5 Frozen reproducibility index. Repository paths are typeset as breakable labels.
+7

@@ -1,0 +1,29 @@
+{
+  "estimate": 0.00772562533718829,
+  "se": 0.0010888318741472493,
+  "ci": [
+    0.005591554078640492,
+    0.009859696595736088
+  ],
+  "p_raw": 1.2903987003390785e-12,
+  "optimizer": "lbfgs",
+  "converged": true,
+  "singular": false,
+  "random_effect_variances": {
+    "group_intercept_var": 2.6255913721108858e-05,
+    "nested_param_var": 0.0006867230625310948
+  },
+  "n_obs": 25600,
+  "n_groups": 50,
+  "warnings": [
+    "The MLE may be on the boundary of the parameter space."
+  ],
+  "bootstrap_completed": 2000,
+  "bootstrap_ci": [
+    0.0034020524731531968,
+    0.011922657345969182
+  ],
+  "bootstrap_median": 0.007733240384771764,
+  "classification": "direction retained but magnitude uncertain",
+  "plan_commit": "7cdb9a2b9a820799fe1b05491f9498b838f5a15c"
+}

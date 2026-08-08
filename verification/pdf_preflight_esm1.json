@@ -1,0 +1,3 @@
+{
+  "status":"submission_blocker_pending_overleaf_recompile","pages":7,"pdf_version":"1.5","bytes":322512,"sha256":"3c713f29fec9927f2369f28ebf4a6193a1d4a9b6022c6130d6991272c7d7b756","page_points":[595.276,841.89],"encrypted":false,"text_extraction":"pass","links":1,"metadata_title":"blank_recommended_correction","metadata_author":"blank_recommended_correction","type3_font_occurrences":10,"type3_pages":[3,5,6],"raster_images":0,"visual_submission_blockers":[{"page":2,"issue":"corrected primary and H1 depth tables rightmost columns clipped"}],"compact_layout":"readable_but_some_small_figure_labels"
+}

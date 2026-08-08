@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "status": "coding_correction_current_draws",
+  "plan_commit": "ec35570569cb0078bbf3f49a4b1b421ccad8c1c4",
+  "analysis_commit": "ec35570569cb0078bbf3f49a4b1b421ccad8c1c4",
+  "inputs": {
+    "results/production_confirmatory/raw/exact.parquet": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+    "results/production_confirmatory/pointwise_gradient_statistics.parquet": "99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342",
+    "verification/_bootstrap_checkpoints/h1_boot.parquet": "07c3a47cbbd01b1af8e03f947b0bc7744d9e6942805e8940665c435635dc68d6",
+    "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_iterations.parquet": "851c898abdf3abb3f399d7d7c1c37497b0ca1dab1a8d1619685f0e3a9ffa1b32"
+  },
+  "h1_audit": {
+    "n_rows": 25600,
+    "direct_columns": 12,
+    "centered_columns": 12,
+    "direct_rank": 12,
+    "centered_rank": 12,
+    "mapping_rank": 12,
+    "max_column_space_projection_error": 4.973799150320701e-14,
+    "max_abs_coefficient_difference": 4.0939474033052647e-16,
+    "max_abs_covariance_difference": 7.885876738937536e-19,
+    "max_abs_fitted_difference": 2.7200464103316335e-15,
+    "max_abs_residual_difference": 2.7200464103316335e-15,
+    "log_likelihood_difference": -1.4551915228366852e-11,
+    "scale_difference": 7.589415207398531e-18,
+    "random_effect_variance_differences": {
+      "group_intercept_var": 1.2803750030696004e-17,
+      "nested_param_var": -3.5019730171281793e-17
+    }
+  },
+  "h2h4_audit": {
+    "n_rows": 101891,
+    "direct_columns": 14,
+    "centered_columns": 14,
+    "direct_rank": 14,
+    "centered_rank": 14,
+    "mapping_rank": 14,
+    "max_column_space_projection_error": 1.527117681196825e-13,
+    "max_abs_coefficient_difference": 3.727573805178963e-14,
+    "max_abs_covariance_difference": 1.0609175755786626e-13,
+    "max_abs_fitted_difference": 1.5371703909750067e-11,
+    "max_abs_residual_difference": 1.5371703909750067e-11,
+    "log_likelihood_difference": 0.0,
+    "scale_difference": -6.658007478677064e-13,
+    "random_effect_variance_differences": {
+      "group_intercept_var": 5.152529011093199e-12,
+      "nested_param_var": 8.6023410617031e-12
+    }
+  },
+  "h1_warnings": [
+    "The MLE may be on the boundary of the parameter space.",
+    "The MLE may be on the boundary of the parameter space."
+  ],
+  "h2h4_warnings": [
+    "The MLE may be on the boundary of the parameter space.",
+    "The MLE may be on the boundary of the parameter space."
+  ],
+  "simple_effect_identities": {
+    "EL_R0": "E:L",
+    "EL_R1": "E:L + E:L:R",
+    "EL_average_R": "E:L + 0.5*E:L:R",
+    "ER_L0": "E:R",
+    "ER_L1": "E:R + E:L:R",
+    "ER_average_L": "E:R + 0.5*E:L:R"
+  },
+  "bootstrap_validation_status": "draw transformation complete; explicit resample-refit subset validation pending"
+}

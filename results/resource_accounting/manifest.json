@@ -1,0 +1,18 @@
+{
+  "plan_commit": "645521db6511ca049d89e64f810e65a3407a7b52",
+  "analysis_commit": "b56742ee45b4e2dd513481a7a15b3725e6539652",
+  "inputs": {
+    "qnn_snr/budget.py": "7466028f0d8796c083a6d7d54e163e911ab6903724249866acc4d3f3726511b8",
+    "qnn_snr/gradients.py": "050e003d09f800201d6a5c8c59b319cc5736e38664ba4a54cded03ddd84accf5",
+    "qnn_snr/costs.py": "0b7e1abb90f0fe00f48bd1cde06f6b1f02e3fc65ad94e36791994e26f4acd994",
+    "results/production_confirmatory/resource_accounting.csv": "9d66d430edf0889ac81e9c11c99d057999d45efc0fe9c2157013eaac9f18c39e",
+    "results/production_confirmatory/pointwise_gradient_statistics.parquet": "99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342"
+  },
+  "command": "python scripts/run_resource_accounting.py",
+  "d6_extreme_job_counts": {
+    "conditional_global": 48,
+    "end_to_end_local": 61,
+    "relative_difference": 0.2708333333333333
+  },
+  "zero_variance_join_rows": 1833
+}

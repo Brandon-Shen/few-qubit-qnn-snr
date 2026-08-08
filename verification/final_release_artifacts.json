@@ -1,0 +1,21 @@
+{
+  "status": "final_compiled_artifacts_frozen",
+  "intended_release": "sncs-submission-v5",
+  "tag_creation_authorized": true,
+  "artifacts": [
+    {
+      "path": "submission_package/Manuscript.pdf",
+      "sha256": "a643affeb0899393c9a04ded07a39df5ea7f68509c5fa832e36619a33c66805a",
+      "bytes": 613438
+    },
+    {
+      "path": "submission_package/ESM_1.pdf",
+      "sha256": "c8a97a0167a209d314ba9e5f101be88029954c056588af53600650f67f89e2c3",
+      "bytes": 457560
+    }
+  ],
+  "historical_imports": [
+    "verification/overleaf_import/main_overleaf.pdf",
+    "verification/overleaf_import/ESM_1_overleaf.pdf"
+  ]
+}

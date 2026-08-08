@@ -17,6 +17,13 @@ text width = 8.5 - 2*0.75 = 7.0in; single column = (7.0 - 0.28) / 2 = 3.36in.
 from __future__ import annotations
 
 import matplotlib as mpl
+
+mpl.rcParams.update({
+    "pdf.fonttype": 42,
+    "ps.fonttype": 42,
+    "svg.fonttype": "none",
+})
+
 import matplotlib.pyplot as plt
 
 TEXT_WIDTH_IN = 7.0
@@ -70,6 +77,8 @@ def apply_style() -> None:
         "savefig.bbox": "tight",
         "savefig.pad_inches": 0.02,
         "pdf.fonttype": 42,
+        "ps.fonttype": 42,
+        "svg.fonttype": "none",
     })
 
 

@@ -1,0 +1,114 @@
+{
+  "model_formula": "a ~ E_c*L_c*R_c + depth_z + E_c:depth_z + L_c:depth_z + R_c:depth_z",
+  "random_effects_for_predictions": 0,
+  "residual_weights": {
+    "0": 0.5,
+    "1": 0.5
+  },
+  "depth_weights": {
+    "1": 0.0625,
+    "2": 0.125,
+    "3": 0.1875,
+    "4": 0.25,
+    "6": 0.375
+  },
+  "predictions": [
+    {
+      "E": 0,
+      "L": 0,
+      "objective": "Global infidelity",
+      "cnot_schedule": "Baseline",
+      "mu_asinh": 0.023116507349779044,
+      "se_asinh": 0.0010348968362473183,
+      "ci_lo_asinh": 0.021088146823019856,
+      "ci_hi_asinh": 0.025144867876538232,
+      "sinh_adjusted_mean": 0.023118566210679745,
+      "sinh_ci_lo": 0.021089709875846886,
+      "sinh_ci_hi": 0.025147517661023633
+    },
+    {
+      "E": 1,
+      "L": 0,
+      "objective": "Global infidelity",
+      "cnot_schedule": "Pair-restricted",
+      "mu_asinh": 0.025413368458387427,
+      "se_asinh": 0.0010348968362473183,
+      "ci_lo_asinh": 0.02338500793162824,
+      "ci_hi_asinh": 0.027441728985146616,
+      "sinh_adjusted_mean": 0.025416104038723925,
+      "sinh_ci_lo": 0.023387139372007905,
+      "sinh_ci_hi": 0.02744517327359101
+    },
+    {
+      "E": 0,
+      "L": 1,
+      "objective": "TFIM energy",
+      "cnot_schedule": "Baseline",
+      "mu_asinh": 0.04239703932664471,
+      "se_asinh": 0.0010348968362473183,
+      "ci_lo_asinh": 0.04036867879988552,
+      "ci_hi_asinh": 0.0444253998534039,
+      "sinh_adjusted_mean": 0.04240974197780985,
+      "sinh_ci_lo": 0.04037964402985067,
+      "sinh_ci_hi": 0.04444001440995822
+    },
+    {
+      "E": 1,
+      "L": 1,
+      "objective": "TFIM energy",
+      "cnot_schedule": "Pair-restricted",
+      "mu_asinh": 0.048736697234909365,
+      "se_asinh": 0.0010348968362473183,
+      "ci_lo_asinh": 0.046708336708150174,
+      "ci_hi_asinh": 0.05076505776166856,
+      "sinh_adjusted_mean": 0.048755993293629354,
+      "sinh_ci_lo": 0.046725322247063245,
+      "sinh_ci_hi": 0.05078686493443541
+    }
+  ],
+  "contrasts": [
+    {
+      "contrast_id": "restricted_minus_baseline_L0",
+      "contrast": "Pair-restricted minus baseline at global infidelity",
+      "estimate_asinh": 0.0022968611086083813,
+      "se_asinh": 0.0007645705303248883,
+      "ci_lo_asinh": 0.000798330405530911,
+      "ci_hi_asinh": 0.0037953918116858517,
+      "difference_sinh_adjusted": 0.0022975378280441806,
+      "delta_se": 0.0007647961322645718,
+      "delta_ci_lo": 0.0007985649532900882,
+      "delta_ci_hi": 0.003796510702798273
+    },
+    {
+      "contrast_id": "restricted_minus_baseline_L1",
+      "contrast": "Pair-restricted minus baseline at TFIM energy",
+      "estimate_asinh": 0.006339657908264641,
+      "se_asinh": 0.0007645705303248883,
+      "ci_lo_asinh": 0.004841127205187171,
+      "ci_hi_asinh": 0.007838188611342112,
+      "difference_sinh_adjusted": 0.006346251315819507,
+      "delta_se": 0.0007653683172462601,
+      "delta_ci_lo": 0.00484615697910881,
+      "delta_ci_hi": 0.007846345652530203
+    },
+    {
+      "contrast_id": "difference_in_schedule_effects_H1",
+      "contrast": "Difference in schedule effects, H1",
+      "estimate_asinh": 0.004042796799656259,
+      "se_asinh": 0.0010812660133762467,
+      "ci_lo_asinh": 0.0019235543557316113,
+      "ci_hi_asinh": 0.0061620392435809065,
+      "difference_sinh_adjusted": 0.004048713487775326,
+      "delta_se": 0.001081989722633646,
+      "delta_ci_lo": 0.001928052599770897,
+      "delta_ci_hi": 0.006169374375779755
+    }
+  ],
+  "h1_reproduction": {
+    "coefficient": "E_c:L_c",
+    "fit_estimate": 0.004042796799656259,
+    "fit_se": 0.0010812660133762467,
+    "absolute_estimate_error": 0.0,
+    "absolute_se_error": 0.0
+  }
+}

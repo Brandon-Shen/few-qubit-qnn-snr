@@ -1,0 +1,141 @@
+{
+  "status": "frozen_submission_numerical_source",
+  "plan_commit": "645521db6511ca049d89e64f810e65a3407a7b52",
+  "freeze_commit": "f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05",
+  "provenance_commit": "6ec255cab39a516bfc1cd188c71e0225713605c4",
+  "tag": "submission-numerical-results-freeze-v1",
+  "row_count": 347,
+  "row_key": [
+    "analysis_identifier",
+    "dataset",
+    "estimand",
+    "depth",
+    "weighting",
+    "estimator_mode",
+    "interval_method"
+  ],
+  "component_references": [
+    {
+      "path": "paper/figure_data/fig0_el_primary_source.csv",
+      "role": "reconciled fig0 source",
+      "sha256": "d0db4812d881108a7d5d03705ccb2ee8a9fab5bab71f1fc05546a968dba0797d",
+      "bytes": 1095
+    },
+    {
+      "path": "results/h1_depth_weighting/independent_seed/depth_contrasts.csv",
+      "role": "H1 depth contrasts",
+      "sha256": "4fd17cb0c033405f06b6c5a3f40e39547d0288e2ac1c12cbddc88bad0f7d018f",
+      "bytes": 1387
+    },
+    {
+      "path": "results/h1_depth_weighting/original/depth_contrasts.csv",
+      "role": "H1 depth contrasts",
+      "sha256": "20ae09f9164899142d77be6cfccf5dd936deebb2a3110a031cb833151da6b5cb",
+      "bytes": 1389
+    },
+    {
+      "path": "results/h1_marginal_effects/h1_marginal_effects.json",
+      "role": "H1 marginal effects",
+      "sha256": "a73bf768fcae27106063cf931efcb92b87982d45b2499689e6b1e9dafeb891d7",
+      "bytes": 3775
+    },
+    {
+      "path": "results/h1_marginal_effects/h1_marginal_effects_table.tex",
+      "role": "H1 generated marginal table",
+      "sha256": "9b63fc6ce7327d4f49d8b57d7a0266bacc1bfd8805e3d09d7094ce4fe096bca8",
+      "bytes": 1958
+    },
+    {
+      "path": "results/h3_centered_robustness/bootstrap_draws.parquet",
+      "role": "H3 draws",
+      "sha256": "4c58e504a92172b9913ac275073288059c5e33de773162f5c045541264cb0149",
+      "bytes": 38697
+    },
+    {
+      "path": "results/independent_seed_h1/effect_coded/coefficient.json",
+      "role": "independent-seed H1",
+      "sha256": "2312ed16c8c64da3d87b34df8f5f2084a5b89b3e4d1badfa91e4e7d35efabb9b",
+      "bytes": 455
+    },
+    {
+      "path": "results/jel_conditional/manifest.json",
+      "role": "J manifest",
+      "sha256": "9e2d9319b58d7d62c1bedef46125e4f58f457071b39a9d2aab7931a231094da9",
+      "bytes": 605
+    },
+    {
+      "path": "results/jel_conditional/summary.csv",
+      "role": "conditional J",
+      "sha256": "2db550704f50d0a533db356b47bd88b3b19cf63120748803df1b974aa8290099",
+      "bytes": 601
+    },
+    {
+      "path": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+      "role": "corrected primary family",
+      "sha256": "280e36f53278b8c26cc7390e2e06d6a2f9040db1b414b5435203e4a4cadfc05c",
+      "bytes": 1598
+    },
+    {
+      "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_seed_manifest.csv",
+      "role": "H2-H4 seed manifest",
+      "sha256": "ca9069deb2fe00212ca449da1403331ffcf06200ca433510c60db93959a71db4",
+      "bytes": 441110
+    },
+    {
+      "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_summary.csv",
+      "role": "H2-H4 1000-fit summary",
+      "sha256": "9138f2e17be90bbc38f752de9668bce9fd65c968cf47122834cc29db3ccad900",
+      "bytes": 959
+    },
+    {
+      "path": "results/resource_accounting/manifest.json",
+      "role": "resource manifest",
+      "sha256": "1ba3c05d5d2e8e184379d22b001044694cf3cb7b5b1e78ea767dff696b278e52",
+      "bytes": 935
+    },
+    {
+      "path": "results/resource_accounting/resource_table.csv",
+      "role": "resource accounting",
+      "sha256": "34be6e35abaf71ae804bc610dfd37f9c97d12bbfd5d50ddf8e08ff477265efa1",
+      "bytes": 44346
+    },
+    {
+      "path": "results/task_metrics/prepared_state/configuration_depth_summary.csv",
+      "role": "prepared-state metrics",
+      "sha256": "9bbfb66c6ec8df1c150a5e2ae93e827867ddb6021f6f76ea283040c8036e3c6d",
+      "bytes": 85776
+    },
+    {
+      "path": "results/task_metrics/prepared_state/manifest.json",
+      "role": "task manifest",
+      "sha256": "85eb55696bfa944c5469f606d3a6684690403c5533ea848999e72434a5f438dd",
+      "bytes": 1061
+    },
+    {
+      "path": "verification/figure_source_reconciliation_results.json",
+      "role": "figure reconciliation",
+      "sha256": "7833f77db98b110df47eaf34a726c02f01c4c609481947f86821beaf647c823c",
+      "bytes": 877
+    },
+    {
+      "path": "verification/h1_depth_weighting_results.json",
+      "role": "H1 depth report",
+      "sha256": "50f88ff2a16c5e4cda85ca030afa423c3d420b92ae0a2460b8187edc1d2a569c",
+      "bytes": 23400
+    },
+    {
+      "path": "verification/h3_centered_interaction_robustness_results.json",
+      "role": "H3 robustness",
+      "sha256": "721e1dc681d6dfa57bd409248e6b1117bb8eb2336b5c45a49aec42d6846135b6",
+      "bytes": 1904
+    }
+  ],
+  "commands": [
+    "python scripts/finalize_h2h4_bootstrap_1000.py",
+    "python scripts/refresh_h3_bootstrap_from_h2h4_1000.py",
+    "python scripts/generate_h1_marginal_effects.py",
+    "python scripts/build_final_submission_freeze.py",
+    "python -m pytest tests/ -q"
+  ],
+  "starting_commit": "3a998cd66da352d97565700ff3707ba942243f9a"
+}

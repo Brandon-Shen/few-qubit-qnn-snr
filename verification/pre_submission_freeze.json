@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "freeze_kind": "pre_submission_pre_analysis",
+  "timestamp_utc": "2026-08-02T07:13:06.888915+00:00",
+  "git": {
+    "commit": "e69ce1c6ab0f9b93b43c6744391540830ed7ae0b",
+    "branch": "submission-prep-h1-finalization-20260802",
+    "tracked_file_status": []
+  },
+  "scientific_input_datasets": [
+    {
+      "path": "results/production_confirmatory/raw/exact.parquet",
+      "sha256": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+      "bytes": 489674
+    },
+    {
+      "path": "results/production_confirmatory/raw/finite_shot_end_to_end.parquet",
+      "sha256": "22b5e761f461c6bfde7a60a4efa7ac13bc59ae003488be84d2f0c1e57ddb7f39",
+      "bytes": 20780180
+    },
+    {
+      "path": "results/production_confirmatory/raw/finite_shot_conditional.parquet",
+      "sha256": "b15b19088d22a0429f48158cdee5ee3caec52f6819815579b3e6aed189afe413",
+      "bytes": 20968869
+    },
+    {
+      "path": "results/h2_replication_v1/_pipeline_output_stage1/raw/exact.parquet",
+      "sha256": "70c562c2724f5310330c2ea4bf10efa4b0fd76327dde8becba9ffe1f7d602715",
+      "bytes": 489754
+    },
+    {
+      "path": "results/h2_replication_v1/_pipeline_output_stage1/raw/finite_shot_end_to_end.parquet",
+      "sha256": "b4a4818b12273f33ba0e11bf230cbfc0c48d99060f9e902d2fb72e2f1af29000",
+      "bytes": 20966054
+    }
+  ],
+  "manuscript_documents": [
+    {
+      "path": "paper/main.tex",
+      "sha256": "f227cf433afd7c8de1284f2b18c41e33b2a067344a801890119bacbc2c3749ad",
+      "bytes": 56432
+    },
+    {
+      "path": "paper/supplemental.tex",
+      "sha256": "538f608f20edab0b46b61be030bd33959799485d3caa6b96fb27c1d7d0802b22",
+      "bytes": 38089
+    }
+  ],
+  "environment": {
+    "operating_system": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.1",
+      "pandas": "3.0.3",
+      "scipy": "1.18.0",
+      "statsmodels": "0.14.6",
+      "pyarrow": "25.0.0",
+      "pennylane": "0.45.1",
+      "matplotlib": "3.11.0"
+    }
+  },
+  "deliberate_exclusions": [
+    ".claude/settings.local.json (untracked local tooling configuration)",
+    "caches, virtual environments, downloaded dependencies, and temporary files"
+  ]
+}

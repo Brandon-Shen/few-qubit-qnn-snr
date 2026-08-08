@@ -1,0 +1,9 @@
+{
+  "status":"content_match_layout_correction_required",
+  "substantive_source_pdf_mismatches":[],
+  "expected_typesetting_differences":["math symbol extraction","Unicode minus signs","ligatures","line wrapping and hyphenation","BibTeX numbering","2^3 extraction"],
+  "main":{"pages":20,"title":true,"author":true,"orcid":true,"affiliation":true,"email":true,"structured_abstract":true,"section_headings":34,"missing_headings":[],"figures_source":4,"tables_source":3,"bibliography":true,"declarations":true},
+  "supplement":{"pages":7,"online_resource_identity":true,"section_headings":12,"missing_headings":[],"figures_source":4,"tables_source":5,"corrected_primary_table":true},
+  "frozen_content":{"primary_family":true,"independent_seed_h1":true,"h1_depth_weighting":true,"h3_explanatory":true,"conditional_j":true,"prepared_state":true,"resources":true,"interpretation_qualifiers":true},
+  "visual_defects":[{"document":"main","page":14,"issue":"confirmatory table rightmost column clipped"},{"document":"ESM_1","page":2,"issue":"Tables 1 and 2 right edges clipped"}]
+}

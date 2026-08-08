@@ -1,4 +1,4 @@
-"""Best-effort structural check for main.tex, used as a substitute for actual
+"""Best-effort structural check for sn-article.tex.
 pdflatex compilation (no LaTeX toolchain is available in this environment --
 see verification/paper_accuracy_check.md / the session's final report for why
 this is a stand-in, not a real compile). Checks:
@@ -20,7 +20,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-MAIN_TEX = Path(__file__).resolve().parents[1] / "main.tex"
+MAIN_TEX = Path(__file__).resolve().parents[1] / "sn-article.tex"
 PAPER_DIR = MAIN_TEX.parent
 
 

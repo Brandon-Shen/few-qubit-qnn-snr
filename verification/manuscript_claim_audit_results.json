@@ -1,0 +1,10 @@
+{
+  "status":"scientific_pass_overleaf_recompile_required",
+  "required_values_checked":28,"missing_required_values":[],"manifest_hash_errors":[],"ambiguous_unconditioned_j":false,
+  "primary_family":{"H1":"verified","H2":"verified_bootstrap_includes_zero","H3":"verified_model_dependent_not_robust","H4":"verified_unresolved_not_absent"},
+  "post_primary":{"independent_seed_h1":true,"h1_depth_weighting":true,"h3_objective_specific":true,"conditional_j":true,"prepared_state":true,"resources":true},
+  "superseded_values":{"main_article":[],"supplement":"explicit historical correction section only"},
+  "contextual_allowed_matches":[{"text":"-0.000958","reason":"frozen H3 L=0 explanatory contrast"},{"text":"optimized performance","reason":"explicit negation"},{"text":"robust or confirmed","reason":"explicit negation"}],
+  "remaining_layout_or_dependency_issues":["main page 14 clipped table","ESM page 2 clipped tables","Type 3 figure fonts","blank ESM PDF metadata","missing sn-jnl.cls","missing sn-basic.bst"],
+  "new_overleaf_compile_required":true
+}

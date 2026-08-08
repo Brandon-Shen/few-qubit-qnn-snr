@@ -153,46 +153,32 @@ def test_pooled_summary_excludes_failed_fits_but_counts_them(tmp_path, monkeypat
     monkeypatch.setattr(mod, "CKPT_DIR", ckpt_dir)
     monkeypatch.setattr(mod, "POOL_SOURCES", [("regression_a", "h2h4_boot_endtoend_regression_a", 266001)])
     monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(mod, "FINAL_SUCCESS_TARGET", 2)
+    monkeypatch.setattr(mod, "CHECKPOINT_NS", [2])
+    monkeypatch.setattr(mod, "transform_bootstrap_draws", lambda d, family: d.assign(
+        **{"E_c:L_c": d["E:L"], "E_c:R_c": d["E:R"], "L_c:R_c:depth_z": d["L:R:depth_z"]}))
     (tmp_path / "results" / "production_corrected_end_to_end").mkdir(parents=True, exist_ok=True)
     (tmp_path / "verification").mkdir(exist_ok=True)
 
     mod.main()
 
     summary = pd.read_csv(tmp_path / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_summary.csv")
-    assert (summary["n_pooled"] == 2).all(), "successful-draw count should exclude the 3 failed iterations"
+    assert (summary["n_successful"] == 2).all(), "successful-draw count should exclude the 3 failed iterations"
     assert (summary["n_failed"] == 3).all(), "failed-iteration count must still be reported"
     assert np.isclose(summary["fit_failure_rate_pct"].iloc[0], 100 * 3 / 5)
 
 
-# --- 6. The final forest-plot input uses only end-to-end bootstrap draws ---
+# --- 6. The final forest plot uses the frozen corrected end-to-end package ---
 
 def test_forest_plot_script_reads_only_endtoend_checkpoints():
-    import ast
-
     script_path = REPO_ROOT / "paper" / "scripts" / "make_fig1_forest.py"
     script = script_path.read_text(encoding="utf-8")
-    assert "endtoend" in script or "end_to_end" in script, (
-        "fig1 script must reference end-to-end-labeled data somewhere"
-    )
-
-    # Inspect only actual `read_parquet(...)` call arguments (not prose/comments/docstrings),
-    # so a docstring that *names* the forbidden old pooled file as an example of what to
-    # avoid does not itself trip this check.
-    tree = ast.parse(script)
-    read_parquet_arg_strings = []
-    for node in ast.walk(tree):
-        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
-                and node.func.attr == "read_parquet"):
-            for sub in ast.walk(node):
-                if isinstance(sub, ast.Constant) and isinstance(sub.value, str):
-                    read_parquet_arg_strings.append(sub.value)
-
-    assert read_parquet_arg_strings, "expected at least one pd.read_parquet(...) call in the fig1 script"
-    for arg in read_parquet_arg_strings:
-        assert not (arg.startswith("h2h4_boot_shard") or "/h2h4_boot_shard" in arg or "\\h2h4_boot_shard" in arg), (
-            f"fig1 script must not read an old pooled-mode shard checkpoint by name, found: {arg!r} "
-            f"(superseded per verification/confirmatory_numbers_adopted.md)"
-        )
+    assert "end_to_end" in script
+    assert "primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv" in script
+    assert "primary_corrected/effect_coded/corrected_bootstrap_intervals_current_draws.csv" in script
+    assert "h1_centered_bootstrap_2000.meta.json" in script
+    assert "production_confirmatory/confirmatory_hypotheses.csv" not in script
+    assert "h2h4_boot_shard" not in script
 
 
 # --- 7. The zero-variance audit reproduces the production eligibility count ---

@@ -1,0 +1,9 @@
+# Prepared-state task-metrics plan
+
+**Status:** post-primary descriptive initialization-state analysis; no optimization or final-performance claim.
+
+No authoritative state file exists. Deterministically regenerate through `physics_summary_rows`/`forward_pass_exact` using the two frozen configs, seed roots, `derive_seed` for theta/classical parameters, authoritative circuit/residual code, and `diagonalize_tfim(4,1,.5)`. Before aggregation, reproduce frozen exact gradients for initializations `{0,49}`, configurations `{1,8}`, depths `{1,6}`, all parameters to absolute `1e-10`; stop on mismatch. The target Hamiltonian/ground state must be identical and nondegenerate across objectives/datasets.
+
+Create exactly one row per `(dataset,initialization,configuration,depth)` for 2*50*8*5=4,000 terminal-block prepared states; reject duplicates rather than budget/parameter collapse. Compute raw TFIM energy, normalized energy `(E-E0)/(Emax-E0)`, fidelity `|<psi0|psi>|^2`, and infidelity `1-fidelity`. Assert energy/spectral and normalized/fidelity bounds plus complementarity to `1e-10`. Each state is equally weighted; never parameter/budget weight.
+
+Separately summarize dataset/configuration/depth count, mean, median, SD, Q1/Q3/IQR, min/max. Bootstrap mean metrics by complete initialization profiles with iteration-keyed seeds 355001/355002, exactly 2,000 completed draws, checkpoint every 100, percentile 95% CI, stop above 1% failure. No tests/p-values/multiplicity. Produce tidy CSV/Parquet, summaries, draws/checkpoints/failures, supplement table, vector figure/PNG/source, bounds and gradient validation, checksums/manifest, and `verification/task_metrics_results.{md,json}` under `results/task_metrics/prepared_state/`. Gradient comparison is side-by-side descriptive only. Stop for nonunique regeneration, target mismatch, bounds/gradient failure, duplicate key, or mixing.

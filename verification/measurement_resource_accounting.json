@@ -1,0 +1,53 @@
+{
+  "status": "implementation_audit",
+  "plan_commit": "645521db6511ca049d89e64f810e65a3407a7b52",
+  "analysis_commit": "b56742ee45b4e2dd513481a7a15b3725e6539652",
+  "validation": {
+    "rows": 320,
+    "duplicate_keys": 0,
+    "shot_conservation": true,
+    "production_zero_shot_jobs": 0,
+    "raw_summary_max_abs_difference": 0.0,
+    "errors": []
+  },
+  "d6_job_ratio": 0.2708333333333333,
+  "zero_variance_join_rows": 1833,
+  "protocol": {
+    "global_target_infidelity": {
+      "implementation": "direct Bernoulli sampling from exact overlap_probability(state,psi_0)",
+      "outcomes": "success count k of n; estimator 1-k/n",
+      "objective_settings": 1,
+      "job_basis_label": "overlap",
+      "inverse_state_preparation_circuit": false,
+      "target_gates_represented_or_counted": false,
+      "hardware_equivalence": false
+    },
+    "tfim_energy": {
+      "H": "-J sum Z_i Z_(i+1) - h sum X_i, open boundary",
+      "terms": {
+        "ZZ": 3,
+        "X": 4
+      },
+      "settings": 2,
+      "groups": [
+        "z",
+        "x"
+      ],
+      "allocation": "each shifted terminal state receives separate Z and X jobs; shared multinomial within basis",
+      "covariance": "within-basis joint sampling implicit; cross-basis covariance absent"
+    },
+    "modes": {
+      "finite_shot_end_to_end": "sample forward Z features, shifted node Jacobians, shifted terminal objective; noisy features nonlinearly re-encoded",
+      "finite_shot_conditional": "forward features exact/fixed; shifted node Jacobians and terminal objective sampled; forward-feature variance excluded"
+    },
+    "budget": "B covers the complete gradient-vector job list; floor allocation plus deterministic sorted remainder",
+    "omitted": [
+      "physical gate count",
+      "target inverse-preparation gates",
+      "calibration",
+      "readout overhead",
+      "hardware noise",
+      "wall-clock scheduling"
+    ]
+  }
+}

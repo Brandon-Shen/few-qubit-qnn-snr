@@ -1,0 +1,3 @@
+{
+  "status":"submission_blocker_pending_overleaf_recompile","pages":20,"pdf_version":"1.5","bytes":504450,"sha256":"9e99088a2225d8bb2e2e02ca4ae51d88caee7bdefb2a79e04dc63ec9d96e6248","page_points":[595.276,841.89],"encrypted":false,"text_extraction":"pass","links":79,"metadata_title":"correct","metadata_author":"correct","type3_font_occurrences":5,"type3_pages":[12,13],"raster_images":0,"visual_submission_blockers":[{"page":14,"issue":"confirmatory table rightmost bootstrap column clipped"}],"class_generated_author_format":"acceptable"
+}

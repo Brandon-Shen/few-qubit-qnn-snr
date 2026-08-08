@@ -1,0 +1,16 @@
+{
+  "status": "pass",
+  "authoritative_manifest": "results/final_submission_v1/manifest.json",
+  "main_source": "paper/sn-article.tex",
+  "supplement_source": "paper/supplemental.tex",
+  "abstract_word_count": 200,
+  "required_values_checked": 28,
+  "missing_required": {},
+  "prohibited_matches": {},
+  "ambiguous_unconditioned_j": false,
+  "manifest_hash_errors": [],
+  "figure_source_errors": [],
+  "availability_errors": [],
+  "synchronization_errors": [],
+  "supplement_contains_explicit_historical_audit": true
+}

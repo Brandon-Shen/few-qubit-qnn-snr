@@ -1,0 +1,8 @@
+{
+  "original_path": "paper/figure_data/fig0_el_primary_source.csv",
+  "sha256": "f89ccd263f2ea2e3fb92aed4677d0e32292851eda316244d014ccd49342a9a11",
+  "starting_commit": "3a998cd66da352d97565700ff3707ba942243f9a",
+  "classification": "valid deterministic numeric regeneration with only generated_at and git_commit differing from tracked bytes",
+  "numeric_content_matches_tracked": true,
+  "archived_before_source_change": true
+}

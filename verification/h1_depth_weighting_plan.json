@@ -1,0 +1,32 @@
+{
+  "status": "prospectively frozen before new depth-result inspection",
+  "scope": "post-primary exploratory and robustness-oriented; excluded from H1-H4 Holm family",
+  "datasets": {
+    "original": "results/production_confirmatory/raw/exact.parquet",
+    "independent_seed": "results/h2_replication_v1/_pipeline_output_stage1/raw/exact.parquet",
+    "raw_pooling_allowed": false
+  },
+  "scientific_key": ["initialization_id", "configuration_id", "depth", "parameter_id"],
+  "response": "asinh(abs(exact_gradient))",
+  "centered_factors": {"E_c": "E-0.5", "L_c": "L-0.5", "R_c": "R-0.5"},
+  "depths": [1, 2, 3, 4, 6],
+  "formula": "a ~ E_c*L_c*R_c + C(depth, Sum) + E_c:C(depth, Sum) + L_c:C(depth, Sum) + R_c:C(depth, Sum) + E_c:L_c:C(depth, Sum)",
+  "fit": {"likelihood": "REML", "optimizer_order": ["lbfgs", "bfgs", "cg", "powell", "nm"], "group_random_intercept": "initialization_id", "variance_component": "initialization_id:depth:parameter_id"},
+  "contrasts": {"definition": "E_c:L_c difference-in-differences at each depth, averaged equally over R_c", "ci": "normal-reference Wald 95%", "within_dataset_adjustment": "Holm across five depth contrasts; raw p-values and unadjusted intervals also reported"},
+  "weights": {
+    "equal_depth": [0.2, 0.2, 0.2, 0.2, 0.2],
+    "observation_count_expected": [0.0625, 0.125, 0.1875, 0.25, 0.375],
+    "parameter_count_expected": [0.0625, 0.125, 0.1875, 0.25, 0.375],
+    "covariance_rule": "w' C V C' w"
+  },
+  "cross_dataset_difference": {"direction": "independent_seed-original", "variance": "var(seed)+var(original)", "independence_required": true},
+  "moderation": {"model_based": "joint Wald on four E_c:L_c:C(depth, Sum) columns", "cluster_robust": "OLS identical fixed formula, initialization-clustered covariance, chi-square df=4", "point_estimate_tolerance": 1e-8},
+  "classification": {
+    "materiality_unit": 0.0010812660,
+    "localize_one_depth_absolute_contribution_fraction": 0.5,
+    "localize_shallow_D1_D2_absolute_contribution_fraction": 0.6,
+    "depth_direction_uses_point_estimates": true
+  },
+  "outputs": ["verification/h1_depth_weighting_results.md", "verification/h1_depth_weighting_results.json", "results/h1_depth_weighting/original", "results/h1_depth_weighting/independent_seed", "results/h1_depth_weighting/comparison"],
+  "protected_path": "paper/figure_data/fig0_el_primary_source.csv"
+}

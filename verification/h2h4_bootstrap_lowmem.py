@@ -146,6 +146,10 @@ def _one_iteration_lowmem(pre: PrecomputedCellIndex, rng: np.random.Generator,
     rng2 = np.random.default_rng(bootstrap_seed)
 
     records = []
+    model_only = pointwise_bootstrap_iterations == 0
+    model_columns = ["analysis_mode", "E", "L", "R", "depth", "depth_z", "log2_budget",
+                     "initialization_id", "parameter_id"]
+    model_indices = [CELL_KEY_COLS.index(c) for c in model_columns]
     for key17 in pre.sorted_full_keys:
         cellkey5 = tuple(key17[i] for i in _CK5_IDX)
         new_id = key17[_INIT_IDX]
@@ -167,6 +171,12 @@ def _one_iteration_lowmem(pre: PrecomputedCellIndex, rng: np.random.Generator,
         else:
             snr_est = float("nan")
             snr_exact = float("nan")
+
+        if model_only:
+            record = {name: key17[idx] for name, idx in zip(model_columns, model_indices)}
+            record["SNR_est"] = snr_est
+            records.append(record)
+            continue
 
         bias = mu_hat - exact
         sign_agreement = bool(np.sign(mu_hat) == np.sign(exact)) if mu_hat != 0 and exact != 0 else False

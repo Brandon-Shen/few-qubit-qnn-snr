@@ -108,8 +108,12 @@ def select_initialization_count(cfg: ExperimentConfig, h1_pilot_result, h2h4_pil
     """Section 17.B: using variance components estimated from independent
     pilot data, simulate complete factorial datasets for candidate
     initialization counts and select the smallest count whose simulated 95%
-    CI half-width 90th percentile is <= 0.20 for all four target
-    coefficients."""
+    CI half-width 90th percentile is <= 0.20 for each of the three H2--H4
+    finite-shot interaction coefficients on the asinh(SNR_est) scale.
+
+    H1 is not part of this implemented selection rule; this documentation
+    correction does not alter the frozen computation.
+    """
     from qnn_snr.stats.models import H2_H4_FORMULA, fit_mixed_model
 
     spec = cfg.pilot.initialization_count

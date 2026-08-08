@@ -1,0 +1,1087 @@
+{
+  "main": {
+    "status": "review",
+    "pdf": "verification/overleaf_import/main_overleaf.pdf",
+    "sha256": "9e99088a2225d8bb2e2e02ca4ae51d88caee7bdefb2a79e04dc63ec9d96e6248",
+    "pages": 20,
+    "page_size_points": [
+      595.276,
+      841.89
+    ],
+    "encrypted": false,
+    "metadata": {
+      "format": "PDF 1.5",
+      "title": "Interaction-Aware Benchmarking of Exact-Gradient Signal and Finite-Shot Resolvability in a Four-Qubit Hybrid Quantum Neural Network",
+      "author": "Brandon Shen",
+      "subject": "Factorial benchmarking of exact-gradient signal and finite-shot resolvability in a four-qubit hybrid QNN",
+      "keywords": "quantum machine learning, quantum neural networks, factorial design, finite-shot gradient estimation, gradient resolvability, reproducible benchmarking",
+      "creator": "LaTeX with hyperref",
+      "producer": "pdfTeX-1.40.27",
+      "creationDate": "D:20260802213330Z",
+      "modDate": "D:20260802213330Z",
+      "trapped": "",
+      "encryption": null
+    },
+    "text_characters": 50146,
+    "links": 79,
+    "fonts": [
+      {
+        "basefont": "HOVMCL+CMBX8",
+        "type": "Type1",
+        "xref": 582,
+        "encoding": "",
+        "pages": [
+          14
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "MAPZML+CMR17",
+        "type": "Type1",
+        "xref": 572,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "DLGFFY+CMR12",
+        "type": "Type1",
+        "xref": 573,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "ACAMTG+CMR8",
+        "type": "Type1",
+        "xref": 574,
+        "encoding": "",
+        "pages": [
+          14
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "JLVRSE+CMR10",
+        "type": "Type1",
+        "xref": 576,
+        "encoding": "",
+        "pages": [
+          20
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "JGEUWF+CMR7",
+        "type": "Type1",
+        "xref": 575,
+        "encoding": "",
+        "pages": [
+          15
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "ASFZSP+CMR9",
+        "type": "Type1",
+        "xref": 578,
+        "encoding": "",
+        "pages": [
+          14
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "HQGISA+CMBX9",
+        "type": "Type1",
+        "xref": 577,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "ABYCJY+CMBX6",
+        "type": "Type1",
+        "xref": 579,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "YEFDNF+CMMIB10",
+        "type": "Type1",
+        "xref": 580,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "IYLPED+CMBSY10",
+        "type": "Type1",
+        "xref": 581,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "DSMAJC+CMMI10",
+        "type": "Type1",
+        "xref": 585,
+        "encoding": "",
+        "pages": [
+          17
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "UJRFRW+CMSY10",
+        "type": "Type1",
+        "xref": 587,
+        "encoding": "",
+        "pages": [
+          17
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "EALZER+CMBX12",
+        "type": "Type1",
+        "xref": 584,
+        "encoding": "",
+        "pages": [
+          18
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "WETWMM+CMTI10",
+        "type": "Type1",
+        "xref": 586,
+        "encoding": "",
+        "pages": [
+          8
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "NJRALE+CMMI7",
+        "type": "Type1",
+        "xref": 588,
+        "encoding": "",
+        "pages": [
+          15
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "RBUMJU+CMEX10",
+        "type": "Type1",
+        "xref": 590,
+        "encoding": "",
+        "pages": [
+          9
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "YOBGJO+MSBM10",
+        "type": "Type1",
+        "xref": 589,
+        "encoding": "",
+        "pages": [
+          7
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "MULJMX+SFRM1000",
+        "type": "Type1",
+        "xref": 591,
+        "encoding": "",
+        "pages": [
+          6
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "WPFFTW+CMBX10",
+        "type": "Type1",
+        "xref": 592,
+        "encoding": "",
+        "pages": [
+          18
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "MFGXVX+CMSY7",
+        "type": "Type1",
+        "xref": 593,
+        "encoding": "",
+        "pages": [
+          15
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "EINFCE+CMR5",
+        "type": "Type1",
+        "xref": 594,
+        "encoding": "",
+        "pages": [
+          6
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "PZUWYS+CMMI9",
+        "type": "Type1",
+        "xref": 596,
+        "encoding": "",
+        "pages": [
+          14
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "RHAYSX+CMSY9",
+        "type": "Type1",
+        "xref": 597,
+        "encoding": "",
+        "pages": [
+          14
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "XCFMKO+CMMI8",
+        "type": "Type1",
+        "xref": 598,
+        "encoding": "",
+        "pages": [
+          13
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "KVFQUZ+CMSY8",
+        "type": "Type1",
+        "xref": 599,
+        "encoding": "",
+        "pages": [
+          13
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "REZMTI+DejaVuSans",
+        "type": "Type3",
+        "xref": 276,
+        "encoding": "",
+        "pages": [
+          12
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "GXDUII+DejaVuSans",
+        "type": "Type3",
+        "xref": 277,
+        "encoding": "",
+        "pages": [
+          12
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "BKMZMO+DejaVuSans-Oblique",
+        "type": "Type3",
+        "xref": 275,
+        "encoding": "",
+        "pages": [
+          12
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "QLFPII+CMR6",
+        "type": "Type1",
+        "xref": 602,
+        "encoding": "",
+        "pages": [
+          13
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "XADOIV+CMMI6",
+        "type": "Type1",
+        "xref": 600,
+        "encoding": "",
+        "pages": [
+          13
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "XABHPT+CMSY6",
+        "type": "Type1",
+        "xref": 601,
+        "encoding": "",
+        "pages": [
+          13
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "DEXOCE+DejaVuSans",
+        "type": "Type3",
+        "xref": 317,
+        "encoding": "",
+        "pages": [
+          13
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "BKMZMO+DejaVuSans-Oblique",
+        "type": "Type3",
+        "xref": 316,
+        "encoding": "",
+        "pages": [
+          13
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "LGSTRE+STIXGeneral-Regular",
+        "type": "Type0",
+        "xref": 325,
+        "encoding": "Identity-H",
+        "pages": [
+          13
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "GWDOZS+STIXGeneral-Italic",
+        "type": "Type0",
+        "xref": 327,
+        "encoding": "Identity-H",
+        "pages": [
+          13
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "EEJHTF+STIXGeneral-Regular",
+        "type": "Type0",
+        "xref": 326,
+        "encoding": "Identity-H",
+        "pages": [
+          13
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "EMGRPO+STIXGeneral-Regular",
+        "type": "Type0",
+        "xref": 343,
+        "encoding": "Identity-H",
+        "pages": [
+          14
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "PIFHCT+STIXGeneral-Regular",
+        "type": "Type0",
+        "xref": 342,
+        "encoding": "Identity-H",
+        "pages": [
+          14
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "FQSGOY+STIXGeneral-Italic",
+        "type": "Type0",
+        "xref": 344,
+        "encoding": "Identity-H",
+        "pages": [
+          14
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "UUNXIR+CMTT10",
+        "type": "Type1",
+        "xref": 604,
+        "encoding": "",
+        "pages": [
+          18
+        ],
+        "embedded": true
+      }
+    ],
+    "type3_fonts": [
+      {
+        "font": "REZMTI+DejaVuSans",
+        "page": 12
+      },
+      {
+        "font": "GXDUII+DejaVuSans",
+        "page": 12
+      },
+      {
+        "font": "BKMZMO+DejaVuSans-Oblique",
+        "page": 12
+      },
+      {
+        "font": "DEXOCE+DejaVuSans",
+        "page": 13
+      },
+      {
+        "font": "BKMZMO+DejaVuSans-Oblique",
+        "page": 13
+      }
+    ],
+    "unembedded_fonts": [
+      {
+        "font": "REZMTI+DejaVuSans",
+        "page": 12
+      },
+      {
+        "font": "GXDUII+DejaVuSans",
+        "page": 12
+      },
+      {
+        "font": "BKMZMO+DejaVuSans-Oblique",
+        "page": 12
+      },
+      {
+        "font": "DEXOCE+DejaVuSans",
+        "page": 13
+      },
+      {
+        "font": "BKMZMO+DejaVuSans-Oblique",
+        "page": 13
+      }
+    ],
+    "images": [],
+    "minimum_effective_dpi": null,
+    "source": "paper/sn-article.tex",
+    "source_sha256": "f1d40b33ad132c0923d974c715306130088d2592d9a65fcc4e08a892f0692e8d",
+    "source_lines": 473,
+    "structure": {
+      "documentclass": [
+        "sn-jnl"
+      ],
+      "packages": [
+        "graphicx",
+        "amsmath",
+        "amssymb",
+        "amsfonts",
+        "booktabs",
+        "braket",
+        "array",
+        "tabularx",
+        "enumitem",
+        "seqsplit",
+        "appendix"
+      ],
+      "sections": [
+        "Introduction",
+        "Background and study questions",
+        "Finite-sample gradient usability",
+        "Interventions and interaction hypotheses",
+        "Evaluation protocol and experimental setup",
+        "Reference task and objectives",
+        "Hybrid block architecture and entangling schedules",
+        "Residual hybrid architecture",
+        "Gradient assembly and validation target",
+        "Complete factorial design",
+        "Finite-shot estimator modes",
+        "Measurement-budget accounting",
+        "Primary summaries and estimator-fidelity diagnostics",
+        "Pilot-informed replicate and initialization counts",
+        "Analysis provenance and amendments",
+        "Mixed-effects models",
+        "Inference and multiplicity",
+        "Post-run robustness and independent-seed rerun",
+        "Implementation audit and use of large language models",
+        "Results",
+        "Calibration and finite-shot eligibility",
+        "Centered exact-gradient interaction (H1)",
+        "Finite-shot interaction (H2)",
+        "Residual-related interactions (H3 and H4)",
+        "Conditional multiplicative indices",
+        "Prepared-state metrics and implemented resources",
+        "Implementation checks",
+        "Discussion",
+        "Principal findings",
+        "Interpretation and relation to prior work",
+        "Implications for QML evaluation",
+        "Limitations and priorities for follow-up",
+        "Conclusion",
+        "Statements and Declarations"
+      ],
+      "figures": [
+        "figures/fig13_h1_depth.pdf",
+        "figures/fig14_h1_weighting.pdf",
+        "figures/fig0_el_primary.pdf",
+        "figures/fig1_confirmatory_forest.pdf"
+      ],
+      "figure_captions": [
+        "Complete $2^3$ factorial design",
+        "Analysis provenance and interpretive roles",
+        "Post-primary centered $E\\times L$ exact-gradient contrasts by block count in the original and independent-seed datasets. Points show covariance-aware mixed-model contrasts and bars show unadjusted Wald 95\\% intervals. Shape and line style distinguish datasets; the horizontal reference is zero. The display does not posit a monotonic depth law.",
+        "Post-primary H1 weighting summaries. Equal-depth and observation/matched-parameter weighting answer different questions; the adopted pooled estimate is shown separately. Bars are Wald 95\\% intervals, and zero is the reference. Statistical significance is not a criterion for choosing a weighting.",
+        "Descriptive multiplicative $E\\times L$ indices conditional on $R=0$. $I_{EL\\mid R=0",
+        "Corrected centered H1--H4 family. Decisions follow the primary model-based Wald/Holm rule. Percentile bootstrap intervals corroborate H1; H2 and H3 intervals include zero despite model-based rejection; H4 is unresolved. Fits are completed bootstrap fits, distinct from the 50 independent initialization clusters.",
+        "Corrected primary Wald 95\\% intervals and initialization-cluster percentile bootstrap intervals for H1--H4, with a zero reference. H1 used 2,000 completed bootstrap fits; H2--H4 used 443. Marker shape and line style distinguish interval types without reliance on color."
+      ],
+      "table_count": 3,
+      "figure_count": 4,
+      "bibliography": [
+        "references"
+      ],
+      "bibliographystyle": [],
+      "inputs": []
+    },
+    "section_heading_checks": {
+      "Introduction": true,
+      "Background and study questions": true,
+      "Finite-sample gradient usability": true,
+      "Interventions and interaction hypotheses": true,
+      "Evaluation protocol and experimental setup": true,
+      "Reference task and objectives": true,
+      "Hybrid block architecture and entangling schedules": true,
+      "Residual hybrid architecture": true,
+      "Gradient assembly and validation target": true,
+      "Complete factorial design": true,
+      "Finite-shot estimator modes": true,
+      "Measurement-budget accounting": true,
+      "Primary summaries and estimator-fidelity diagnostics": true,
+      "Pilot-informed replicate and initialization counts": true,
+      "Analysis provenance and amendments": true,
+      "Mixed-effects models": true,
+      "Inference and multiplicity": true,
+      "Post-run robustness and independent-seed rerun": true,
+      "Implementation audit and use of large language models": true,
+      "Results": true,
+      "Calibration and finite-shot eligibility": true,
+      "Centered exact-gradient interaction (H1)": true,
+      "Finite-shot interaction (H2)": true,
+      "Residual-related interactions (H3 and H4)": true,
+      "Conditional multiplicative indices": true,
+      "Prepared-state metrics and implemented resources": true,
+      "Implementation checks": true,
+      "Discussion": true,
+      "Principal findings": true,
+      "Interpretation and relation to prior work": true,
+      "Implications for QML evaluation": true,
+      "Limitations and priorities for follow-up": true,
+      "Conclusion": true,
+      "Statements and Declarations": true
+    },
+    "identity_checks": {
+      "Purpose": true,
+      "Methods": true,
+      "Results": true,
+      "Conclusion": true,
+      "Brandon Shen": true,
+      "0009-0002-3545-2106": true
+    },
+    "render_directory": "verification/pdf_review/main"
+  },
+  "esm1": {
+    "status": "review",
+    "pdf": "verification/overleaf_import/ESM_1_overleaf.pdf",
+    "sha256": "3c713f29fec9927f2369f28ebf4a6193a1d4a9b6022c6130d6991272c7d7b756",
+    "pages": 7,
+    "page_size_points": [
+      595.276,
+      841.89
+    ],
+    "encrypted": false,
+    "metadata": {
+      "format": "PDF 1.5",
+      "title": "",
+      "author": "",
+      "subject": "",
+      "keywords": "",
+      "creator": "LaTeX with hyperref",
+      "producer": "pdfTeX-1.40.27",
+      "creationDate": "D:20260802213420Z",
+      "modDate": "D:20260802213420Z",
+      "trapped": "",
+      "encryption": null
+    },
+    "text_characters": 12362,
+    "links": 1,
+    "fonts": [
+      {
+        "basefont": "PFAHXS+CMBX12",
+        "type": "Type1",
+        "xref": 285,
+        "encoding": "",
+        "pages": [
+          6
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "ZBPRON+CMTT10",
+        "type": "Type1",
+        "xref": 286,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "KQKXCM+CMR17",
+        "type": "Type1",
+        "xref": 280,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "DLGFFY+CMR12",
+        "type": "Type1",
+        "xref": 281,
+        "encoding": "",
+        "pages": [
+          1
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "ASVPLU+CMR8",
+        "type": "Type1",
+        "xref": 282,
+        "encoding": "",
+        "pages": [
+          7
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "URMZID+CMR10",
+        "type": "Type1",
+        "xref": 284,
+        "encoding": "",
+        "pages": [
+          7
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "UGSIAN+CMR7",
+        "type": "Type1",
+        "xref": 283,
+        "encoding": "",
+        "pages": [
+          4
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "AEGPTV+CMMI10",
+        "type": "Type1",
+        "xref": 287,
+        "encoding": "",
+        "pages": [
+          6
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "GYCEGA+CMMI7",
+        "type": "Type1",
+        "xref": 288,
+        "encoding": "",
+        "pages": [
+          4
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "VRDWNQ+CMSY10",
+        "type": "Type1",
+        "xref": 289,
+        "encoding": "",
+        "pages": [
+          5
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "SSEQUT+CMR9",
+        "type": "Type1",
+        "xref": 291,
+        "encoding": "",
+        "pages": [
+          7
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "KKRNGI+CMMI9",
+        "type": "Type1",
+        "xref": 292,
+        "encoding": "",
+        "pages": [
+          4
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "BWVGNT+CMSY9",
+        "type": "Type1",
+        "xref": 293,
+        "encoding": "",
+        "pages": [
+          4
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "XIYRXR+CMBX8",
+        "type": "Type1",
+        "xref": 294,
+        "encoding": "",
+        "pages": [
+          7
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "JNTJXP+CMMI8",
+        "type": "Type1",
+        "xref": 295,
+        "encoding": "",
+        "pages": [
+          5
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "REZMTI+DejaVuSans",
+        "type": "Type3",
+        "xref": 407,
+        "encoding": "",
+        "pages": [
+          3
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "GXDUII+DejaVuSans",
+        "type": "Type3",
+        "xref": 408,
+        "encoding": "",
+        "pages": [
+          3
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "BKMZMO+DejaVuSans-Oblique",
+        "type": "Type3",
+        "xref": 406,
+        "encoding": "",
+        "pages": [
+          3
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "DEXOCE+DejaVuSans",
+        "type": "Type3",
+        "xref": 420,
+        "encoding": "",
+        "pages": [
+          3
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "BKMZMO+DejaVuSans-Oblique",
+        "type": "Type3",
+        "xref": 419,
+        "encoding": "",
+        "pages": [
+          3
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "CTDSML+CMSY7",
+        "type": "Type1",
+        "xref": 296,
+        "encoding": "",
+        "pages": [
+          4
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "XADOIV+CMMI6",
+        "type": "Type1",
+        "xref": 297,
+        "encoding": "",
+        "pages": [
+          5
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "XABHPT+CMSY6",
+        "type": "Type1",
+        "xref": 298,
+        "encoding": "",
+        "pages": [
+          5
+        ],
+        "embedded": true
+      },
+      {
+        "basefont": "MIZNRZ+DejaVuSans",
+        "type": "Type3",
+        "xref": 436,
+        "encoding": "",
+        "pages": [
+          5
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "EUSECA+DejaVuSans-Oblique",
+        "type": "Type3",
+        "xref": 435,
+        "encoding": "",
+        "pages": [
+          5
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "HDZGNL+DejaVuSans",
+        "type": "Type3",
+        "xref": 437,
+        "encoding": "",
+        "pages": [
+          5
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "BYFPCP+DejaVuSans",
+        "type": "Type3",
+        "xref": 448,
+        "encoding": "",
+        "pages": [
+          6
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "CPUQYB+DejaVuSans",
+        "type": "Type3",
+        "xref": 449,
+        "encoding": "",
+        "pages": [
+          6
+        ],
+        "embedded": false
+      },
+      {
+        "basefont": "CWSOZO+CMTT9",
+        "type": "Type1",
+        "xref": 308,
+        "encoding": "",
+        "pages": [
+          7
+        ],
+        "embedded": true
+      }
+    ],
+    "type3_fonts": [
+      {
+        "font": "REZMTI+DejaVuSans",
+        "page": 3
+      },
+      {
+        "font": "GXDUII+DejaVuSans",
+        "page": 3
+      },
+      {
+        "font": "BKMZMO+DejaVuSans-Oblique",
+        "page": 3
+      },
+      {
+        "font": "DEXOCE+DejaVuSans",
+        "page": 3
+      },
+      {
+        "font": "BKMZMO+DejaVuSans-Oblique",
+        "page": 3
+      },
+      {
+        "font": "MIZNRZ+DejaVuSans",
+        "page": 5
+      },
+      {
+        "font": "EUSECA+DejaVuSans-Oblique",
+        "page": 5
+      },
+      {
+        "font": "HDZGNL+DejaVuSans",
+        "page": 5
+      },
+      {
+        "font": "BYFPCP+DejaVuSans",
+        "page": 6
+      },
+      {
+        "font": "CPUQYB+DejaVuSans",
+        "page": 6
+      }
+    ],
+    "unembedded_fonts": [
+      {
+        "font": "REZMTI+DejaVuSans",
+        "page": 3
+      },
+      {
+        "font": "GXDUII+DejaVuSans",
+        "page": 3
+      },
+      {
+        "font": "BKMZMO+DejaVuSans-Oblique",
+        "page": 3
+      },
+      {
+        "font": "DEXOCE+DejaVuSans",
+        "page": 3
+      },
+      {
+        "font": "BKMZMO+DejaVuSans-Oblique",
+        "page": 3
+      },
+      {
+        "font": "MIZNRZ+DejaVuSans",
+        "page": 5
+      },
+      {
+        "font": "EUSECA+DejaVuSans-Oblique",
+        "page": 5
+      },
+      {
+        "font": "HDZGNL+DejaVuSans",
+        "page": 5
+      },
+      {
+        "font": "BYFPCP+DejaVuSans",
+        "page": 6
+      },
+      {
+        "font": "CPUQYB+DejaVuSans",
+        "page": 6
+      }
+    ],
+    "images": [],
+    "minimum_effective_dpi": null,
+    "source": "paper/supplemental.tex",
+    "source_sha256": "7680b9a0c486d856bcf199bc220390b2de6689603919f783da499ac7035cea42",
+    "source_lines": 178,
+    "structure": {
+      "documentclass": [
+        "sn-jnl"
+      ],
+      "packages": [
+        "graphicx",
+        "amsmath",
+        "amssymb",
+        "booktabs",
+        "array",
+        "tabularx",
+        "seqsplit"
+      ],
+      "sections": [
+        "Scope and frozen provenance",
+        "Factor-coding correction and estimands",
+        "Corrected primary family and bootstrap",
+        "Independent-seed H1 and depth weighting",
+        "H3 post-primary explanatory analyses",
+        "Conditional exact-gradient indices",
+        "Prepared-state metrics at initialization",
+        "Measurement implementation and resource accounting",
+        "Eligibility and zero-variance resource join",
+        "Historical correction and audit record",
+        "Reproducibility index",
+        "Remaining limitations"
+      ],
+      "figures": [
+        "figures/fig13_h1_depth.pdf",
+        "figures/fig14_h1_weighting.pdf",
+        "figures/fig12_j_conditional.pdf",
+        "figures/fig15_prepared_state_metrics.pdf"
+      ],
+      "figure_captions": [
+        "Corrected primary family. Decisions follow model-based Wald tests with Holm adjustment. Intervals in the final column are initialization-cluster percentile bootstrap intervals. H1 used 2,000 completed fits with zero failures; H2--H4 used 443 completed nested-bootstrap fits. Iterations are distinct from the 50 independent initialization clusters. H2 and H3 are model-based rejections not corroborated by their bootstrap intervals; H4 remains unresolved.",
+        "Post-primary H1 depth contrasts and weighting summaries. Observation and matched-parameter weights are identical: 0.0625, 0.125, 0.1875, 0.25, and 0.375 at $D=1,2,3,4,6$. Intervals are unadjusted Wald 95\\% intervals.",
+        "Post-primary centered H1 contrasts by block count. Bars are unadjusted Wald 95\\% intervals; zero is the reference. Dataset identity is encoded by shape and line style, not color alone. No monotonic depth law is assumed.",
+        "Post-primary equal-depth, observation/matched-parameter, and adopted pooled H1 summaries. Bars are Wald 95\\% intervals. Weightings answer different questions and were not selected by significance.",
+        "Post-primary H3 explanatory and sensitivity results. Bootstrap intervals contain zero for both objective-specific contrasts and their average. Active-depth and conditional-mode rows are not substitutions for the primary model.",
+        "Conditional descriptive exact-gradient indices. Each initialization-cluster bootstrap completed 2,000 iterations with zero failures. Values above one are above the multiplicative no-interaction reference, not percentage improvements in optimization.",
+        "All four frozen conditional $J_{EL\\mid R",
+        "Descriptive terminal-block prepared-state fidelity and normalized energy at initialization from frozen source data. No regression or optimization trajectory is implied.",
+        "Frozen reproducibility index. Repository paths are typeset as breakable labels."
+      ],
+      "table_count": 5,
+      "figure_count": 4,
+      "bibliography": [],
+      "bibliographystyle": [],
+      "inputs": []
+    },
+    "section_heading_checks": {
+      "Scope and frozen provenance": true,
+      "Factor-coding correction and estimands": true,
+      "Corrected primary family and bootstrap": true,
+      "Independent-seed H1 and depth weighting": true,
+      "H3 post-primary explanatory analyses": true,
+      "Conditional exact-gradient indices": true,
+      "Prepared-state metrics at initialization": true,
+      "Measurement implementation and resource accounting": true,
+      "Eligibility and zero-variance resource join": true,
+      "Historical correction and audit record": true,
+      "Reproducibility index": true,
+      "Remaining limitations": true
+    },
+    "identity_checks": {
+      "Online Resource 1": true,
+      "Corrected primary family": true,
+      "Conditional exact-gradient indices": true
+    },
+    "render_directory": "verification/pdf_review/esm1"
+  }
+}

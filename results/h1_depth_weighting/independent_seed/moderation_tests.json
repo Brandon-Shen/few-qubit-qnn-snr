@@ -1,0 +1,21 @@
+{
+  "mixed_model": {
+    "statistic": 7.562514472754768,
+    "df": 4,
+    "p_value": 0.10898405364447201,
+    "restriction": "D2-D1=D3-D1=D4-D1=D6-D1=0"
+  },
+  "cluster_robust_ols": {
+    "statistic": 1.810096001161781,
+    "df": 4,
+    "p_value": 0.7706347175648259,
+    "restriction": "D2-D1=D3-D1=D4-D1=D6-D1=0"
+  },
+  "cluster_robust_metadata": {
+    "covariance": "cluster(initialization_id), finite-sample correction",
+    "n_clusters": 50,
+    "df_resid": 25572.0,
+    "design_rank": 28
+  },
+  "max_abs_mixed_ols_contrast_difference": 3.187554387107383e-16
+}

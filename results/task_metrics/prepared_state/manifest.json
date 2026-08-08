@@ -1,0 +1,28 @@
+{
+  "plan_commit": "645521db6511ca049d89e64f810e65a3407a7b52",
+  "analysis_commit": "9327aca680713423c5820db76b22ed1fb471a3d2",
+  "input_sha256": {
+    "configs\\confirmatory.yaml": "d531ed722df1c5be2b19da6e366f398471f0d72ac3573fc6acecafe4c1e40a3a",
+    "configs\\h2_replication_v1_stage1.yaml": "89521e5a483bf8714fa4524d302a83568dedb552b35a26d91d7b4f328072b8e8",
+    "results\\production_confirmatory\\raw\\exact.parquet": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+    "results\\h2_replication_v1\\_pipeline_output_stage1\\raw\\exact.parquet": "70c562c2724f5310330c2ea4bf10efa4b0fd76327dde8becba9ffe1f7d602715"
+  },
+  "seeds": {
+    "original": 355001,
+    "independent_seed": 355002
+  },
+  "bootstrap_completed": {
+    "original": 2000,
+    "independent_seed": 2000
+  },
+  "failures": 0,
+  "command": "python scripts/run_task_metrics.py",
+  "environment": {
+    "python": "3.12.10"
+  },
+  "descriptive_comparison_files": [
+    "gradient_metric_comparison.csv",
+    "objective_summary.csv",
+    "cross_seed_cell_comparison.csv"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "status": "imported_identity_screen_pass",
+  "import_timestamp": "2026-08-02T14:40:04.3251044-07:00",
+  "branch": "submission-manuscript-revision-20260802",
+  "source_identification": "user confirmed repository paper/sn-article.tex and paper/supplemental.tex are the supplied pasted-text sources",
+  "artifacts": [
+    {"original_filename":"Interaction_Aware_Benchmarking_of_Gradient_Resolvability_in_a_Four_Qubit_Hybrid_Quantum_Neural_Network (4).pdf","assigned_filename":"verification/overleaf_import/main_overleaf.pdf","type":"PDF 1.5","bytes":504450,"pages":20,"sha256":"9e99088a2225d8bb2e2e02ca4ae51d88caee7bdefb2a79e04dc63ec9d96e6248"},
+    {"original_filename":"Interaction_Aware_Benchmarking_of_Gradient_Resolvability_in_a_Four_Qubit_Hybrid_Quantum_Neural_Network (3).pdf","assigned_filename":"verification/overleaf_import/ESM_1_overleaf.pdf","type":"PDF 1.5","bytes":322512,"pages":7,"sha256":"3c713f29fec9927f2369f28ebf4a6193a1d4a9b6022c6130d6991272c7d7b756"},
+    {"original_filename":"Pasted text (2)(6).txt","identified_current_source":"paper/sn-article.tex","assigned_filename":"verification/overleaf_import/main_overleaf.tex","type":"UTF-8 LaTeX","bytes":51967,"lines":473,"sha256":"f1d40b33ad132c0923d974c715306130088d2592d9a65fcc4e08a892f0692e8d"},
+    {"original_filename":"Pasted text(51).txt","identified_current_source":"paper/supplemental.tex","assigned_filename":"verification/overleaf_import/ESM_1_overleaf.tex","type":"UTF-8 LaTeX","bytes":14137,"lines":178,"sha256":"7680b9a0c486d856bcf199bc220390b2de6689603919f783da499ac7035cea42"}
+  ],
+  "identity": {"main_pages":20,"supplement_pages":7,"main_title_match":true,"main_structured_abstract":true,"main_not_supplement":true,"supplement_online_resource_title":true,"sources_use_sn_jnl":true}
+}

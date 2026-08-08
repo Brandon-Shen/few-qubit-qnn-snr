@@ -105,7 +105,7 @@ for label, pt in zip(labels, points):
     source_rows.append({"panel": "b", "series": label.replace("\n", " "), "depth": None,
                          "estimate": pt["estimate"], "ci95_lo": pt["ci95_lo"], "ci95_hi": pt["ci95_hi"]})
 SOURCE_OUT.parent.mkdir(parents=True, exist_ok=True)
-pd.DataFrame(source_rows).to_csv(SOURCE_OUT, index=False)
+pd.DataFrame(source_rows).to_csv(SOURCE_OUT, index=False, lineterminator="\n")
 
 print(f"wrote {OUT_PATH}")
 print(f"wrote {SOURCE_OUT}")

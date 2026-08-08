@@ -1,0 +1,13 @@
+{
+  "status":"final_release_package_prepared",
+  "path":"submission_package/",
+  "missing_dependencies":["sn-jnl.cls","sn-basic.bst"],
+  "all_referenced_figures_present":true,
+  "pdfs_byte_identical_to_supplied":false,
+  "pdfs_outdated_relative_to_current_source":false,
+  "new_overleaf_compile_required":false,
+  "zip_created":false,
+  "local_tex_used":false,
+  "final_artifact_record":"verification/final_release_artifacts.json",
+  "historical_imports_retained":true
+}

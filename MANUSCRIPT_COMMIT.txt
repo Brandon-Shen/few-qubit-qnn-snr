@@ -1,15 +1,48 @@
-# Manuscript commit identifier
-#
-# The git commit hash below is the exact repository state (data, config,
-# code, and paper/main.tex) that the submitted manuscript's numbers,
-# figures, and tables were finalized against. `git checkout <hash>` to see
-# a byte-for-byte match to what is cited in the paper.
-#
-# This file is necessarily written in a commit *after* the one it names
-# (a commit cannot contain its own hash), so it points to its immediate
-# parent commit -- see `git log --oneline -2` from this file's commit to
-# confirm.
+# Finalized manuscript substantive commit
 
-b2ba9e23963e37dc4542632f2020d67f9fb65690
+Commit A:
+0e2aa2a55d8de70777434e079508c06bca560b70
 
-git checkout b2ba9e23963e37dc4542632f2020d67f9fb65690
+Commit A is the substantive finalized repository state against which the
+manuscript text, numerical values, tables, figures, source files,
+documentation, verification scripts, and submission-facing materials were
+finalized.
+
+The recorded hash is the substantive manuscript source, documentation, and
+validation state for the intended release sncs-submission-v5. Compiled PDF artifacts are
+excluded from this release commit by author direction.
+
+Canonical sources:
+- paper/sn-article.tex
+- paper/supplemental.tex
+
+Byte-identical synchronized upload sources:
+- submission_package/main.tex
+- submission_package/ESM_1.tex
+
+This file is necessarily updated in a following metadata-only Commit B because
+a commit cannot contain its own hash. Commit B changes only this
+MANUSCRIPT_COMMIT.txt record and any unavoidable release-pointer metadata; it
+does not change scientific outputs or the substantive finalized state.
+
+Commit C:
+fd25501366de8361eae3ad4ea69a01cfcc53a51d
+
+Commit C makes checksum verification platform-independent by canonicalizing
+tracked text artifacts to LF before hashing. It updates only checksum logic,
+tests, and derived checksum records; it does not alter scientific values or
+the substantive manuscript state. GitHub Actions passed on both Ubuntu and
+Windows at Commit C before the replacement release tag was created.
+
+The historical numerical-results freeze is separate:
+- tag: submission-numerical-results-freeze-v1
+- numerical freeze commit: f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05
+
+The final manuscript/repository release tag on the complete provenance and
+portable-validation state is:
+- sncs-submission-v5
+
+The authorized release step creates this new tag without moving or rewriting any prior tag.
+
+To inspect the substantive finalized state:
+git checkout 0e2aa2a55d8de70777434e079508c06bca560b70

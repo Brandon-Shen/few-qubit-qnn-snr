@@ -32,19 +32,17 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from qnn_snr.stats.factor_coding import transform_bootstrap_draws
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CKPT_DIR = REPO_ROOT / "verification" / "_bootstrap_checkpoints"
-TARGET_COEFS = ["E:L", "E:R", "L:R:depth_z"]
-CHECKPOINT_NS = [40, 100, 200, 400, 600, 800, 1000]
+TARGET_COEFS = ["E_c:L_c", "E_c:R_c", "L_c:R_c:depth_z"]
+CHECKPOINT_NS = [40, 100, 200, 400, 443, 1000]
+FINAL_SUCCESS_TARGET = 1000
 
 POOL_SOURCES = [
     ("regression_a", "h2h4_boot_endtoend_regression_a", 266001),
-    ("shard0", "h2h4_boot_endtoend_shard0", 366001),
-    ("shard1", "h2h4_boot_endtoend_shard1", 376001),
-    ("shard2", "h2h4_boot_endtoend_shard2", 386001),
-    ("shard3", "h2h4_boot_endtoend_shard3", 396001),
-    ("shard4", "h2h4_boot_endtoend_shard4", 406001),
+    *[(f"shard{i}", f"h2h4_boot_endtoend_shard{i}", 366001 + i * 10000) for i in range(16)],
 ]
 
 
@@ -88,17 +86,37 @@ def main():
             "failed_iterations": failed,
         })
 
-    pooled = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+    all_completed = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+    if len(all_completed) < FINAL_SUCCESS_TARGET:
+        raise RuntimeError(f"need {FINAL_SUCCESS_TARGET} successful fits, found {len(all_completed)}")
+    all_completed["global_iteration_id"] = range(len(all_completed))
+    all_completed["fit_status"] = "successful"
+    all_completed["converged"] = True
+    all_completed["valid_for_percentile"] = all_completed.global_iteration_id < FINAL_SUCCESS_TARGET
+    pooled = all_completed.iloc[:FINAL_SUCCESS_TARGET].copy()
+    excluded = all_completed.iloc[FINAL_SUCCESS_TARGET:].copy()
     n_pooled = len(pooled)
-    print(f"Pooled draws (excluding regression_b duplicate check): {n_pooled}")
+    print(f"Included draws (excluding regression_b duplicate check): {n_pooled}; "
+          f"completed after revised target and excluded: {len(excluded)}")
     for s in stream_report:
         print(f"  {s['stream']} (seed {s['seed']}): {s['n_success']} success, {s['n_failed']} failed")
 
+    if n_pooled != FINAL_SUCCESS_TARGET or pooled.global_iteration_id.nunique() != FINAL_SUCCESS_TARGET:
+        raise RuntimeError(f"final pool must contain exactly {FINAL_SUCCESS_TARGET} unique successful fits")
     # write iteration-level parquet (lossless)
     iter_path = REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_iterations.parquet"
     if not pooled.empty:
         pooled.to_parquet(iter_path, index=False)
         print(f"wrote {iter_path} ({n_pooled} rows)")
+        if not excluded.empty:
+            audit_dir = REPO_ROOT / "results/superseded/h2h4_bootstrap_post_1000_excluded"
+            audit_dir.mkdir(parents=True, exist_ok=True)
+            excluded.to_parquet(audit_dir / "successful_draws_excluded_by_revised_1000_target.parquet", index=False)
+            (audit_dir / "README.md").write_text(
+                f"# Post-target successful draws\n\nThese {len(excluded)} valid deterministic draws completed before workers "
+                "were stopped after the target was revised from 2,000 to 1,000. They are preserved for audit, "
+                "excluded from every reported percentile interval, and were not failures or rejections.\n",
+                encoding="utf-8")
 
     # deterministic pooling order for checkpoint-prefix definitions
     stream_order = {name: i for i, (name, _, _) in enumerate(POOL_SOURCES)}
@@ -106,6 +124,8 @@ def main():
         pooled_sorted = pooled.copy()
         pooled_sorted["_stream_order"] = pooled_sorted["_stream"].map(stream_order)
         pooled_sorted = pooled_sorted.sort_values(["_stream_order", "iteration"]).reset_index(drop=True)
+        pooled_sorted = transform_bootstrap_draws(pooled_sorted, "h2h4")
+        pooled = transform_bootstrap_draws(pooled, "h2h4")
     else:
         pooled_sorted = pooled
 
@@ -133,6 +153,15 @@ def main():
     ckpt_df = pd.DataFrame(checkpoint_rows)
     ckpt_path = REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_checkpoints.csv"
     ckpt_df.to_csv(ckpt_path, index=False)
+    tex_rows = []
+    for n in CHECKPOINT_NS:
+        q = ckpt_df[ckpt_df["n"] == n].set_index("coefficient")
+        if len(q) != 3:
+            continue
+        cells = [f"[{q.loc[c, 'ci_lo']:.6f}, {q.loc[c, 'ci_hi']:.6f}]" for c in TARGET_COEFS]
+        tex_rows.append(f"{n:,} & " + " & ".join(cells) + r" \\")
+    (REPO_ROOT / "results/production_corrected_end_to_end/bootstrap_checkpoint_rows.tex").write_text(
+        "\n".join(tex_rows) + "\n", encoding="utf-8")
     print(f"\nwrote {ckpt_path}")
     print(ckpt_df.to_string())
 
@@ -141,12 +170,27 @@ def main():
     for coef in TARGET_COEFS:
         vals = pooled[coef].to_numpy() if not pooled.empty else np.array([])
         lo, hi = percentile_ci(vals)
+        # Exact binomial/order-statistic 95% rank interval for Monte Carlo
+        # uncertainty in each percentile endpoint (not a scientific CI).
+        from scipy.stats import binom
+        finite = np.sort(vals[np.isfinite(vals)])
+        def rank_mc(p):
+            low = max(0, int(binom.ppf(0.025, len(finite), p)) - 1)
+            high = min(len(finite) - 1, int(binom.ppf(0.975, len(finite), p)))
+            return float(finite[low]), float(finite[high]), low + 1, high + 1
+        lo_mc = rank_mc(0.025); hi_mc = rank_mc(0.975)
         summary_rows.append({
-            "coefficient": coef, "n_pooled": n_pooled, "n_failed": n_failed_total,
-            "fit_failure_rate_pct": 100 * n_failed_total / (n_pooled + n_failed_total) if (n_pooled + n_failed_total) else float("nan"),
+            "coefficient": coef, "n_attempted": len(all_completed) + n_failed_total,
+            "n_successful": n_pooled, "n_failed": n_failed_total, "n_rejected": 0,
+            "n_successful_excluded_after_target_revision": len(excluded),
+            "fit_failure_rate_pct": 100 * n_failed_total / (len(all_completed) + n_failed_total) if (len(all_completed) + n_failed_total) else float("nan"),
             "median": float(np.median(vals)) if len(vals) else float("nan"),
             "ci_lo": lo, "ci_hi": hi, "width": hi - lo if np.isfinite(lo) and np.isfinite(hi) else float("nan"),
             "includes_zero": bool(lo <= 0 <= hi) if np.isfinite(lo) and np.isfinite(hi) else None,
+            "ci_lo_mc95_lo": lo_mc[0], "ci_lo_mc95_hi": lo_mc[1],
+            "ci_lo_mc95_rank_lo": lo_mc[2], "ci_lo_mc95_rank_hi": lo_mc[3],
+            "ci_hi_mc95_lo": hi_mc[0], "ci_hi_mc95_hi": hi_mc[1],
+            "ci_hi_mc95_rank_lo": hi_mc[2], "ci_hi_mc95_rank_hi": hi_mc[3],
         })
     summary_df = pd.DataFrame(summary_rows)
     summary_path = REPO_ROOT / "results" / "production_corrected_end_to_end" / "bootstrap_end_to_end_h2_h4_summary.csv"

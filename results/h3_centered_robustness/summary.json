@@ -1,0 +1,31 @@
+{
+  "plan_commit": "7cdb9a2b9a820799fe1b05491f9498b838f5a15c",
+  "omnibus": {
+    "statistic": 3.0796506381705,
+    "df": 4.0,
+    "p": 0.5445856697524714
+  },
+  "warnings": {
+    "full": [
+      "The MLE may be on the boundary of the parameter space."
+    ],
+    "active": [
+      "Gradient optimization failed, |grad| = 111.153799",
+      "Maximum Likelihood optimization failed to converge. Check mle_retvals",
+      "MixedLM optimization failed, trying a different optimizer may help.",
+      "The Hessian matrix at the estimated parameter values is not positive definite.",
+      "The MLE may be on the boundary of the parameter space."
+    ],
+    "conditional": [
+      "The MLE may be on the boundary of the parameter space."
+    ],
+    "categorical": [
+      "The MLE may be on the boundary of the parameter space."
+    ]
+  },
+  "n": {
+    "finite_shot_end_to_end": 101891,
+    "finite_shot_conditional": 101076
+  },
+  "loo_status": "pending_separate_execution"
+}

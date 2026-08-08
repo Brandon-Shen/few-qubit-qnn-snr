@@ -1,0 +1,61 @@
+{
+  "formula": "a ~ E_c*L_c*R_c + C(depth, Sum) + E_c:C(depth, Sum) + L_c:C(depth, Sum) + R_c:C(depth, Sum) + E_c:L_c:C(depth, Sum)",
+  "n_obs": 25600,
+  "n_groups": 50,
+  "n_vc_levels": 3200,
+  "design_columns": [
+    "Intercept",
+    "C(depth, Sum)[S.1]",
+    "C(depth, Sum)[S.2]",
+    "C(depth, Sum)[S.3]",
+    "C(depth, Sum)[S.4]",
+    "E_c",
+    "E_c:C(depth, Sum)[S.1]",
+    "E_c:C(depth, Sum)[S.2]",
+    "E_c:C(depth, Sum)[S.3]",
+    "E_c:C(depth, Sum)[S.4]",
+    "L_c",
+    "L_c:C(depth, Sum)[S.1]",
+    "L_c:C(depth, Sum)[S.2]",
+    "L_c:C(depth, Sum)[S.3]",
+    "L_c:C(depth, Sum)[S.4]",
+    "E_c:L_c",
+    "E_c:L_c:C(depth, Sum)[S.1]",
+    "E_c:L_c:C(depth, Sum)[S.2]",
+    "E_c:L_c:C(depth, Sum)[S.3]",
+    "E_c:L_c:C(depth, Sum)[S.4]",
+    "R_c",
+    "R_c:C(depth, Sum)[S.1]",
+    "R_c:C(depth, Sum)[S.2]",
+    "R_c:C(depth, Sum)[S.3]",
+    "R_c:C(depth, Sum)[S.4]",
+    "E_c:R_c",
+    "L_c:R_c",
+    "E_c:L_c:R_c"
+  ],
+  "design_rank": 28,
+  "design_n_columns": 28,
+  "condition_number": 20.37566163637918,
+  "optimizer_attempts": [
+    "lbfgs"
+  ],
+  "adopted_optimizer": "lbfgs",
+  "converged": true,
+  "singular": false,
+  "random_effect_variances": {
+    "group_intercept_var": 2.7489030333267687e-05,
+    "nested_param_var": 0.000734427026091576
+  },
+  "residual_variance": 0.001861843040537795,
+  "reml_log_likelihood": 41683.37064912138,
+  "warnings": [
+    "ConvergenceWarning: The MLE may be on the boundary of the parameter space."
+  ],
+  "software": {
+    "python": "3.12.10",
+    "numpy": "2.5.1",
+    "pandas": "3.0.3",
+    "scipy": "1.18.0",
+    "statsmodels": "0.14.6"
+  }
+}

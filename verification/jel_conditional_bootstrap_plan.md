@@ -1,0 +1,9 @@
+# Conditional J_EL definition and bootstrap plan
+
+**Status:** post-primary descriptive, frozen before new J inspection; not a centered-H1 equivalent.
+
+Inputs are the unique original and independent-seed exact tables. Require `statevector_exact`, budget 0, finite gradients, all configurations/depths, 50 clusters, one `(initialization,configuration,depth,parameter)` row, valid matched identities, and disjoint initialization seeds. Define `G_c=sqrt(mean(g_exact^2))` after pooling all eligible parameter rows in configuration c. Thus rows/parameters are equally weighted, deeper depths receive more weight, and neither depths nor initializations are pre-averaged.
+
+Using authoritative configuration mapping, `J_EL_given_R0=G5*G1/(G2*G3)` for EL/baseline/E/L and `J_EL_given_R1=G8*G4/(G6*G7)` for ELR/R/ER/LR. No R-marginal index. Acceptance requires authoritative and independent implementations reproduce `J_EL_given_R0=1.2417603765323095` within `1e-12`; otherwise stop. Zero/nonfinite denominators are undefined without epsilon.
+
+Separately bootstrap datasets by complete initialization profiles, uniquely relabel repeats, preserve all configurations/depths/parameters, and use iteration-keyed seeds 255001/255002. Target exactly 2,000 defined completed draws, checkpoint every 100 attempts, endpoints 100/250/400/1000/2000, percentile 95% intervals, and preserve draws. Log attempted/completed/undefined/failed/reasons; stop above 1% undefined/failure rather than silently drop. No p-values or multiplicity adjustment. Report J, `100*(J-1)%`, median, CI, iterations, failures, and weighting. Outputs: `results/jel_conditional/` and `verification/jel_conditional_bootstrap_results.{md,json}` with input checksums, plan/analysis commits, environment, commands, checkpoint identities. Synthetic tests fix J=1, >1, and <1 behavior.

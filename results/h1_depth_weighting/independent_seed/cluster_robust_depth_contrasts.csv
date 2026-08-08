@@ -1,0 +1,6 @@
+depth,estimate,se,ci_lo,ci_hi,p_raw,p_holm_within_dataset,n_rows,n_matched_parameters_per_initialization,n_initialization_clusters,contrast_expression,contrast_vector_nonzero
+1,0.0018622672726542333,0.006021224209473095,-0.009939115320753691,0.013663649866062158,0.7571056317199918,1.0,1600,4,50,"E_c:L_c at D=1, averaged equally over R_c","E_c:L_c=1;E_c:L_c:C(depth, Sum)[S.1]=1"
+2,0.003119779483297387,0.006717861982712947,-0.01004698805593083,0.0162865470225256,0.6423607232128701,1.0,3200,8,50,"E_c:L_c at D=2, averaged equally over R_c","E_c:L_c=1;E_c:L_c:C(depth, Sum)[S.2]=1"
+3,0.006249973906829185,0.005307767953319989,-0.004153060119973868,0.01665300793363224,0.23899020006284355,0.7169706001885306,4800,12,50,"E_c:L_c at D=3, averaged equally over R_c","E_c:L_c=1;E_c:L_c:C(depth, Sum)[S.3]=1"
+4,0.007885154528646743,0.004765040765762788,-0.001454153757113481,0.01722446281440697,0.09796656148680338,0.39186624594721353,6400,16,50,"E_c:L_c at D=4, averaged equally over R_c","E_c:L_c=1;E_c:L_c:C(depth, Sum)[S.4]=1"
+6,0.010869606553448619,0.003925484133247309,0.0031757990304004625,0.018563414076496774,0.005623122967977922,0.02811561483988961,9600,24,50,"E_c:L_c at D=6, averaged equally over R_c","E_c:L_c=1;E_c:L_c:C(depth, Sum)[S.1]=-1;E_c:L_c:C(depth, Sum)[S.2]=-1;E_c:L_c:C(depth, Sum)[S.3]=-1;E_c:L_c:C(depth, Sum)[S.4]=-1"
