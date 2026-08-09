@@ -107,12 +107,13 @@ def figures(depth_diff: pd.DataFrame, weighting_source: pd.DataFrame, out: Path)
     ax.set_ylabel(r"Centered $E\times L$ contrast in $\mathrm{asinh}(|g_{exact}|)$")
     ax.legend(frameon=False); fig.tight_layout(); fig.savefig(out/"figure_a_depth.pdf"); fig.savefig(out/"figure_a_depth.png",dpi=200); plt.close(fig)
     weighting_source.to_csv(out / "figure_b_weighting_source.csv", index=False)
-    fig, ax = plt.subplots(figsize=(6.0, 3.3)); labels=list(weighting_source.estimand.unique()); y=np.arange(len(labels)); off={"original":-.1,"independent_seed":.1}
+    fig, ax = plt.subplots(figsize=(6.0, 3.8)); labels=list(weighting_source.estimand.unique()); y=np.arange(len(labels)); off={"original":-.1,"independent_seed":.1}
     for dataset,marker,ls in [("original","o","-"),("independent_seed","s","--")]:
         z=weighting_source[weighting_source.dataset==dataset].set_index("estimand").loc[labels]
         ax.errorbar(z.estimate,y+off[dataset],xerr=[z.estimate-z.ci_lo,z.ci_hi-z.estimate],fmt=marker,linestyle=ls,capsize=3,label=dataset.replace('_',' '))
     ax.axvline(0,color="0.45",lw=.8); ax.set_yticks(y,labels); ax.set_xlabel(r"Centered $E\times L$ estimate in $\mathrm{asinh}(|g_{exact}|)$")
-    ax.legend(frameon=False); fig.tight_layout(); fig.savefig(out/"figure_b_weighting.pdf"); fig.savefig(out/"figure_b_weighting.png",dpi=200); plt.close(fig)
+    ax.legend(frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.01), ncol=2)
+    fig.tight_layout(); fig.savefig(out/"figure_b_weighting.pdf"); fig.savefig(out/"figure_b_weighting.png",dpi=200); plt.close(fig)
 
 
 def main() -> None:
