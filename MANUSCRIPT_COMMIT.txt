@@ -9,7 +9,7 @@ documentation, verification scripts, and submission-facing materials were
 finalized.
 
 The recorded hash is the substantive manuscript source, documentation, and
-validation state for the intended release sncs-submission-v5. Compiled PDF artifacts are
+validation state for the intended release sncs-submission-v1. Compiled PDF artifacts are
 excluded from this release commit by author direction.
 
 Canonical sources:
@@ -40,7 +40,7 @@ The historical numerical-results freeze is separate:
 
 The final manuscript/repository release tag on the complete provenance and
 portable-validation state is:
-- sncs-submission-v5
+- sncs-submission-v1
 
 The authorized release step creates this new tag without moving or rewriting any prior tag.
 
