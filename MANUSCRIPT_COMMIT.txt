@@ -45,4 +45,4 @@ portable-validation state is:
 The authorized release step creates this new tag without moving or rewriting any prior tag.
 
 To inspect the substantive finalized state:
-git checkout 0e2aa2a55d8de70777434e079508c06bca560b70
+git checkout a98835e1dd4b40c0abeaf636c1dbe1e33b3849d3
