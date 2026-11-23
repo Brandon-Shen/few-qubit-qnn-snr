@@ -1,0 +1,13 @@
+{
+  "attempted": 1000,
+  "accepted": 1000,
+  "failed_rejected_or_interrupted": 0,
+  "fits_started": 1000,
+  "target_met": true,
+  "stop_reason": "accepted_target_reached",
+  "master_seed": 2026112103,
+  "pilot_draws_included": 0,
+  "source_changes": [],
+  "prior_artifact_changes": [],
+  "classification_changes": []
+}

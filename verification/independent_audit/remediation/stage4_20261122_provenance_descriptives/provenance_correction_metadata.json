@@ -1,0 +1,19 @@
+{
+  "status": "separate proposed corrective records for author review; original freeze preserved",
+  "created_utc": "2026-11-22T21:22:46.250927+00:00",
+  "authoritative_manifest": "results/final_submission_v1/manifest.json",
+  "authoritative_manifest_sha256": "c5a046541088fc35c363d3eb4519a34170f65e232ad214b0f8cd095bca4abc43",
+  "historical_standalone_inventory": "results/final_submission_v1/component_references.json",
+  "historical_inventory_sha256": "1f4f252574fcf733390ac49c967779a061bcb9cf2eb81a8130ff9fa1bfebe402",
+  "canonical_text_hash_convention": "SHA-256 after CRLF -> LF for documented text suffixes; binary files use raw bytes",
+  "candidate_bytes_convention": "Canonical-LF byte count for text, raw count for binary; current actual artifacts already use LF",
+  "candidate_inventory": "component_references.corrected_candidate.json",
+  "candidate_inventory_sha256": "03c9edc33abec6da91ab4b20bc093e4b316498789f2007daf5691f76e81995b7",
+  "component_reference_count": 19,
+  "conflicting_entries": 5,
+  "mechanism": "All five standalone hashes and both inventories byte counts describe CRLF variants; manifest hashes describe LF content. Numerical content change not indicated",
+  "interval_overlay": "bootstrap_interval_provenance_overlay.json",
+  "interval_overlay_sha256": "eaad9628bd36294d70f5b4b79ab259516ad343f732837f889d3d60563c5c55b4",
+  "new_scientific_numbers_written_to_freeze": false,
+  "manuscript_changes_applied": false
+}

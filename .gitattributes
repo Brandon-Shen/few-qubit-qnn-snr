@@ -27,3 +27,19 @@
 
 # Immutable pre-reconciliation audit archive: preserve its protected bytes.
 verification/figure_source_archive/*.csv -text -diff
+
+# Preserve reviewed release-file bytes and audit hashes.
+/results/h1_depth_weighting/comparison/figure_a_depth_source.csv -text !eol
+/results/h1_depth_weighting/comparison/figure_b_weighting_source.csv -text !eol
+/submission/sndqs-submission-v1/ESM_1.tex -text !eol
+/submission/sndqs-submission-v1/main.tex -text !eol
+/verification/independent_audit/remediation/stage2_20261112_rng_pilot/collision_pairs.csv -text !eol
+/verification/independent_audit/remediation/stage2_20261112_rng_pilot/pilot_provenance_summary.json -text !eol
+/verification/independent_audit/remediation/stage2_20261112_rng_pilot/rng_summary.json -text !eol
+/verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/coefficient_distribution_summaries.csv -text !eol
+/verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/eligibility_summary.csv -text !eol
+/verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/endpoint_monte_carlo_rank_intervals.csv -text !eol
+/verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/fit_status.csv -text !eol
+/verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/interval_summaries.csv -text !eol
+/verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/procedure_comparison.csv -text !eol
+/verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/sensitivity_coefficients.csv -text !eol

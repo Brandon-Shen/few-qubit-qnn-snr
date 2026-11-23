@@ -1,5 +1,7 @@
 # Results provenance
 
+The proposed unpublished SNDQS submission v1 release adds an [evidence index](../submission/sndqs-submission-v1/EVIDENCE_INDEX.md) for the Stage 3 vector-preserving sensitivity, Stage 4 provenance overlays and estimator-specific descriptive outputs. The original numerical freeze remains authoritative for adopted results.
+
 **If you trust one source for the submitted numerical conclusions, use `results/final_submission_v1/manifest.json`.**
 
 | Directory | Provenance and status |

@@ -1,0 +1,194 @@
+[
+  {
+    "analysis_identifier": "bootstrap_H1",
+    "dataset": "original",
+    "estimand": "E_c:L_c",
+    "estimator_mode": "statevector_exact",
+    "interval_method": "percentile 95%",
+    "row_key": {
+      "analysis_identifier": "bootstrap_H1",
+      "dataset": "original",
+      "estimand": "E_c:L_c",
+      "depth": null,
+      "weighting": null,
+      "estimator_mode": "statevector_exact",
+      "interval_method": "percentile 95%"
+    },
+    "historical_source_output": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "historical_source_script": "scripts/run_h1_centered_bootstrap_extension.py",
+    "coefficient_source": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "coefficient_source_sha256": "280e36f53278b8c26cc7390e2e06d6a2f9040db1b414b5435203e4a4cadfc05c",
+    "coefficient_row_key": {
+      "hypothesis": "H1"
+    },
+    "point_estimate_column": "corrected_estimate",
+    "interval_source": "results/primary_corrected/effect_coded/corrected_bootstrap_intervals_current_draws.csv",
+    "interval_source_sha256": "941c8d2499e317bf1c740e33d2228d899642f283db65c568107b0242b37463d9",
+    "interval_row_key": {
+      "hypothesis": "H1"
+    },
+    "interval_columns": [
+      "percentile_ci_lo",
+      "percentile_ci_hi"
+    ],
+    "bootstrap_count_column": "completed_bootstrap_iterations",
+    "bootstrap_count": 2000,
+    "centered_draw_source": "results/primary_corrected/effect_coded/h1_centered_bootstrap_2000.parquet",
+    "centered_draw_source_sha256": "8d4954c10c284ee4f4bafacd69135af1a226fd8b309d156225d0b156ade35bef",
+    "direct_draw_source": "results/primary_corrected/effect_coded/h1_direct_bootstrap_2000_checkpoint.parquet",
+    "direct_draw_source_sha256": "405f1f9906cbf7701e54ef33a9b888a28fb96d7ca8534252004dff190e0d352b",
+    "generator_raw_input": "results/production_confirmatory/raw/exact.parquet",
+    "generator_raw_input_sha256": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+    "historical_recorded_input_checksum": "77e54bed863de79be0d1ebb4937f015fe29a1b1cb5d58e0f216f3acd4b9bb542",
+    "historical_recorded_input_role": "exact gradients",
+    "transform_source": "qnn_snr/stats/factor_coding.py",
+    "finalization_source": "scripts/run_h1_centered_bootstrap_extension.py",
+    "scientific_label": "original adopted historical analysis; finite-shot component-wise inner bootstrap retained",
+    "percentiles_recomputed_in_stage4": false,
+    "source_table_values_verified": true
+  },
+  {
+    "analysis_identifier": "bootstrap_H2",
+    "dataset": "original",
+    "estimand": "E_c:L_c",
+    "estimator_mode": "finite_shot_end_to_end",
+    "interval_method": "percentile 95%",
+    "row_key": {
+      "analysis_identifier": "bootstrap_H2",
+      "dataset": "original",
+      "estimand": "E_c:L_c",
+      "depth": null,
+      "weighting": null,
+      "estimator_mode": "finite_shot_end_to_end",
+      "interval_method": "percentile 95%"
+    },
+    "historical_source_output": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "historical_source_script": "verification/run_h2h4_bootstrap_shard_endtoend_only.py",
+    "coefficient_source": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "coefficient_source_sha256": "280e36f53278b8c26cc7390e2e06d6a2f9040db1b414b5435203e4a4cadfc05c",
+    "coefficient_row_key": {
+      "hypothesis": "H2"
+    },
+    "point_estimate_column": "corrected_estimate",
+    "interval_source": "results/primary_corrected/effect_coded/corrected_bootstrap_intervals_current_draws.csv",
+    "interval_source_sha256": "941c8d2499e317bf1c740e33d2228d899642f283db65c568107b0242b37463d9",
+    "interval_row_key": {
+      "hypothesis": "H2"
+    },
+    "interval_columns": [
+      "percentile_ci_lo",
+      "percentile_ci_hi"
+    ],
+    "bootstrap_count_column": "completed_bootstrap_iterations",
+    "bootstrap_count": 1000,
+    "centered_draw_source": "results/primary_corrected/effect_coded/h2h4_centered_bootstrap_1000_transformed.parquet",
+    "centered_draw_source_sha256": "d985dce62adfd787c8c5ff189935774b7712425d84bde14444f0042ba5bd7a05",
+    "direct_draw_source": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_iterations.parquet",
+    "direct_draw_source_sha256": "9fff3510b7892a6df22136acc929c69766a799b1bd23214e5f76bf6f07f3ace6",
+    "generator_raw_input": "results/production_confirmatory/raw/finite_shot_end_to_end.parquet",
+    "generator_raw_input_sha256": "22b5e761f461c6bfde7a60a4efa7ac13bc59ae003488be84d2f0c1e57ddb7f39",
+    "historical_recorded_input_checksum": "99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342",
+    "historical_recorded_input_role": "pointwise table for originating model (not the raw inner resampling input)",
+    "transform_source": "qnn_snr/stats/factor_coding.py",
+    "finalization_source": "scripts/finalize_h2h4_bootstrap_1000.py",
+    "scientific_label": "original adopted historical analysis; finite-shot component-wise inner bootstrap retained",
+    "percentiles_recomputed_in_stage4": false,
+    "source_table_values_verified": true
+  },
+  {
+    "analysis_identifier": "bootstrap_H3",
+    "dataset": "original",
+    "estimand": "E_c:R_c",
+    "estimator_mode": "finite_shot_end_to_end",
+    "interval_method": "percentile 95%",
+    "row_key": {
+      "analysis_identifier": "bootstrap_H3",
+      "dataset": "original",
+      "estimand": "E_c:R_c",
+      "depth": null,
+      "weighting": null,
+      "estimator_mode": "finite_shot_end_to_end",
+      "interval_method": "percentile 95%"
+    },
+    "historical_source_output": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "historical_source_script": "verification/run_h2h4_bootstrap_shard_endtoend_only.py",
+    "coefficient_source": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "coefficient_source_sha256": "280e36f53278b8c26cc7390e2e06d6a2f9040db1b414b5435203e4a4cadfc05c",
+    "coefficient_row_key": {
+      "hypothesis": "H3"
+    },
+    "point_estimate_column": "corrected_estimate",
+    "interval_source": "results/primary_corrected/effect_coded/corrected_bootstrap_intervals_current_draws.csv",
+    "interval_source_sha256": "941c8d2499e317bf1c740e33d2228d899642f283db65c568107b0242b37463d9",
+    "interval_row_key": {
+      "hypothesis": "H3"
+    },
+    "interval_columns": [
+      "percentile_ci_lo",
+      "percentile_ci_hi"
+    ],
+    "bootstrap_count_column": "completed_bootstrap_iterations",
+    "bootstrap_count": 1000,
+    "centered_draw_source": "results/primary_corrected/effect_coded/h2h4_centered_bootstrap_1000_transformed.parquet",
+    "centered_draw_source_sha256": "d985dce62adfd787c8c5ff189935774b7712425d84bde14444f0042ba5bd7a05",
+    "direct_draw_source": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_iterations.parquet",
+    "direct_draw_source_sha256": "9fff3510b7892a6df22136acc929c69766a799b1bd23214e5f76bf6f07f3ace6",
+    "generator_raw_input": "results/production_confirmatory/raw/finite_shot_end_to_end.parquet",
+    "generator_raw_input_sha256": "22b5e761f461c6bfde7a60a4efa7ac13bc59ae003488be84d2f0c1e57ddb7f39",
+    "historical_recorded_input_checksum": "99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342",
+    "historical_recorded_input_role": "pointwise table for originating model (not the raw inner resampling input)",
+    "transform_source": "qnn_snr/stats/factor_coding.py",
+    "finalization_source": "scripts/finalize_h2h4_bootstrap_1000.py",
+    "scientific_label": "original adopted historical analysis; finite-shot component-wise inner bootstrap retained",
+    "percentiles_recomputed_in_stage4": false,
+    "source_table_values_verified": true
+  },
+  {
+    "analysis_identifier": "bootstrap_H4",
+    "dataset": "original",
+    "estimand": "L_c:R_c:depth_z",
+    "estimator_mode": "finite_shot_end_to_end",
+    "interval_method": "percentile 95%",
+    "row_key": {
+      "analysis_identifier": "bootstrap_H4",
+      "dataset": "original",
+      "estimand": "L_c:R_c:depth_z",
+      "depth": null,
+      "weighting": null,
+      "estimator_mode": "finite_shot_end_to_end",
+      "interval_method": "percentile 95%"
+    },
+    "historical_source_output": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "historical_source_script": "verification/run_h2h4_bootstrap_shard_endtoend_only.py",
+    "coefficient_source": "results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv",
+    "coefficient_source_sha256": "280e36f53278b8c26cc7390e2e06d6a2f9040db1b414b5435203e4a4cadfc05c",
+    "coefficient_row_key": {
+      "hypothesis": "H4"
+    },
+    "point_estimate_column": "corrected_estimate",
+    "interval_source": "results/primary_corrected/effect_coded/corrected_bootstrap_intervals_current_draws.csv",
+    "interval_source_sha256": "941c8d2499e317bf1c740e33d2228d899642f283db65c568107b0242b37463d9",
+    "interval_row_key": {
+      "hypothesis": "H4"
+    },
+    "interval_columns": [
+      "percentile_ci_lo",
+      "percentile_ci_hi"
+    ],
+    "bootstrap_count_column": "completed_bootstrap_iterations",
+    "bootstrap_count": 1000,
+    "centered_draw_source": "results/primary_corrected/effect_coded/h2h4_centered_bootstrap_1000_transformed.parquet",
+    "centered_draw_source_sha256": "d985dce62adfd787c8c5ff189935774b7712425d84bde14444f0042ba5bd7a05",
+    "direct_draw_source": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_iterations.parquet",
+    "direct_draw_source_sha256": "9fff3510b7892a6df22136acc929c69766a799b1bd23214e5f76bf6f07f3ace6",
+    "generator_raw_input": "results/production_confirmatory/raw/finite_shot_end_to_end.parquet",
+    "generator_raw_input_sha256": "22b5e761f461c6bfde7a60a4efa7ac13bc59ae003488be84d2f0c1e57ddb7f39",
+    "historical_recorded_input_checksum": "99a4decf8597c9fcc5a61a8e59075d34e1cf6668714ee19e38b39258e15d1342",
+    "historical_recorded_input_role": "pointwise table for originating model (not the raw inner resampling input)",
+    "transform_source": "qnn_snr/stats/factor_coding.py",
+    "finalization_source": "scripts/finalize_h2h4_bootstrap_1000.py",
+    "scientific_label": "original adopted historical analysis; finite-shot component-wise inner bootstrap retained",
+    "percentiles_recomputed_in_stage4": false,
+    "source_table_values_verified": true
+  }
+]

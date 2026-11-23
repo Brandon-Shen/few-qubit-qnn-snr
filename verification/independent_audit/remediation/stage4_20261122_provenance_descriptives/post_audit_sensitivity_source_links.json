@@ -1,0 +1,21 @@
+{
+  "label": "separate post-audit sensitivity, never substituted for frozen primary/bootstrap rows",
+  "source_manifest": "verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/completion.json",
+  "source_manifest_sha256": "7c9ed8c06cafca107815f7a35df5b660cf769e3724897b55435f88542e8aed7c",
+  "report": "verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/STAGE_3_BOOTSTRAP_SENSITIVITY.md",
+  "report_sha256": "d4823add2590581612ff0ba7b33e2374ceaf5fef6dcfedbc2e13c189d9d1fed5",
+  "coefficients": "verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/sensitivity_coefficients.csv",
+  "coefficients_sha256": "1bc98a8a7b39a2347b1c6e8b4e4d632f85eacce960f79de312a4b3983aafbfed",
+  "intervals": "verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/interval_summaries.csv",
+  "intervals_sha256": "9c258d08c04915f659776954f9ec2ab158ed74f8917e23fefec630b0056fc144",
+  "accepted": 1000,
+  "hypotheses_covered": [
+    "H2",
+    "H3",
+    "H4",
+    "H3_L0",
+    "H3_L1",
+    "H3_average"
+  ],
+  "H1_refit": false
+}

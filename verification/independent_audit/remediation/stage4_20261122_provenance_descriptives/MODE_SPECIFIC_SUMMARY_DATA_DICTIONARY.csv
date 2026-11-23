@@ -1,0 +1,32 @@
+column,definition,denominator_or_population,source_role
+analysis_mode,Finite-shot estimator population: end-to-end or conditional; never pooled in these new tables,group key,validated archived design/group metadata
+configuration_id,Canonical factorial configuration ID 1..8,group key,validated archived design/group metadata
+E,Entangling-schedule factor 0/1,configuration metadata,validated archived design/group metadata
+L,Terminal-objective factor 0/1,configuration metadata,validated archived design/group metadata
+R,Classical residual factor 0/1,configuration metadata,validated archived design/group metadata
+depth,"Nominal hybrid block count D in {1,2,3,4,6}",group key,validated archived design/group metadata
+budget,Total simulator shots B for one complete gradient-vector replicate,group key; not per-parameter budget,validated archived design/group metadata
+n_initialization_clusters,Distinct matched initialization IDs,"50 per row; independent top-level design clusters, subject to IA-001 stream-reuse caveat",raw replicate reaggregation
+quantum_parameters_per_initialization,Number of quantum gradient components at the specified depth,4D; common vector components are not independent shot experiments,raw replicate reaggregation
+gradient_vectors_per_initialization_vector_cell,Archived complete gradient-vector replicates per fixed initialization/configuration/depth/mode/budget,30,raw replicate reaggregation
+n_measured_gradient_vectors,Complete archived vectors represented in the row,50 initializations x 30 vectors; not 50 x 30 x 4D,raw replicate reaggregation
+n_raw_component_rows,Archived scalar gradient rows represented in the row,50 x 30 x 4D,raw replicate reaggregation
+n_parameter_cells,Pointwise parameter-level cells aggregated,50 x 4D; each aggregates 30 vector replicates,raw replicate reaggregation
+n_finite_SNR_est,Parameter cells with finite plug-in estimator SNR,SNR summary denominator,raw replicate reaggregation
+n_nonfinite_SNR_est,Undefined/infinite SNR cells omitted from SNR summaries,n_parameter_cells - n_finite_SNR_est,raw replicate reaggregation
+n_zero_variance_parameter_cells,Cells with exactly zero ddof=1 empirical replicate variance,No epsilon/floor,raw replicate reaggregation
+n_signed_mean_ci_parameter_cells,All parameter cells entering the archived signed-mean CI flag fraction,Includes nonfinite-SNR cells,raw replicate reaggregation
+n_bias_sign_parameter_cells,All parameter cells entering bias and sign summaries,Includes nonfinite-SNR cells,raw replicate reaggregation
+median_SNR_est,Median abs(sample mean)/sample SD across parameter cells,"Finite SNR_est only; SD ddof=1, no sqrt(30) denominator",raw replicate reaggregation
+iqr_SNR_est,75th minus 25th percentile of plug-in SNR,Finite SNR_est only; linear interpolation,raw replicate reaggregation
+rms_SNR_est,sqrt(mean(SNR_est squared)),"Finite SNR_est only; this is descriptive, not a model coefficient",raw replicate reaggregation
+fraction_SNR_est_geq_1,Fraction of finite SNR_est values >=1,n_finite_SNR_est,raw replicate reaggregation
+fraction_archived_signed_mean_ci_excludes_zero,Fraction of original archived per-parameter signed-mean CIs flagged as excluding zero,"n_signed_mean_ci_parameter_cells; original CI flags inherited, no new bootstrap",archived pointwise signed_mean_ci_excludes_zero flags
+median_SNR_exact,Median abs(exact gradient)/sample SD,Finite SNR_exact only; not pooled with SNR_est,raw replicate reaggregation
+median_absolute_bias,Median abs(sample mean - exact gradient),All parameter cells; not mean absolute replicate error,raw replicate reaggregation
+iqr_absolute_bias,75th minus 25th percentile of absolute bias,All parameter cells; linear interpolation,raw replicate reaggregation
+sign_agreement_fraction,Fraction whose sample-mean sign agrees with exact-gradient sign,All parameter cells; false if either is exactly zero; not a replicate-sign fraction,raw replicate reaggregation
+rms_exact_gradient_magnitude,RMS of unique exact gradients at this configuration/depth,50 x 4D exact parameter rows counted once; shared across budgets/modes,unique frozen statevector_exact gradients
+exact_gradient_landscape_variance_across_inits,Sample variance across initialization means of absolute exact gradient,"50 initialization-level means, ddof=1; not variance across all derivatives",unique frozen statevector_exact gradients
+total_simulator_shots_per_vector_mean,Mean archived implemented shots for a complete gradient vector,B; repeated component rows do not multiply total physical vector shots,"raw per-vector resource values, checked against archived mode-keyed resource accounting"
+total_circuit_evaluations_per_vector_mean,Mean archived job/evaluation count per complete vector in this estimator mode,Raw archive reconciled with the mode-keyed resource table,"raw per-vector resource values, checked against archived mode-keyed resource accounting"

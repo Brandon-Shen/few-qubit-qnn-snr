@@ -1,0 +1,37 @@
+[
+  {
+    "path": "results/h1_marginal_effects/h1_marginal_effects.json",
+    "sha256_unchanged": "a73bf768fcae27106063cf931efcb92b87982d45b2499689e6b1e9dafeb891d7",
+    "historical_bytes": 3775,
+    "proposed_canonical_lf_bytes": 3662,
+    "historical_byte_count_matches_crlf_variant": true
+  },
+  {
+    "path": "results/h1_marginal_effects/h1_marginal_effects_table.tex",
+    "sha256_unchanged": "9b63fc6ce7327d4f49d8b57d7a0266bacc1bfd8805e3d09d7094ce4fe096bca8",
+    "historical_bytes": 1958,
+    "proposed_canonical_lf_bytes": 1934,
+    "historical_byte_count_matches_crlf_variant": true
+  },
+  {
+    "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_seed_manifest.csv",
+    "sha256_unchanged": "ca9069deb2fe00212ca449da1403331ffcf06200ca433510c60db93959a71db4",
+    "historical_bytes": 441110,
+    "proposed_canonical_lf_bytes": 439923,
+    "historical_byte_count_matches_crlf_variant": true
+  },
+  {
+    "path": "results/production_corrected_end_to_end/bootstrap_end_to_end_h2_h4_summary.csv",
+    "sha256_unchanged": "9138f2e17be90bbc38f752de9668bce9fd65c968cf47122834cc29db3ccad900",
+    "historical_bytes": 959,
+    "proposed_canonical_lf_bytes": 955,
+    "historical_byte_count_matches_crlf_variant": true
+  },
+  {
+    "path": "verification/h3_centered_interaction_robustness_results.json",
+    "sha256_unchanged": "721e1dc681d6dfa57bd409248e6b1117bb8eb2336b5c45a49aec42d6846135b6",
+    "historical_bytes": 1904,
+    "proposed_canonical_lf_bytes": 1825,
+    "historical_byte_count_matches_crlf_variant": true
+  }
+]

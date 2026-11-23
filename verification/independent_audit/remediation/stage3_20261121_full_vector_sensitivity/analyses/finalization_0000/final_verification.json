@@ -1,0 +1,29 @@
+{
+  "checkpoint_hashes_verified": 1000,
+  "accepted_coefficients_finite": true,
+  "attempt_limit_respected": true,
+  "accepted_limit_respected": true,
+  "source_hash_mismatches": [],
+  "prior_artifact_mismatches": [],
+  "lineage_checks": [
+    {
+      "iteration": 0,
+      "passed": true,
+      "vector_cells": 8000
+    },
+    {
+      "iteration": 500,
+      "passed": true,
+      "vector_cells": 8000
+    },
+    {
+      "iteration": 999,
+      "passed": true,
+      "vector_cells": 8000
+    }
+  ],
+  "historical_percentiles_reconciled": true,
+  "new_percentiles_method": "linear",
+  "model_refits_in_finalization": 0,
+  "sensitivity_status": "full_target_met"
+}

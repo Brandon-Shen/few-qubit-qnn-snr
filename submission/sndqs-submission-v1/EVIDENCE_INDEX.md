@@ -1,0 +1,20 @@
+# Reader guide to the reproducibility evidence
+
+Paths cited in the manuscript and supplement use the repository root. Publication is pending. The evidence file plan records exact repository paths and SHA-256 hashes.
+
+| Question | Start here |
+|---|---|
+| What is the frozen numerical authority? | [Numerical manifest](../../results/final_submission_v1/manifest.json), [frozen numerical rows](../../results/final_submission_v1/final_numerical_results.csv) and [frozen checksum list](../../results/final_submission_v1/checksums.sha256) |
+| Which sources give the adopted H1–H4 estimates and intervals? | [Primary estimates and Wald/Holm inference](../../results/primary_corrected/effect_coded/corrected_confirmatory_hypotheses.csv), [adopted bootstrap intervals](../../results/primary_corrected/effect_coded/corrected_bootstrap_intervals_current_draws.csv) and [original bootstrap draw and generator source index](../../verification/independent_audit/remediation/stage4_20261122_provenance_descriptives/bootstrap_interval_source_index.csv) |
+| What did the vector bootstrap change? | [Procedure comparison](../../verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/procedure_comparison.csv), [sensitivity coefficients](../../verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/sensitivity_coefficients.csv), and [Stage 3 report](../../verification/independent_audit/remediation/stage3_20261121_full_vector_sensitivity/analyses/finalization_0000/STAGE_3_BOOTSTRAP_SENSITIVITY.md) |
+| How are the provenance metadata and pooled descriptives corrected? | [Stage 4 report](../../verification/independent_audit/remediation/stage4_20261122_provenance_descriptives/STAGE_4_REPORTING_PROVENANCE_CORRECTIONS.md), [bootstrap role overlay](../../verification/independent_audit/remediation/stage4_20261122_provenance_descriptives/bootstrap_interval_provenance_overlay.json), [end-to-end summaries](../../verification/independent_audit/remediation/stage4_20261122_provenance_descriptives/configuration_summaries_finite_shot_end_to_end.csv), [conditional summaries](../../verification/independent_audit/remediation/stage4_20261122_provenance_descriptives/configuration_summaries_finite_shot_conditional.csv), and [data dictionary](../../verification/independent_audit/remediation/stage4_20261122_provenance_descriptives/MODE_SPECIFIC_SUMMARY_DATA_DICTIONARY.csv) |
+| What was audited? | [Scientific code audit](../../verification/independent_audit/SCIENTIFIC_CODE_AUDIT.md), [numerical reconciliation](../../verification/independent_audit/NUMERICAL_RECONCILIATION.md), [reproducibility report](../../verification/independent_audit/REPRODUCIBILITY_REPORT.md) |
+| How can I inspect the software and reproduction commands? | [Direct dependency pins](../../requirements-lock.txt), [project specification](../../pyproject.toml), [freeze environment](../../results/final_submission_v1/environment.json), [recorded commands](../../results/final_submission_v1/commands.txt), and [historical repository README](https://github.com/Brandon-Shen/few-qubit-qnn-snr/tree/sndc-submission-v1#readme) |
+
+## Verify the frozen evidence
+
+Run from the repository root with Python 3.12. This reads stored files and checks hashes.
+
+    python -c "import hashlib,json; from pathlib import Path; p=Path('results/final_submission_v1'); sha=lambda f: hashlib.sha256(f.read_bytes()).hexdigest(); rows=json.loads((p/'manifest.json').read_bytes())['component_references']; assert all(sha(Path(r['path']))==r['sha256'] for r in rows); sums=[l.split(maxsplit=1) for l in (p/'checksums.sha256').read_text().splitlines() if l.strip()]; assert all(sha(p/f)==h for h,f in sums); print(f'Verified {len(rows)} component and {len(sums)} companion hashes')"
+
+See the [release evidence file plan](PUBLIC_EVIDENCE_FILES.csv) and [manuscript commit record](../../MANUSCRIPT_COMMIT.txt). The four sensitivity filenames in Online Resource 1 resolve relative to its stated finalization directory.
