@@ -1,48 +1,11 @@
-# Finalized manuscript substantive commit
+# SNDQS submission v1 manuscript provenance
 
-Commit A:
-0e2aa2a55d8de70777434e079508c06bca560b70
+Status: proposed, unpublished
+Substantive commit: e13be53b170c89c5fc290e030cc0d0dfd8e49bee
+Canonical manuscript: submission/sndqs-submission-v1/main.tex
+Canonical supplement: submission/sndqs-submission-v1/ESM_1.tex
+Historical release: sndc-submission-v1 (ca058a70f49aa5c3300b2ea66e39421e0b0fed15)
+Numerical freeze tag: submission-numerical-results-freeze-v1 (cfe1e836a5fe85d7318710c390940046e5953bdb)
+Numerical authority: results/final_submission_v1/manifest.json
 
-Commit A is the substantive finalized repository state against which the
-manuscript text, numerical values, tables, figures, source files,
-documentation, verification scripts, and submission-facing materials were
-finalized.
-
-The recorded hash is the substantive manuscript source, documentation, and
-validation state for the intended release sndc-submission-v1. Compiled PDF artifacts are
-excluded from this release commit by author direction.
-
-Canonical sources:
-- paper/sn-article.tex
-- paper/supplemental.tex
-
-Byte-identical synchronized upload sources:
-- submission_package/main.tex
-- submission_package/ESM_1.tex
-
-This file is necessarily updated in a following metadata-only Commit B because
-a commit cannot contain its own hash. Commit B changes only this
-MANUSCRIPT_COMMIT.txt record and any unavoidable release-pointer metadata; it
-does not change scientific outputs or the substantive finalized state.
-
-Commit C:
-fd25501366de8361eae3ad4ea69a01cfcc53a51d
-
-Commit C makes checksum verification platform-independent by canonicalizing
-tracked text artifacts to LF before hashing. It updates only checksum logic,
-tests, and derived checksum records; it does not alter scientific values or
-the substantive manuscript state. GitHub Actions passed on both Ubuntu and
-Windows at Commit C before the replacement release tag was created.
-
-The historical numerical-results freeze is separate:
-- tag: submission-numerical-results-freeze-v1
-- numerical freeze commit: f2c5f496bd9223aa1aa0f00382fafa1ab95bfc05
-
-The final manuscript/repository release tag on the complete provenance and
-portable-validation state is:
-- sndc-submission-v1
-
-The authorized release step creates this new tag without moving or rewriting any prior tag.
-
-To inspect the substantive finalized state:
-git checkout a98835e1dd4b40c0abeaf636c1dbe1e33b3849d3
+After the substantive commit is approved and created, record its exact hash in a metadata-only commit. Point the proposed release tag to that metadata commit after authorization. The release tag and this record identify different commits by design.
